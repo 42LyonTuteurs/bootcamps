@@ -1,0 +1,5 @@
+Discord Guide
+https://discordjs.guide/#before-you-begin
+
+About Cronjobs
+https://scotch.io/tutorials/nodejs-cron-jobs-by-examples#toc-different-intervals-for-scheduling-tasks
