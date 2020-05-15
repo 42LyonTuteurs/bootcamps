@@ -8,7 +8,7 @@ module.exports = {
     return (config.admin.includes(user.username))
   },
   getRandomArbitrary(min, max) {
-    return Math.random() * (max - min) + min;
+    return Math.round(Math.random() * (max - min) + min);
   },
   alreadySubscribed(user) {
     // 

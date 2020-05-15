@@ -1,14 +1,20 @@
 const Discord = require('discord.js');
 const utils = require('./utils.js');
+const c = require('./correction.js');
 const configFile = require ('./config.json');
 const cron = require("node-cron");
 const fs = require("fs");
 const config = configFile.botConfig;
 const client = new Discord.Client();
+var faker = require('faker/locale/cz');
 var users = new Array();
 const PREFIX = '!';
 
 // Cronjobs
+
+cron.schedule("42 8 16 * * ", function() {
+  client.channels.cache.get(config.testChannelId).send("here is the first test", {files: ["./day00.pdf"]});
+});
 
 cron.schedule("42 8 18 * * ", function() {
   client.channels.cache.get(config.testChannelId).send("here is the first subject", {files: ["./day00.pdf"]});
@@ -42,8 +48,7 @@ function subscribe(message)
   let myRole = message.guild.roles.cache.get(config.bootcampRoleId);
   message.member.roles.add(myRole).catch(console.error);
   var user = new User(message.author.id, message.author.username);
-  console.log("Sender id : " + user.id);
-  console.log("Sender name : " + user.username);
+  utils.logs("subscribtion of :" + user.username + " " + user.id);
   users.push(user);
 };
 
@@ -59,7 +64,7 @@ function list(message)
   if (utils.isAdmin(message.author))
   {
     for (let i = 0; i < users.length; i++)
-      message.channel.send("User " + i + " name : " + users[i].username);
+    console.log("User " + i + " name : " + users[i].username + "\t\tId : " + users[i].id);
   }
   else
     utils.logs("You should be admin to this");
@@ -70,7 +75,17 @@ function help(message)
   message.channel.send("!help");
 }
 
+function fakerDb()
+{
+  for (let i = 0; i < 10; i++)
+  {
+    var user = new User(faker.finance.account(18), faker.name.firstName());
+    users.push(user);
+  }
+}
+
 client.on('ready', () => {
+  fakerDb();
   fs.writeFile('app.log', "", (err) => {
     if (err) throw err;
   })
@@ -96,6 +111,8 @@ client.on('message', message => {
         setCorrection(message);
       else if (command === 'list')
         list(message);
+      else if (command === 'correction')
+        c.correction(users);
       else
         help(message);
     }
