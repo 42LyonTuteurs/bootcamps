@@ -1,10 +1,30 @@
-Sat May 16 2020 11:49:16 :
+Sat May 16 2020 15:00:28 :
 Logged in as bootcamp#3825!
-Sat May 16 2020 11:49:31 | zekidok | UserId : 220625639655473152 :
-send : !subscribe pouet
-Sat May 16 2020 11:49:31 :
+Sat May 16 2020 15:00:35 | zekidok | UserId : 220625639655473152 :
+send : !list
+Sat May 16 2020 15:00:43 :
 subscribtion of :zekidok 220625639655473152
-Sat May 16 2020 11:49:45 | zekidok | UserId : 220625639655473152 :
-send : !subscribe pouet bonjour
-Sat May 16 2020 11:49:45 :
-subscribtion of :zekidok 220625639655473152
+Sat May 16 2020 15:00:43 | zekidok | UserId : 220625639655473152 :
+send : !subscribe
+Sat May 16 2020 15:00:46 | zekidok | UserId : 220625639655473152 :
+send : !list
+Sat May 16 2020 15:00:54 | zekidok | UserId : 220625639655473152 :
+send : !unsubscribe
+Sat May 16 2020 15:00:58 | zekidok | UserId : 220625639655473152 :
+send : !list
+Sat May 16 2020 15:01:19 | poulet_braisé | UserId : 685982799630827654 :
+send : !list
+Sat May 16 2020 15:01:19 :
+You should be admin to this
+Sat May 16 2020 15:02:02 | poulet_braisé | UserId : 685982799630827654 :
+send : !subscribe
+Sat May 16 2020 15:02:02 :
+subscribtion of :poulet_braisé 685982799630827654
+Sat May 16 2020 15:02:06 | zekidok | UserId : 220625639655473152 :
+send : !list
+Sat May 16 2020 15:02:29 | poulet_braisé | UserId : 685982799630827654 :
+send : !subscribe
+Sat May 16 2020 15:02:29 :
+subscribtion of :poulet_braisé 685982799630827654
+Sat May 16 2020 15:02:38 | zekidok | UserId : 220625639655473152 :
+send : !list

@@ -1,4 +1,9 @@
 const Discord = require('discord.js');
+const { Users, Stat, Day } = require('./dbObject');
+const userCtrl = require('./controllers/UsersCtrl');
+const dayCtrl = require('./controllers/DayCtrl');
+const statCtrl =  require('./controllers/StatCtrl');
+const { Op } = require('sequelize');
 const utils = require('./utils.js');
 const c = require('./correction.js');
 const configFile = require ('./config.json');
@@ -6,7 +11,7 @@ const cron = require("node-cron");
 const fs = require("fs");
 const config = configFile.botConfig;
 const client = new Discord.Client();
-var faker = require('faker/locale/cz');
+var faker = require('faker');
 var users = new Array();
 const PREFIX = '!';
 
@@ -43,29 +48,29 @@ function User(id, username) {
   this.username = username;
 }
 
-function subscribe(message)
+async function subscribe(message)
 {
   let myRole = message.guild.roles.cache.get(config.bootcampRoleId);
   message.member.roles.add(myRole).catch(console.error);
   var user = new User(message.author.id, message.author.username);
   utils.logs("subscribtion of :" + user.username + " " + user.id);
   users.push(user);
-  // await userCtrl.addUser(user.id, user.username);
+  await userCtrl.addUser(user.id, user.username);
 };
 
-function unsubscribe(message)
+async function unsubscribe(message)
 {
+  await userCtrl.deleteUserByLogin(message.author.username)
   let index = users.findIndex(u => u.username == message.author.username);
   if (index != -1)
     users.splice(index, 1);
 }
 
-function list(message)
+async function list(message)
 {
   if (utils.isAdmin(message.author))
   {
-    for (let i = 0; i < users.length; i++)
-    console.log("User " + i + " name : " + users[i].username + "\t\tId : " + users[i].id);
+    await userCtrl.All();
   }
   else
     utils.logs("You should be admin to this");
@@ -84,17 +89,18 @@ function help(message)
   message.channel.send("!help");
 }
 
-function fakerDb()
+async function fakerDb()
 {
-  for (let i = 0; i < 10; i++)
+  for (let i = 0; i < 40; i++)
   {
     var user = new User(faker.finance.account(18), faker.name.firstName());
+    await userCtrl.addUser(user.id, user.username);
     users.push(user);
   }
 }
 
-client.on('ready', () => {
-  fakerDb();
+client.on('ready', async() => {
+  await fakerDb();
   fs.writeFile('app.log', "", (err) => {
     if (err) throw err;
   })
@@ -115,7 +121,7 @@ client.on('message', message => {
       console.log(commandArgs);
       if (command === 'subscribe')
         subscribe(message);
-      if (command === 'info')
+      else if (command === 'info')
         info(message, commandArgs);
       else if (command === 'unsubscribe')
         unsubscribe(message);
