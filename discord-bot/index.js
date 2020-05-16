@@ -50,6 +50,7 @@ function subscribe(message)
   var user = new User(message.author.id, message.author.username);
   utils.logs("subscribtion of :" + user.username + " " + user.id);
   users.push(user);
+  // await userCtrl.addUser(user.id, user.username);
 };
 
 function unsubscribe(message)
@@ -68,6 +69,14 @@ function list(message)
   }
   else
     utils.logs("You should be admin to this");
+}
+
+function info(message, argv)
+{
+  if (!argv)
+  {
+    printUser.InfoByLogin(message.author.username)
+  }
 }
 
 function help(message)
@@ -103,8 +112,11 @@ client.on('message', message => {
       const input = message.content.slice(PREFIX.length).split(' ');
       const command = input.shift();
       const commandArgs = input.join(' ');
+      console.log(commandArgs);
       if (command === 'subscribe')
         subscribe(message);
+      if (command === 'info')
+        info(message, commandArgs);
       else if (command === 'unsubscribe')
         unsubscribe(message);
       else if (command === 'setCorrection')
