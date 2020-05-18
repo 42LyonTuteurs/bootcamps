@@ -9,10 +9,6 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.INTEGER,
             defaultValue: 0,
         },
-        subject: {
-            type: DataTypes.INTEGER,
-            defaultValue: 0,
-        },
         correction: {
             type: DataTypes.INTEGER,
             defaultValue: 0,
