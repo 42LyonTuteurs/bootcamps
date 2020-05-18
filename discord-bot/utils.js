@@ -56,6 +56,12 @@ module.exports = {
         await this.printStatByDiscordId(user.discord_id);
     },
 
+    printUserInfoByLoginInChannel: async function (message, login) {
+        const user = this.getUserByLogin(login)
+        message.channel.send("login          : " + user.login);
+        await this.printStatByDiscordIdInChannel(message, user.discord_id);
+    },
+
     printUserInfoByUser: async function (user) {
         await this.printUserInfoByLogin(user.login);
     },
@@ -121,9 +127,14 @@ module.exports = {
         await this.createStatByDiscordId(User.discord_id);
     },
 
-    printStatByDiscordId : async function(discord_id) {
+    printStatByDiscordId : async function(message, discord_id) {
         const stat = this.getStatByDiscordId(discord_id);
         this.printStat(stat);
+    },
+
+    printStatByDiscordIdInChannel : async function(message, discord_id) {
+        const stat = this.getStatByDiscordId(discord_id);
+        this.printStatInChannel(message, stat);
     },
 
     printStatByUser : async function(user) {
@@ -133,15 +144,30 @@ module.exports = {
 
     printStat : function (stat) {
         if (stat != null){
-            console.log("discord id     : " + stat.user_id);
-            console.log("jours terminés : " + stat.days_done);
-            console.log("nb corrections : " + stat.correction);
-            console.log("nb corrigé     : " + stat.corrected);
-            console.log("Day 0          : " + stat.day0_id);
-            console.log("Day 1          : " + stat.day1_id);
-            console.log("Day 2          : " + stat.day2_id);
-            console.log("Day 3          : " + stat.day3_id);
-            console.log("Day 4          : " + stat.day4_id);
+            console.log(
+            "discord id     : " + stat.user_id + "\n" +
+            "jours terminés : " + stat.days_done + "\n" +
+            "nb corrections : " + stat.correction + "\n" +
+            "nb corrigé     : " + stat.corrected + "\n" +
+            "Day 0          : " + stat.day0_id + "\n" +
+            "Day 1          : " + stat.day1_id + "\n" +
+            "Day 2          : " + stat.day2_id + "\n" +
+            "Day 3          : " + stat.day3_id + "\n" +
+            "Day 4          : " + stat.day4_id + "\n");
+        }
+    },
+    printStatInChannel : function (message, stat) {
+        if (stat != null){
+            message.channel.send(
+            "discord id     : " + stat.user_id + "\n" +
+            "jours terminés : " + stat.days_done + "\n" +
+            "nb corrections : " + stat.correction + "\n" +
+            "nb corrigé     : " + stat.corrected + "\n" +
+            "Day 0          : " + stat.day0_id + "\n" +
+            "Day 1          : " + stat.day1_id + "\n" +
+            "Day 2          : " + stat.day2_id + "\n" +
+            "Day 3          : " + stat.day3_id + "\n" +
+            "Day 4          : " + stat.day4_id + "\n");
         }
     },
 

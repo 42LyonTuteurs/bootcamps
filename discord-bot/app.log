@@ -1,51 +1,21 @@
-Mon May 18 2020 16:37:30 :
+Mon May 18 2020 17:10:29 :
 Logged in as bootcamp#3825!
 
-Mon May 18 2020 16:37:36 | undefined | UserId : 220625639655473152 :
-send : !unsubscribe
+Mon May 18 2020 17:10:33 | undefined | UserId : 220625639655473152 :
+send : !info
 
-Mon May 18 2020 16:37:54 | undefined | UserId : 374265216608763907 :
-send : !subscribe
+Mon May 18 2020 17:10:33 :
+ERROR : function getUserByDiscordId : Error: WHERE parameter "discord_id" has invalid "undefined" value
 
-Mon May 18 2020 16:37:54 :
-subscribtion of :jdarko 374265216608763907
+Mon May 18 2020 17:10:33 :
+ERROR : function getStatByUser : Error: WHERE parameter "user_id" has invalid "undefined" value
 
-Mon May 18 2020 16:37:54 :
-ERROR : function addUser : SequelizeUniqueConstraintError: Validation error
+Mon May 18 2020 17:10:34 | undefined | UserId : 235088799074484224 :
+send : 
 
-Mon May 18 2020 16:37:54 :
-ERROR : function createStatByDiscordId : SequelizeUniqueConstraintError: Validation error
+Mon May 18 2020 17:10:40 | undefined | UserId : 374265216608763907 :
+send : !list
 
-Mon May 18 2020 16:38:01 | undefined | UserId : 374265216608763907 :
-send : !unsubscribe
-
-Mon May 18 2020 16:38:14 | undefined | UserId : 374265216608763907 :
-send : !subscribe
-
-Mon May 18 2020 16:38:14 :
-subscribtion of :jdarko 374265216608763907
-
-Mon May 18 2020 16:38:14 :
-ERROR : function createStatByDiscordId : SequelizeUniqueConstraintError: Validation error
-
-Mon May 18 2020 16:38:15 | undefined | UserId : 709771830222651492 :
-send : ```Here is your private channel with the bot, please enter here your commands to interract with the bot```
-
-Mon May 18 2020 16:38:15 | undefined | UserId : 709771830222651492 :
-send : Here is your private channel with the bot, please enter here your commands to interract with the bot
-
-Mon May 18 2020 16:38:29 | undefined | UserId : 685982799630827654 :
-send : !subscribe
-
-Mon May 18 2020 16:38:29 :
-subscribtion of :mon_cul.club® 685982799630827654
-
-Mon May 18 2020 16:38:29 | undefined | UserId : 709771830222651492 :
-send : Here is your private channel with the bot, please enter here your commands to interract with the bot
-
-Mon May 18 2020 16:38:29 | undefined | UserId : 709771830222651492 :
-send : ```Here is your private channel with the bot, please enter here your commands to interract with the bot```
-
-Mon May 18 2020 16:38:45 | undefined | UserId : 685982799630827654 :
-send : !unsubscribe
+Mon May 18 2020 17:11:09 | undefined | UserId : 374265216608763907 :
+send : !correction
 

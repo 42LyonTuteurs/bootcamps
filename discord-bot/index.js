@@ -8,7 +8,6 @@ const cron = require("node-cron");
 const fs = require("fs");
 const config = configFile.botConfig;
 const client = new Discord.Client();
-// const everyoneRole = client.guilds.get('SERVER ID').roles.find('name', '@everyone');
 var faker = require('faker');
 var users = new Array();
 const PREFIX = '!';
@@ -57,7 +56,7 @@ async function subscribe(message)
   if (!message.guild.channels.cache.map(t => t.name).includes("bootcamp-" + message.member.nickname)) {
     const everyoneRole = message.guild.roles.cache.get(config.everyoneRoleId);
     const PrivateChannelWithBot = "bootcamp " + message.member.nickname;
-    message.guild.channels.create(PrivateChannelWithBot, { 
+    message.guild.channels.create(PrivateChannelWithBot, {
       type: "text",
       parent: config.privateChannelCategoryId,
       permissionOverwrites: [
@@ -107,8 +106,17 @@ function info(message, argv)
 {
   if (!argv)
   {
-    printUser.InfoByLogin(message.member.nickname)
+    if (utils.isAdmin(message.member))
+      utils.printUserInfoByLogin(message.member.nickname)
+    else
+      utils.printUserInfoByLoginInChannel(message, message.member.nickname)
   }
+  argv.forEach(element => {
+    if (utils.isAdmin(message.member))
+      utils.printUserInfoByLogin(message.member.nickname)
+    else
+      utils.printUserInfoByLoginInChannel(message, element);
+  })
 }
 
 function help(message)
@@ -156,7 +164,7 @@ client.on('message', async message => {
       if (command === 'subscribe')
         subscribe(message);
       else if (command === 'info')
-        info(message, commandArgs);
+        info(message, commandArgs.split(" "));
       else if (command === 'unsubscribe')
         unsubscribe(message);
       else if (command === 'setCorrection')
@@ -169,12 +177,6 @@ client.on('message', async message => {
         c.corrected(message, commandArgs.split(" "))
       else if (command === 'validated')
         c.validated(message, commandArgs.split(" "))
-      else if (command === 'qui' || command === 'quoi' || command == 'ou' || command == 'où') {
-        if (commandArgs != "pouce")
-          message.channel.send('MON CUL !');
-      }
-      else if (command == "pouce" && commandArgs != "pouce")
-        message.channel.send("PONEY !");
       else
         help(message);
     }
