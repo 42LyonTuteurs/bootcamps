@@ -79,18 +79,23 @@ async function subscribe(message)
 
 async function unsubscribe(message)
 {
-  await utils.deleteUserByLogin(message.member.nickname)
+  await utils.deleteUserByLogin(message.member.nickname);
+  let channelToDestroy;
   let index = users.findIndex(u => u.username == message.member.nickname);
   if (index != -1)
     users.splice(index, 1);
-  if (!message.guild.channels.cache.map(t => t.name).includes("bootcamp-" + message.member.nickname)) {
-    console.log("found");
+  if (message.guild.channels.cache.map(t => t.name).includes("bootcamp-" + message.member.nickname)) {
+    message.guild.channels.cache.forEach(element => {
+      if (element.name == "bootcamp-" + message.member.nickname)
+        channelToDestroy = element;
+    });
   }
+  channelToDestroy.delete();
 }
 
 async function list(message)
 {
-  if (utils.isAdmin(message.author.username))
+  if (utils.isAdmin(message.member))
   {
     await utils.printAll();
   }

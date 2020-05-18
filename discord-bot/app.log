@@ -1,54 +1,51 @@
-Mon May 18 2020 15:52:02 :
+Mon May 18 2020 16:37:30 :
 Logged in as bootcamp#3825!
 
-Mon May 18 2020 15:52:09 | undefined | UserId : 220625639655473152 :
+Mon May 18 2020 16:37:36 | undefined | UserId : 220625639655473152 :
+send : !unsubscribe
+
+Mon May 18 2020 16:37:54 | undefined | UserId : 374265216608763907 :
 send : !subscribe
 
-Mon May 18 2020 15:52:09 :
-subscribtion of :tclaudel 220625639655473152
-
-Mon May 18 2020 15:52:09 :
-ERROR : function addUser : SequelizeUniqueConstraintError: Validation error
-
-Mon May 18 2020 15:52:09 :
-ERROR : function createStatByDiscordId : SequelizeUniqueConstraintError: Validation error
-
-Mon May 18 2020 15:52:25 | undefined | UserId : 374265216608763907 :
-send : !correction
-
-Mon May 18 2020 15:53:01 | undefined | UserId : 220625639655473152 :
-send : !subscribe
-
-Mon May 18 2020 15:53:01 :
-subscribtion of :tclaudel 220625639655473152
-
-Mon May 18 2020 15:53:01 :
-ERROR : function addUser : SequelizeUniqueConstraintError: Validation error
-
-Mon May 18 2020 15:53:01 :
-ERROR : function createStatByDiscordId : SequelizeUniqueConstraintError: Validation error
-
-Mon May 18 2020 15:53:10 | undefined | UserId : 374265216608763907 :
-send : !subscribe
-
-Mon May 18 2020 15:53:10 :
+Mon May 18 2020 16:37:54 :
 subscribtion of :jdarko 374265216608763907
 
-Mon May 18 2020 15:53:10 :
+Mon May 18 2020 16:37:54 :
 ERROR : function addUser : SequelizeUniqueConstraintError: Validation error
 
-Mon May 18 2020 15:53:10 :
+Mon May 18 2020 16:37:54 :
 ERROR : function createStatByDiscordId : SequelizeUniqueConstraintError: Validation error
 
-Mon May 18 2020 15:53:26 | undefined | UserId : 374265216608763907 :
+Mon May 18 2020 16:38:01 | undefined | UserId : 374265216608763907 :
+send : !unsubscribe
+
+Mon May 18 2020 16:38:14 | undefined | UserId : 374265216608763907 :
 send : !subscribe
 
-Mon May 18 2020 15:53:26 :
+Mon May 18 2020 16:38:14 :
 subscribtion of :jdarko 374265216608763907
 
-Mon May 18 2020 15:53:26 :
-ERROR : function addUser : SequelizeUniqueConstraintError: Validation error
-
-Mon May 18 2020 15:53:26 :
+Mon May 18 2020 16:38:14 :
 ERROR : function createStatByDiscordId : SequelizeUniqueConstraintError: Validation error
+
+Mon May 18 2020 16:38:15 | undefined | UserId : 709771830222651492 :
+send : ```Here is your private channel with the bot, please enter here your commands to interract with the bot```
+
+Mon May 18 2020 16:38:15 | undefined | UserId : 709771830222651492 :
+send : Here is your private channel with the bot, please enter here your commands to interract with the bot
+
+Mon May 18 2020 16:38:29 | undefined | UserId : 685982799630827654 :
+send : !subscribe
+
+Mon May 18 2020 16:38:29 :
+subscribtion of :mon_cul.club® 685982799630827654
+
+Mon May 18 2020 16:38:29 | undefined | UserId : 709771830222651492 :
+send : Here is your private channel with the bot, please enter here your commands to interract with the bot
+
+Mon May 18 2020 16:38:29 | undefined | UserId : 709771830222651492 :
+send : ```Here is your private channel with the bot, please enter here your commands to interract with the bot```
+
+Mon May 18 2020 16:38:45 | undefined | UserId : 685982799630827654 :
+send : !unsubscribe
 

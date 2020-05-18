@@ -6,7 +6,7 @@ const { Users, Stat, Day } = require('./dbObject');
 
 module.exports = {
     isAdmin(user) {
-        return (config.admin.includes(user.username))
+        return (config.admin.includes(user.nickname))
     },
 
     getRandomArbitrary(min, max) {
