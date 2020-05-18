@@ -144,10 +144,7 @@ client.on('ready', async() => {
 });
 
 client.on('message', async message => {
-<<<<<<< HEAD
   // console.log(message.guild.roles.cache);
-=======
->>>>>>> tclaudel
   utils.logs("send : "+ message.content, message.member);
   LoginList = await utils.AllLogin();
   if (message.author.username != "bootcamp" && !message.author.bot)
