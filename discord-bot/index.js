@@ -1,5 +1,5 @@
 const Discord = require('discord.js');
-const { Users, Stat, Day } = require('./dbObject');;
+const { Users, Stat, Day } = require('./dbObject');
 const { Op } = require('sequelize');
 const utils = require('./utils.js');
 const c = require('./correction.js');
@@ -14,28 +14,24 @@ const PREFIX = '!';
 
 // Cronjobs
 
-cron.schedule("42 8 17 * * ", function() {
-  client.channels.cache.get(config.testChannelId).send("here is the first test", {files: ["./day00.pdf"]});
-});
-
 cron.schedule("42 8 18 * * ", function() {
-  client.channels.cache.get(config.testChannelId).send("here is the first subject", {files: ["./day00.pdf"]});
+  client.channels.cache.get(config.testChannelId).send("here is the Day01 subject", {files: ["./day00.pdf"]});
 });
 
 cron.schedule("42 8 19 * * ", function() {
-  client.channels.cache.get(config.testChannelId).send("here is the first subject", {files: ["./day01.pdf"]});
+  client.channels.cache.get(config.testChannelId).send("here is the Day02 subject", {files: ["./day01.pdf"]});
 });
 
 cron.schedule("42 8 20 * * ", function() {
-  client.channels.cache.get(config.testChannelId).send("here is the first subject", {files: ["./day02.pdf"]});
+  client.channels.cache.get(config.testChannelId).send("here is the Day03 subject", {files: ["./day02.pdf"]});
 });
 
 cron.schedule("42 8 21 * * ", function() {
-  client.channels.cache.get(config.testChannelId).send("here is the first subject", {files: ["./day03.pdf"]});
+  client.channels.cache.get(config.testChannelId).send("here is the Day04 subject", {files: ["./day03.pdf"]});
 });
 
 cron.schedule("42 8 22 * * ", function() {
-  client.channels.cache.get(config.testChannelId).send("here is the first subject", {files: ["./day04.pdf"]});
+  client.channels.cache.get(config.testChannelId).send("here is the Day0 subject", {files: ["./day04.pdf"]});
 });
 
 // End Cronjobs
