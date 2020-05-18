@@ -54,16 +54,27 @@ async function subscribe(message)
   utils.logs("subscribtion of :" + user.username + " " + user.id);
   users.push(user);
   await utils.addUser(user.id, user.username);
-  const everyoneRole = message.guild.roles.cache.get(config.everyoneRoleId);
-  const PrivateChannelWithBot = "bootcamp " + message.member.nickname;
-  await message.guild.channels.create(PrivateChannelWithBot, "text")
-  .then(r => {
-    r.updateOverwrite(message.author.id, { VIEW_CHANNEL: true});
-    r.updateOverwrite(everyoneRole, { VIEW_CHANNEL: false});
-    // r.overwritePermissions(client.id, { VIEW_CHANNEL: true });
-    // r.overwritePermissions(everyoneRole, { VIEW_CHANNEL: false });
-  })
-  .catch(console.error);
+  if (!message.guild.channels.cache.map(t => t.name).includes("bootcamp-" + message.member.nickname)) {
+    const everyoneRole = message.guild.roles.cache.get(config.everyoneRoleId);
+    const PrivateChannelWithBot = "bootcamp " + message.member.nickname;
+    message.guild.channels.create(PrivateChannelWithBot, {
+      type: "text",
+      parent: config.privateChannelCategoryId,
+      permissionOverwrites: [
+        {
+          id: everyoneRole,
+          deny: ['VIEW_CHANNEL'],
+        },
+        {
+          id: message.author.id,
+          allow: ['VIEW_CHANNEL'],
+        },
+      ],})
+        .then(r => {
+          r.send("Here is your private channel with the bot, please enter here your commands to interract with the bot");
+        })
+        .catch(console.error);
+  }
 };
 
 async function unsubscribe(message)
@@ -88,8 +99,11 @@ function info(message, argv)
 {
   if (!argv)
   {
-    printUser.InfoByLogin(message.member.nickname)
+     utils.printUserInfoByLogin(message.member.nickname)
   }
+  argv.forEach(element => {
+    utils.printUserInfoByLogin(element);
+  })
 }
 
 function help(message)
@@ -106,7 +120,7 @@ async function fakerDb()
     users.push(user);
   }
   // users.push (await utils.addUser("220625639655473152", "tclaudel"));
-  users.push (await utils.addUser("374265216608763907", "jdarko"));
+  // users.push (await utils.addUser("374265216608763907", "jdarko"));
 }
 
 client.on('ready', async() => {
@@ -121,7 +135,7 @@ client.on('ready', async() => {
 });
 
 client.on('message', async message => {
-  console.log(message.guild.roles.cache);
+  // console.log(message.guild.roles.cache);
   utils.logs("send : "+ message.content, message.member);
   LoginList = await utils.AllLogin();
   if (message.author.username != "bootcamp" && !message.author.bot)
@@ -145,8 +159,25 @@ client.on('message', async message => {
         setCorrection(message);
       else if (command === 'list')
         list(message);
+      else if (command === 'print')
+        await utils.printUserInfoByLogin("jdarko");
+      else if (command === 'setDay'){
+        const usr = await utils.getUserByLogin("jdarko")
+        const usr2 = await utils.getUserByLogin("")
+        await utils.createDay(usr, 0);
+        await utils.createDay(usr, 1);
+      }
       else if (command === 'correction')
-        c.correction(users);
+      {
+        await c.correction(users);
+        const user = await utils.getUserByLogin("jdarko");
+        // console.log(user.login);
+        const dayId = await utils.getDayIdByUser(user, 0);
+        // console.log(dayId);
+        const day = await utils.getDayByDayId(dayId);
+        // console.log(day);
+        await utils.printDay(day);
+      }
       else if (command === 'corrected')
         c.corrected(message, commandArgs.split(" "))
       else if (command === 'validated')

@@ -37,6 +37,10 @@ module.exports = {
             this.logs("ERROR : function addUser : " + e);
         }
         await this.createStatByDiscordId(discord_id);
+        const user = await this.getUserByDiscordId(discord_id);
+        for (let i = 0; i < 5; i++) {
+            await this.createDay(user, i);
+        }
     },
 
     printAllLogin : async function(){
@@ -50,7 +54,10 @@ module.exports = {
     },
 
     printUserInfoByLogin: async function (login) {
-        const user = this.getUserByLogin(login)
+        console.log("printUserInfoByLogin");
+        console.log(login);
+
+        const user = await this.getUserByLogin(login)
         console.log("discord id     : " + user.discord_id);
         console.log("login          : " + user.login);
         await this.printStatByDiscordId(user.discord_id);
@@ -122,8 +129,8 @@ module.exports = {
     },
 
     printStatByDiscordId : async function(discord_id) {
-        const stat = this.getStatByDiscordId(discord_id);
-        this.printStat(stat);
+        const stat = await this.getStatByDiscordId(discord_id);
+        await this.printStat(stat);
     },
 
     printStatByUser : async function(user) {
@@ -131,7 +138,7 @@ module.exports = {
         this.printStat(stat);
     },
 
-    printStat : function (stat) {
+    printStat : async function (stat) {
         if (stat != null){
             console.log("discord id     : " + stat.user_id);
             console.log("jours terminés : " + stat.days_done);
@@ -142,6 +149,16 @@ module.exports = {
             console.log("Day 2          : " + stat.day2_id);
             console.log("Day 3          : " + stat.day3_id);
             console.log("Day 4          : " + stat.day4_id);
+            let day = await this.getDayByDayId(stat.day0_id);
+            this.printDay(day);
+            day = await this.getDayByDayId(stat.day1_id);
+            this.printDay(day);
+            day = await this.getDayByDayId(stat.day2_id);
+            this.printDay(day);
+            day = await this.getDayByDayId(stat.day3_id);
+            this.printDay(day);
+            day = await this.getDayByDayId(stat.day4_id);
+            this.printDay(day);
         }
     },
 
@@ -189,8 +206,8 @@ module.exports = {
     },
 
     getStatByDiscordId : async function (discord_id){
-        const user = this.getUserByDiscordId(discord_id)
-        const stat = this.getStatByUser(user)
+        const user = await this.getUserByDiscordId(discord_id)
+        const stat = await this.getStatByUser(user)
         return (stat);
     },
 
@@ -237,13 +254,14 @@ module.exports = {
     },
 
     getDayIdByUser : async function(user, nb){
-        const stat = this.getStatByUser(user);
-        const day_id = this.getDayIdByStat(stat, nb);
+        const stat = await this.getStatByUser(user);
+        const day_id = await this.getDayIdByStat(stat, nb);
         return (day_id);
     },
 
     printDay : async function(day){
         if (day != null) {
+            console.log("----------");
             console.log("day id         : " + day.day_id);
             console.log("day nb         : " + day.day_nb);
             console.log("correction     : " + day.correction);
