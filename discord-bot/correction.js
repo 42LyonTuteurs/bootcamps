@@ -11,7 +11,7 @@ function correctedBy(message, commandArgs) {
 		// correction done
 }
 
-function validated(message, commandArgs) {
+function validatedSomeone(message, commandArgs) {
 	let corrected = commandArgs[0];
 	let corrector = message.member.nickname;
 	let day = commandArgs[1];
@@ -47,7 +47,7 @@ module.exports = {
 	validated : async function(message, commandArgs) {
 		LoginList = await utils.AllLogin();
 		if (LoginList.includes(commandArgs[0]))
-			validated(message, commandArgs);
+			validatedSomeone(message, commandArgs);
 		else
 			console.log("Could not find matching correction")
 	},

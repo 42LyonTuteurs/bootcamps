@@ -1,9 +1,36 @@
-Mon May 18 2020 13:38:17 :
+Mon May 18 2020 15:30:27 :
 Logged in as bootcamp#3825!
 
-Mon May 18 2020 13:38:19 | undefined | UserId : 220625639655473152 :
-send : !pouet
+Mon May 18 2020 15:30:29 | undefined | UserId : 220625639655473152 :
+send : !subscribe
 
-Mon May 18 2020 13:38:19 | undefined | UserId : 709771830222651492 :
-send : !help
+Mon May 18 2020 15:30:29 :
+subscribtion of :tclaudel 220625639655473152
+
+Mon May 18 2020 15:30:29 :
+ERROR : function addUser : SequelizeUniqueConstraintError: Validation error
+
+Mon May 18 2020 15:30:29 :
+ERROR : function createStatByDiscordId : SequelizeUniqueConstraintError: Validation error
+
+Mon May 18 2020 15:30:29 | undefined | UserId : 709771830222651492 :
+send : ```Here is your private channel with the bot, please enter here your commands to interract with the bot```
+
+Mon May 18 2020 15:30:48 | undefined | UserId : 374265216608763907 :
+send : !subscribe
+
+Mon May 18 2020 15:30:48 :
+subscribtion of :jdarko 374265216608763907
+
+Mon May 18 2020 15:30:48 :
+ERROR : function addUser : SequelizeUniqueConstraintError: Validation error
+
+Mon May 18 2020 15:30:48 :
+ERROR : function createStatByDiscordId : SequelizeUniqueConstraintError: Validation error
+
+Mon May 18 2020 15:30:48 | undefined | UserId : 709771830222651492 :
+send : ```Here is your private channel with the bot, please enter here your commands to interract with the bot```
+
+Mon May 18 2020 15:30:59 | undefined | UserId : 374265216608763907 :
+send : j'en ai qu'un seul
 

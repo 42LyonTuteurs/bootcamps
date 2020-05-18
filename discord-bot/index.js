@@ -56,12 +56,21 @@ async function subscribe(message)
   await utils.addUser(user.id, user.username);
   const everyoneRole = message.guild.roles.cache.get(config.everyoneRoleId);
   const PrivateChannelWithBot = "bootcamp " + message.member.nickname;
-  await message.guild.channels.create(PrivateChannelWithBot, "text")
+  message.guild.channels.create(PrivateChannelWithBot, { 
+    type: "text",
+    parent: config.privateChannelCategoryId,
+    permissionOverwrites: [
+    {
+      id: everyoneRole, 
+      deny: ['VIEW_CHANNEL'],
+    },
+    {
+      id: message.author.id,
+      allow: ['VIEW_CHANNEL'],
+    },
+  ],})
   .then(r => {
-    r.updateOverwrite(message.author.id, { VIEW_CHANNEL: true});
-    r.updateOverwrite(everyoneRole, { VIEW_CHANNEL: false});
-    // r.overwritePermissions(client.id, { VIEW_CHANNEL: true });
-    // r.overwritePermissions(everyoneRole, { VIEW_CHANNEL: false });
+    r.send("```Here is your private channel with the bot, please enter here your commands to interract with the bot```");
   })
   .catch(console.error);
 };
@@ -121,7 +130,7 @@ client.on('ready', async() => {
 });
 
 client.on('message', async message => {
-  console.log(message.guild.roles.cache);
+  // console.log(message.guild.channels.cache)
   utils.logs("send : "+ message.content, message.member);
   LoginList = await utils.AllLogin();
   if (message.author.username != "bootcamp" && !message.author.bot)
