@@ -173,6 +173,30 @@ module.exports = {
         }
     },
 
+    printStatInChannel : async function (message, stat) {
+        if (stat != null){
+            message.channel.send("discord id     : " + stat.user_id + "\n" +
+            "jours terminés : " + stat.days_done + "\n" +
+            "nb corrections : " + stat.correction + "\n" +
+            "nb corrigé     : " + stat.corrected + "\n" +
+            "Day 0          : " + stat.day0_id + "\n" +
+            "Day 1          : " + stat.day1_id + "\n" +
+            "Day 2          : " + stat.day2_id + "\n" +
+            "Day 3          : " + stat.day3_id + "\n" +
+            "Day 4          : " + stat.day4_id + "\n");
+            let day = await this.getDayByDayId(stat.day0_id);
+            this.printDay(day);
+            day = await this.getDayByDayId(stat.day1_id);
+            this.printDay(day);
+            day = await this.getDayByDayId(stat.day2_id);
+            this.printDay(day);
+            day = await this.getDayByDayId(stat.day3_id);
+            this.printDay(day);
+            day = await this.getDayByDayId(stat.day4_id);
+            this.printDay(day);
+        }
+    },
+
     updateStatDaysDone : async function (stat) {
         if (stat != null)
             try{
