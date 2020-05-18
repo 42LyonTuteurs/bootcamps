@@ -299,5 +299,16 @@ module.exports = {
             this.logs("ERROR : function updateDayComplete : " + e);
         }
     },
-
+    printAll : async function() {
+      const List = await Users.findAll();
+      console.log(List.map(t => t.dataValues));
+    },
+    UserNb : async function() {
+      const nbOfUsers = await Users.findAll();
+      return (nbOfUsers.length)
+    },
+    AllLogin : async function(){
+      const List = await Users.findAll();
+      return await List.map(t => t.dataValues.login);
+  },
 }
