@@ -1,3 +1,96 @@
-Mon May 18 2020 19:11:58 :
+Mon May 18 2020 19:14:51 :
 Logged in as bootcamp#3825!
+
+Mon May 18 2020 19:15:17 | undefined | UserId : 374265216608763907 :
+send : !info
+
+Mon May 18 2020 19:15:17 :
+ERROR : function getUserByDiscordId : Error: WHERE parameter "discord_id" has invalid "undefined" value
+
+Mon May 18 2020 19:15:17 :
+ERROR : function getStatByUser : TypeError: Cannot read property 'discord_id' of undefined
+
+Mon May 18 2020 19:15:17 | undefined | UserId : 235088799074484224 :
+send : 
+
+Mon May 18 2020 19:15:17 | undefined | UserId : 709771830222651492 :
+send : login          : undefined
+
+Mon May 18 2020 19:21:13 | undefined | UserId : 220625639655473152 :
+send : !info
+
+Mon May 18 2020 19:21:13 :
+ERROR : function getUserByDiscordId : Error: WHERE parameter "discord_id" has invalid "undefined" value
+
+Mon May 18 2020 19:21:13 :
+ERROR : function getStatByUser : TypeError: Cannot read property 'discord_id' of undefined
+
+Mon May 18 2020 19:21:13 | undefined | UserId : 235088799074484224 :
+send : 
+
+Mon May 18 2020 19:21:13 | undefined | UserId : 709771830222651492 :
+send : login          : undefined
+
+Mon May 18 2020 19:22:06 | undefined | UserId : 220625639655473152 :
+send : !info
+
+Mon May 18 2020 19:22:06 :
+ERROR : function getUserByDiscordId : Error: WHERE parameter "discord_id" has invalid "undefined" value
+
+Mon May 18 2020 19:22:06 :
+ERROR : function getStatByUser : TypeError: Cannot read property 'discord_id' of undefined
+
+Mon May 18 2020 19:22:06 | undefined | UserId : 235088799074484224 :
+send : 
+
+Mon May 18 2020 19:22:06 | undefined | UserId : 709771830222651492 :
+send : login          : undefined
+
+Mon May 18 2020 19:22:37 | undefined | UserId : 220625639655473152 :
+send : !subscribe
+
+Mon May 18 2020 19:22:37 :
+subscribtion of :tclaudel 220625639655473152
+
+Mon May 18 2020 19:22:48 | undefined | UserId : 220625639655473152 :
+send : !info
+
+Mon May 18 2020 19:22:48 :
+ERROR : function getUserByDiscordId : Error: WHERE parameter "discord_id" has invalid "undefined" value
+
+Mon May 18 2020 19:22:48 :
+ERROR : function getStatByUser : TypeError: Cannot read property 'discord_id' of undefined
+
+Mon May 18 2020 19:22:48 | undefined | UserId : 709771830222651492 :
+send : login          : undefined
+
+Mon May 18 2020 19:22:50 | undefined | UserId : 235088799074484224 :
+send : 
+
+Mon May 18 2020 19:23:07 | undefined | UserId : 220625639655473152 :
+send : !correction
+
+Mon May 18 2020 19:23:08 :
+ERROR : function getStatByUser : TypeError: Cannot read property 'discord_id' of null
+
+Mon May 18 2020 19:23:08 :
+ERROR : function getDayIdByStat : TypeError: Cannot read property 'day0_id' of null
+
+Mon May 18 2020 19:23:13 | undefined | UserId : 220625639655473152 :
+send : !info
+
+Mon May 18 2020 19:23:13 :
+ERROR : function getUserByDiscordId : Error: WHERE parameter "discord_id" has invalid "undefined" value
+
+Mon May 18 2020 19:23:13 :
+ERROR : function getStatByUser : TypeError: Cannot read property 'discord_id' of undefined
+
+Mon May 18 2020 19:23:13 | undefined | UserId : 709771830222651492 :
+send : login          : undefined
+
+Mon May 18 2020 19:23:13 | undefined | UserId : 235088799074484224 :
+send : 
+
+Mon May 18 2020 19:23:21 | undefined | UserId : 220625639655473152 :
+send : !print
 
