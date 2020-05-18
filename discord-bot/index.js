@@ -1,5 +1,5 @@
 const Discord = require('discord.js');
-const { Users, Stat, Day } = require('./dbObject');;
+const { Users, Stat, Day } = require('./dbObject');
 const { Op } = require('sequelize');
 const utils = require('./utils.js');
 const c = require('./correction.js');
@@ -8,35 +8,30 @@ const cron = require("node-cron");
 const fs = require("fs");
 const config = configFile.botConfig;
 const client = new Discord.Client();
-// const everyoneRole = client.guilds.get('SERVER ID').roles.find('name', '@everyone');
 var faker = require('faker');
 var users = new Array();
 const PREFIX = '!';
 
 // Cronjobs
 
-cron.schedule("42 8 16 * * ", function() {
-  client.channels.cache.get(config.testChannelId).send("here is the first test", {files: ["./day00.pdf"]});
-});
-
 cron.schedule("42 8 18 * * ", function() {
-  client.channels.cache.get(config.testChannelId).send("here is the first subject", {files: ["./day00.pdf"]});
+  client.channels.cache.get(config.testChannelId).send("here is the Day01 subject", {files: ["./day00.pdf"]});
 });
 
 cron.schedule("42 8 19 * * ", function() {
-  client.channels.cache.get(config.testChannelId).send("here is the first subject", {files: ["./day01.pdf"]});
+  client.channels.cache.get(config.testChannelId).send("here is the Day02 subject", {files: ["./day01.pdf"]});
 });
 
 cron.schedule("42 8 20 * * ", function() {
-  client.channels.cache.get(config.testChannelId).send("here is the first subject", {files: ["./day02.pdf"]});
+  client.channels.cache.get(config.testChannelId).send("here is the Day03 subject", {files: ["./day02.pdf"]});
 });
 
 cron.schedule("42 8 21 * * ", function() {
-  client.channels.cache.get(config.testChannelId).send("here is the first subject", {files: ["./day03.pdf"]});
+  client.channels.cache.get(config.testChannelId).send("here is the Day04 subject", {files: ["./day03.pdf"]});
 });
 
 cron.schedule("42 8 22 * * ", function() {
-  client.channels.cache.get(config.testChannelId).send("here is the first subject", {files: ["./day04.pdf"]});
+  client.channels.cache.get(config.testChannelId).send("here is the Day0 subject", {files: ["./day04.pdf"]});
 });
 
 // End Cronjobs
@@ -79,30 +74,44 @@ async function subscribe(message)
 
 async function unsubscribe(message)
 {
-  await utils.deleteUserByLogin(message.member.nickname)
+  await utils.deleteUserByLogin(message.member.nickname);
+  let channelToDestroy;
   let index = users.findIndex(u => u.username == message.member.nickname);
   if (index != -1)
     users.splice(index, 1);
+  if (message.guild.channels.cache.map(t => t.name).includes("bootcamp-" + message.member.nickname)) {
+    message.guild.channels.cache.forEach(element => {
+      if (element.name == "bootcamp-" + message.member.nickname)
+        channelToDestroy = element;
+    });
+  }
+  channelToDestroy.delete();
 }
 
 async function list(message)
 {
-  // if (utils.isAdmin(message.author.username))
-  // {
+  if (utils.isAdmin(message.member))
+  {
     await utils.printAll();
-  // }
-  // else
-    // utils.logs("You should be admin to this");
+  }
+  else
+    utils.logs("You should be admin to this");
 }
 
 function info(message, argv)
 {
   if (!argv)
   {
-     utils.printUserInfoByLogin(message.member.nickname)
+    if (utils.isAdmin(message.member))
+      utils.printUserInfoByLogin(message.member.nickname)
+    else
+      utils.printUserInfoByLoginInChannel(message, message.member.nickname)
   }
   argv.forEach(element => {
-    utils.printUserInfoByLogin(element);
+    if (utils.isAdmin(message.member))
+      utils.printUserInfoByLogin(message.member.nickname)
+    else
+      utils.printUserInfoByLoginInChannel(message, element);
   })
 }
 
@@ -152,7 +161,7 @@ client.on('message', async message => {
       if (command === 'subscribe')
         subscribe(message);
       else if (command === 'info')
-        info(message, commandArgs);
+        info(message, commandArgs.split(" "));
       else if (command === 'unsubscribe')
         unsubscribe(message);
       else if (command === 'setCorrection')
@@ -182,12 +191,6 @@ client.on('message', async message => {
         c.corrected(message, commandArgs.split(" "))
       else if (command === 'validated')
         c.validated(message, commandArgs.split(" "))
-      else if (command === 'qui' || command === 'quoi' || command == 'ou' || command == 'où') {
-        if (commandArgs != "pouce")
-          message.channel.send('MON CUL !');
-      }
-      else if (command == "pouce" && commandArgs != "pouce")
-        message.channel.send("PONEY !");
       else
         help(message);
     }

@@ -6,7 +6,7 @@ const { Users, Stat, Day } = require('./dbObject');
 
 module.exports = {
     isAdmin(user) {
-        return (config.admin.includes(user.username))
+        return (config.admin.includes(user.nickname))
     },
 
     getRandomArbitrary(min, max) {
@@ -61,6 +61,12 @@ module.exports = {
         console.log("discord id     : " + user.discord_id);
         console.log("login          : " + user.login);
         await this.printStatByDiscordId(user.discord_id);
+    },
+
+    printUserInfoByLoginInChannel: async function (message, login) {
+        const user = this.getUserByLogin(login)
+        message.channel.send("login          : " + user.login);
+        await this.printStatByDiscordIdInChannel(message, user.discord_id);
     },
 
     printUserInfoByUser: async function (user) {
@@ -131,6 +137,11 @@ module.exports = {
     printStatByDiscordId : async function(discord_id) {
         const stat = await this.getStatByDiscordId(discord_id);
         await this.printStat(stat);
+    },
+
+    printStatByDiscordIdInChannel : async function(message, discord_id) {
+        const stat = this.getStatByDiscordId(discord_id);
+        this.printStatInChannel(message, stat);
     },
 
     printStatByUser : async function(user) {
