@@ -1,51 +1,9 @@
-Sun May 17 2020 18:18:44 :
+Mon May 18 2020 13:38:17 :
 Logged in as bootcamp#3825!
 
-Sun May 17 2020 18:19:16 | Serronia | UserId : 374265216608763907 :
-send : !list
+Mon May 18 2020 13:38:19 | undefined | UserId : 220625639655473152 :
+send : !pouet
 
-Sun May 17 2020 18:19:26 | Serronia | UserId : 374265216608763907 :
-send : !subscribe
-
-Sun May 17 2020 18:19:26 :
-subscribtion of :Serronia 374265216608763907
-
-Sun May 17 2020 18:19:37 | Serronia | UserId : 374265216608763907 :
-send : !subscribe
-
-Sun May 17 2020 18:19:37 :
-subscribtion of :Serronia 374265216608763907
-
-Sun May 17 2020 18:19:37 :
-ERROR : function addUser : SequelizeUniqueConstraintError: Validation error
-
-Sun May 17 2020 18:19:37 :
-ERROR : function createStatByDiscordId : SequelizeUniqueConstraintError: Validation error
-
-Sun May 17 2020 18:20:37 | Serronia | UserId : 374265216608763907 :
-send : !unsbscribe
-
-Sun May 17 2020 18:20:37 | bootcamp | UserId : 709771830222651492 :
+Mon May 18 2020 13:38:19 | undefined | UserId : 709771830222651492 :
 send : !help
-
-Sun May 17 2020 18:20:51 | Serronia | UserId : 374265216608763907 :
-send : !unsubscribe
-
-Sun May 17 2020 18:20:58 | Serronia | UserId : 374265216608763907 :
-send : !list
-
-Sun May 17 2020 18:21:05 | Serronia | UserId : 374265216608763907 :
-send : !unsubscribe
-
-Sun May 17 2020 18:22:20 | Serronia | UserId : 374265216608763907 :
-send : !setDay
-
-Sun May 17 2020 18:22:21 :
-ERROR : function createDay : TypeError: Cannot read property 'discord_id' of null
-
-Sun May 17 2020 18:22:21 :
-ERROR : function getStatByUser : TypeError: Cannot read property 'discord_id' of null
-
-Sun May 17 2020 18:22:21 :
-ERROR : function getDayIdByStat : TypeError: Cannot read property 'day0_id' of null
 
