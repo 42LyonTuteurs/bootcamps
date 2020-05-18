@@ -15,7 +15,7 @@ const PREFIX = '!';
 
 // Cronjobs
 
-cron.schedule("42 8 16 * * ", function() {
+cron.schedule("42 8 17 * * ", function() {
   client.channels.cache.get(config.testChannelId).send("here is the first test", {files: ["./day00.pdf"]});
 });
 
@@ -54,25 +54,27 @@ async function subscribe(message)
   utils.logs("subscribtion of :" + user.username + " " + user.id);
   users.push(user);
   await utils.addUser(user.id, user.username);
-  const everyoneRole = message.guild.roles.cache.get(config.everyoneRoleId);
-  const PrivateChannelWithBot = "bootcamp " + message.member.nickname;
-  message.guild.channels.create(PrivateChannelWithBot, { 
-    type: "text",
-    parent: config.privateChannelCategoryId,
-    permissionOverwrites: [
-    {
-      id: everyoneRole, 
-      deny: ['VIEW_CHANNEL'],
-    },
-    {
-      id: message.author.id,
-      allow: ['VIEW_CHANNEL'],
-    },
-  ],})
-  .then(r => {
-    r.send("```Here is your private channel with the bot, please enter here your commands to interract with the bot```");
-  })
-  .catch(console.error);
+  if (!message.guild.channels.cache.map(t => t.name).includes("bootcamp-" + message.member.nickname)) {
+    const everyoneRole = message.guild.roles.cache.get(config.everyoneRoleId);
+    const PrivateChannelWithBot = "bootcamp " + message.member.nickname;
+    message.guild.channels.create(PrivateChannelWithBot, { 
+      type: "text",
+      parent: config.privateChannelCategoryId,
+      permissionOverwrites: [
+      {
+        id: everyoneRole, 
+        deny: ['VIEW_CHANNEL'],
+      },
+      {
+        id: message.author.id,
+        allow: ['VIEW_CHANNEL'],
+      },
+    ],})
+    .then(r => {
+      r.send("```Here is your private channel with the bot, please enter here your commands to interract with the bot```");
+    })
+    .catch(console.error);
+  }
 };
 
 async function unsubscribe(message)
@@ -81,16 +83,19 @@ async function unsubscribe(message)
   let index = users.findIndex(u => u.username == message.member.nickname);
   if (index != -1)
     users.splice(index, 1);
+  if (!message.guild.channels.cache.map(t => t.name).includes("bootcamp-" + message.member.nickname)) {
+    console.log("found");
+  }
 }
 
 async function list(message)
 {
-  // if (utils.isAdmin(message.author.username))
-  // {
+  if (utils.isAdmin(message.author.username))
+  {
     await utils.printAll();
-  // }
-  // else
-    // utils.logs("You should be admin to this");
+  }
+  else
+    utils.logs("You should be admin to this");
 }
 
 function info(message, argv)
@@ -130,7 +135,6 @@ client.on('ready', async() => {
 });
 
 client.on('message', async message => {
-  // console.log(message.guild.channels.cache)
   utils.logs("send : "+ message.content, message.member);
   LoginList = await utils.AllLogin();
   if (message.author.username != "bootcamp" && !message.author.bot)
