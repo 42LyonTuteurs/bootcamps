@@ -143,7 +143,7 @@ module.exports = {
 
     printStatByDiscordIdInChannel : async function(message, discord_id, login) {
         const stat = await this.getStatByDiscordId(discord_id);
-        this.printStatInChannel(message, stat, login);
+        await this.printStatInChannel(message, stat, login);
     },
 
     printStatByUser : async function(user) {
@@ -177,7 +177,9 @@ module.exports = {
 
     printStatInChannel : async function (message, stat, login) {
         if (stat != null){
-            message.channel.send("```login          : " + login + "\n" +
+            let str;
+            // message.channel.send(
+            str ="```login          : " + login + "\n" +
             "jours terminés : " + stat.days_done + "\n" +
             "nb corrections : " + stat.correction + "\n" +
             "nb corrigé     : " + stat.corrected + "\n" +
@@ -185,17 +187,19 @@ module.exports = {
             "Day 1          : " + stat.day1_id + "\n" +
             "Day 2          : " + stat.day2_id + "\n" +
             "Day 3          : " + stat.day3_id + "\n" +
-            "Day 4          : " + stat.day4_id + "\n```");
+            "Day 4          : " + stat.day4_id + "\n";
             let day = await this.getDayByDayId(stat.day0_id);
-            this.printDay(day);
+            str+= await this.daysToString(day);
             day = await this.getDayByDayId(stat.day1_id);
-            this.printDay(day);
+            str+= await this.daysToString(day);
             day = await this.getDayByDayId(stat.day2_id);
-            this.printDay(day);
+            str+= await this.daysToString(day);
             day = await this.getDayByDayId(stat.day3_id);
-            this.printDay(day);
+            str+= await this.daysToString(day);
             day = await this.getDayByDayId(stat.day4_id);
-            this.printDay(day);
+            str+= await this.daysToString(day) + "```";
+
+            message.channel.send(str);
         }
     },
 
@@ -291,8 +295,11 @@ module.exports = {
     },
 
     getDayIdByUser : async function(user, nb){
+        console.log("login => " +user);
         const stat = await this.getStatByUser(user);
+        console.log("stat => " +stat);
         const day_id = await this.getDayIdByStat(stat, nb);
+        console.log("day_id => " +day_id);
         return (day_id);
     },
 
@@ -307,6 +314,18 @@ module.exports = {
             console.log("corrected by   : " + day.who_corrected);
             console.log("day complete   : " + day.day_complete);
         }
+    },
+
+    daysToString : async function(day){
+        const str = "----------" + "\n"
+        + "day id         : " + day.day_id+ "\n"
+        + "day nb         : " + day.day_nb+ "\n"
+        + "correction     : " + day.correction+ "\n"
+        + "correction on  : " + day.who_correction+ "\n"
+        + "corrected      : " + day.corrected+ "\n"
+        + "corrected by   : " + day.who_corrected+ "\n"
+        + "day complete   : " + day.day_complete+ "\n";
+        return str;
     },
 
     printDayByStat : async function(stat, nbDay){
