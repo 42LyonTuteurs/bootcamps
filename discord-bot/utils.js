@@ -64,9 +64,11 @@ module.exports = {
     },
 
     printUserInfoByLoginInChannel: async function (message, login) {
-        const user = this.getUserByLogin(login)
-        message.channel.send("login          : " + user.login);
-        await this.printStatByDiscordIdInChannel(message, user.discord_id);
+        console.log("LOGIN" + login)
+        const user = await this.getUserByLogin(login)
+
+        // message.channel.send("```login          : " + user.login + "```");
+        await this.printStatByDiscordIdInChannel(message, user.discord_id, user.login);
     },
 
     printUserInfoByUser: async function (user) {
@@ -139,9 +141,9 @@ module.exports = {
         await this.printStat(stat);
     },
 
-    printStatByDiscordIdInChannel : async function(message, discord_id) {
-        const stat = this.getStatByDiscordId(discord_id);
-        this.printStatInChannel(message, stat);
+    printStatByDiscordIdInChannel : async function(message, discord_id, login) {
+        const stat = await this.getStatByDiscordId(discord_id);
+        this.printStatInChannel(message, stat, login);
     },
 
     printStatByUser : async function(user) {
@@ -173,9 +175,9 @@ module.exports = {
         }
     },
 
-    printStatInChannel : async function (message, stat) {
+    printStatInChannel : async function (message, stat, login) {
         if (stat != null){
-            message.channel.send("discord id     : " + stat.user_id + "\n" +
+            message.channel.send("```login          : " + login + "\n" +
             "jours terminés : " + stat.days_done + "\n" +
             "nb corrections : " + stat.correction + "\n" +
             "nb corrigé     : " + stat.corrected + "\n" +
@@ -183,7 +185,7 @@ module.exports = {
             "Day 1          : " + stat.day1_id + "\n" +
             "Day 2          : " + stat.day2_id + "\n" +
             "Day 3          : " + stat.day3_id + "\n" +
-            "Day 4          : " + stat.day4_id + "\n");
+            "Day 4          : " + stat.day4_id + "\n```");
             let day = await this.getDayByDayId(stat.day0_id);
             this.printDay(day);
             day = await this.getDayByDayId(stat.day1_id);
