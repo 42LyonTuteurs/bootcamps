@@ -324,7 +324,10 @@ module.exports = {
         + "correction on  : " + day.who_correction+ "\n"
         + "corrected      : " + day.corrected+ "\n"
         + "corrected by   : " + day.who_corrected+ "\n"
-        + "day complete   : " + day.day_complete+ "\n";
+        + "day complete   : " + day.day_complete+ "\n"
+        + "correction send: " + day.correction_send+ "\n"
+        + "corrected send : " + day.corrected_send+ "\n"
+        + "validate day   : " + day.day_validated+ "\n";
         return str;
     },
 
@@ -357,6 +360,31 @@ module.exports = {
             this.logs("ERROR : function updateDayCorrected : " + e);
         }
     },
+
+    updateDayCorrectedSend : async function(day){
+        try {
+            await Day.update({ corrected_send: 1 }, { where: { day_id: day.day_id } });
+        } catch (e) {
+            this.logs("ERROR : function updateDayCorrected : " + e);
+        }
+    },
+
+    updateDayCorrectionSend : async function(day){
+        try {
+            await Day.update({ correction_send: 1 }, { where: { day_id: day.day_id } });
+        } catch (e) {
+            this.logs("ERROR : function updateDayCorrected : " + e);
+        }
+    },
+
+    updateDayValidated : async function(day, value){
+        try {
+            await Day.update({ day_validated: value }, { where: { day_id: day.day_id } });
+        } catch (e) {
+            this.logs("ERROR : function updateDayCorrected : " + e);
+        }
+    },
+
 
     updateDayWhoCorrected : async function(day, login){
         try {

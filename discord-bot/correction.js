@@ -24,10 +24,13 @@ async function correctedBy(message, commandArgs) {
 
 		if (dayCorrected.who_corrected != corrector.login || dayCorrector.who_correction != corrected.login){
 			message.channel.send('Wrong Login');
-		} else {
+		}  else if(dayCorrected.corrected_send == 1) {
+			message.channel.send('The correction is already finished');
+		}else {
 			// console.log("c'est good");
 			await utils.updateDayCorrected(dayCorrected);
 			await utils.updateDayCorrection(dayCorrector);
+			await utils.updateDayCorrectedSend(dayCorrected);
 		}
 		console.log(corrector.login + " corrected day " + day + " of " + corrected.login);
 
@@ -38,9 +41,12 @@ async function validatedSomeone(message, commandArgs) {
 	let corrected = commandArgs[0];
 	let corrector = message.member.nickname;
 	let day = commandArgs[1];
-	if (!day)
-		message.channel.send('Please tell me witch day you corected :\n```!corrected ' + corrected + ' <Day Corrected>```');
-	else{
+	let validated = commandArgs[2];
+	if (!day){
+		message.channel.send('Please tell me witch day you corected :\n```!corrected ' + corrected + ' <Day Corrected> <Validated>```');
+	} else if(!validated) {
+		message.channel.send('Please tell me if the day is done or not :\n```!corrected ' + corrected + ' <Day Corrected> <Validated>```');
+	} else{
 		corrected = await utils.getUserByLogin(corrected);
 		corrector = await utils.getUserByLogin(corrector);
 		let dayCorrected = await utils.getDayIdByUser(corrected, day);
@@ -50,9 +56,18 @@ async function validatedSomeone(message, commandArgs) {
 		dayCorrector = await utils.getDayByDayId(dayCorrector);
 		if (dayCorrected.who_corrected != corrector.login || dayCorrector.who_correction != corrected.login){
 			message.channel.send('Wrong Login');
+		} else if(dayCorrector.correction_send == 1){
+			message.channel.send('The correction is already finished');
+		} else if(validated !== "validated" && day !== "validated"){
+			message.channel.send('Please tell me if the day is done or not :\n```!corrected ' + corrected.login + ' <Day Corrected> <Validated>```');
 		}else {
 			await utils.updateDayCorrected(dayCorrected);
 			await utils.updateDayCorrection(dayCorrector);
+			if (validated === "validated"){
+				await utils.updateDayValidated(dayCorrected, 1);
+			} else
+				await utils.updateDayValidated(dayCorrected, 0);
+			await utils.updateDayCorrectionSend(dayCorrector);
 		}
 		console.log(corrector.login + " corrected day " + day + " of " + corrected.login);
 	}
