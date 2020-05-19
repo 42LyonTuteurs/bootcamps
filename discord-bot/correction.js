@@ -31,6 +31,10 @@ async function correctedBy(message, commandArgs) {
 			await utils.updateDayCorrected(dayCorrected);
 			await utils.updateDayCorrection(dayCorrector);
 			await utils.updateDayCorrectedSend(dayCorrected);
+			await this.updateDay(dayCorrector);
+			await this.updateDay(dayCorrected);
+			await this.updateStat(corrected.login, dayCorrected);
+			await this.updateStat(corrector.login, dayCorrector);
 		}
 		console.log(corrector.login + " corrected day " + day + " of " + corrected.login);
 
@@ -68,6 +72,10 @@ async function validatedSomeone(message, commandArgs) {
 			} else
 				await utils.updateDayValidated(dayCorrected, 0);
 			await utils.updateDayCorrectionSend(dayCorrector);
+			await this.updateDay(dayCorrector);
+			await this.updateDay(dayCorrected);
+			await this.updateStat(corrected.login, dayCorrected);
+			await this.updateStat(corrector.login, dayCorrector);
 		}
 		console.log(corrector.login + " corrected day " + day + " of " + corrected.login);
 	}
@@ -120,6 +128,24 @@ module.exports = {
 			message.channel.send('Please tell me witch day you create :\n```!correction <Day Corrected>```');
 		}
 
+	},
+
+	updateStat : async function(login, day){
+		const stat = await utils.getStatByLogin(login);
+		if (day.corrected == 2){
+			await utils.updateStatCorrected(stat);
+		}
+		if (day.correction == 2){
+			await utils.updateStatCorrection(stat);
+		}
+		if (day.day_complete == 1){
+			await utils.updateStatDaysDone(stat);
+		}
+	 },
+
+	updateDay : async function(day){
+		if (day.correction == 2 && day.corrected == 2 && day.day_validated == 1)
+			await utils.updateDayComplete(day);
 	},
 
 	corrected : async function(message, commandArgs) {
