@@ -7,12 +7,29 @@ async function correctedBy(message, commandArgs) {
 	if (!day)
 		message.channel.send('Please tell me witch day you corected :\n```!corrected by ' + corrector + ' <Day Corrected>```');
 	else{
+		// console.log("login corrected :" + corrected);
+		// console.log("login corrector :" + corrector);
 		// correction done
+		corrected = await utils.getUserByLogin(corrected);
+		corrector = await utils.getUserByLogin(corrector);
+		// console.log("user corrected :" + corrected);
+		// console.log("user corrector:" + corrector);
 		const dayCorrected = await utils.getDayByDayId(await utils.getDayIdByUser(corrected, day));
 		const dayCorrector = await utils.getDayByDayId(await utils.getDayIdByUser(corrector, day));
-		await utils.updateDayCorrected(dayCorrected);
-		await utils.updateDayCorrection(dayCorrector);
-		console.log(corrector + " corrected day " + day + " of " + corrected);
+		// console.log("day corrected :" + dayCorrected);
+		// console.log("day corrector:" + dayCorrector);
+		// console.log("whoCorrection" + dayCorrected.who_corrected);
+		// console.log("whoCorrected" + dayCorrector.who_correction);
+
+
+		if (dayCorrected.who_corrected != corrector.login || dayCorrector.who_correction != corrected.login){
+			message.channel.send('Wrong Login');
+		} else {
+			// console.log("c'est good");
+			await utils.updateDayCorrected(dayCorrected);
+			await utils.updateDayCorrection(dayCorrector);
+		}
+		console.log(corrector.login + " corrected day " + day + " of " + corrected.login);
 
 	}
 }
@@ -24,11 +41,20 @@ async function validatedSomeone(message, commandArgs) {
 	if (!day)
 		message.channel.send('Please tell me witch day you corected :\n```!corrected ' + corrected + ' <Day Corrected>```');
 	else{
-		const dayCorrected = await utils.getDayByDayId(await utils.getDayIdByUser(corrected, day));
-		const dayCorrector = await utils.getDayByDayId(await utils.getDayIdByUser(corrector, day));
-		await utils.updateDayCorrected(dayCorrected);
-		await utils.updateDayCorrection(dayCorrector);
-		console.log(corrector + " corrected day " + day + " of " + corrected);
+		corrected = await utils.getUserByLogin(corrected);
+		corrector = await utils.getUserByLogin(corrector);
+		let dayCorrected = await utils.getDayIdByUser(corrected, day);
+			dayCorrected = await utils.getDayByDayId(dayCorrected);
+
+		let dayCorrector = await utils.getDayIdByUser(corrector, day);
+		dayCorrector = await utils.getDayByDayId(dayCorrector);
+		if (dayCorrected.who_corrected != corrector.login || dayCorrector.who_correction != corrected.login){
+			message.channel.send('Wrong Login');
+		}else {
+			await utils.updateDayCorrected(dayCorrected);
+			await utils.updateDayCorrection(dayCorrector);
+		}
+		console.log(corrector.login + " corrected day " + day + " of " + corrected.login);
 	}
 }
 
@@ -58,22 +84,29 @@ function sendCorrection(message, corrector, corrected)
 }
 
 module.exports = {
-	async correction(message, usersSouce, day) {
+	async correction(message, usersSouce, commandArg) {
 		// if ()
 			let correcter = usersSouce.slice();
 		let corrected = usersSouce.slice();
-		let userNb = corrected.length;
-		for (let i = 0; i < userNb; i++)
-		{
-			let random = utils.getRandomArbitrary(0, correcter.length - 1);
-			while (correcter[random].username == corrected[i].username)
-				random = utils.getRandomArbitrary(0, correcter.length - 1);
-			console.log(corrected[i].username + " will be corrected by " + correcter[random].username);
-			await setCorrection(correcter[random].username, corrected[i].username, day);
-			sendCorrection(message, correcter[random].username, corrected[i].username);
-			correcter.splice(random, 1);
+		if (commandArg[0]){
+			let day = commandArg[0];
+			let userNb = corrected.length;
+			for (let i = 0; i < userNb; i++)
+			{
+				let random = utils.getRandomArbitrary(0, correcter.length - 1);
+				while (correcter[random].username == corrected[i].username)
+					random = utils.getRandomArbitrary(0, correcter.length - 1);
+				console.log(corrected[i].username + " will be corrected by " + correcter[random].username);
+				await setCorrection(correcter[random].username, corrected[i].username, day);
+				sendCorrection(message, correcter[random].username, corrected[i].username);
+				correcter.splice(random, 1);
+			}
+		} else {
+			message.channel.send('Please tell me witch day you create :\n```!correction <Day Corrected>```');
 		}
+
 	},
+
 	corrected : async function(message, commandArgs) {
 		// console.log("commands : " + commandArgs);
 		let LoginList = await utils.AllLogin();
@@ -82,6 +115,7 @@ module.exports = {
 		else
 			console.log("Could not find matching correction");
 	},
+
 	validated : async function(message, commandArgs) {
 		let LoginList = await utils.AllLogin();
 		if (LoginList.includes(commandArgs[0]))

@@ -51,7 +51,7 @@ async function subscribe(message)
     utils.logs("subscribtion of :" + user.username + " " + user.id);
     users.push(user);
     await utils.addUser(user.id, user.username);
-    // if (!message.guild.channels.cache.map(t => t.name).includes("bootcamp-" + message.member.nickname)) {
+    if (!message.guild.channels.cache.map(t => t.name).includes("bootcamp-" + message.member.nickname)) {
       const everyoneRole = message.guild.roles.cache.get(config.everyoneRoleId);
       const PrivateChannelWithBot = "bootcamp " + message.member.nickname;
       message.guild.channels.create(PrivateChannelWithBot, {
@@ -71,7 +71,7 @@ async function subscribe(message)
           r.send("@" + message.member.nickname + "\n```Here is your private channel with the bot, please enter here your commands to interract with the bot```");
         })
         .catch(console.error);
-    // }
+    }
     message.channel.send("```" + message.member.nickname + " has been successfully subscribed !\nA Channel has just been created for you in Bootcamp " + 
     "category\nPlease write your commands there to interact with the bot\nThis message will self-destroyed in 10s```")
       .then(msg => {
@@ -184,22 +184,22 @@ client.on('message', async message => {
         list(message);
       else if (command === 'print')
         await utils.printUserInfoByLogin("jdarko");
-      else if (command === 'setDay'){
-        const usr = await utils.getUserByLogin("jdarko")
-        const usr2 = await utils.getUserByLogin("")
-        await utils.createDay(usr, 0);
-        await utils.createDay(usr, 1);
-      }
+      // else if (command === 'setDay'){
+      //   const usr = await utils.getUserByLogin("jdarko")
+      //   // const usr2 = await utils.getUserByLogin("")
+      //   await utils.createDay(usr, 0);
+      //   await utils.createDay(usr, 1);
+      // }
       else if (command === 'correction')
       {
-        await c.correction(message, users, 0);
-        const user = await utils.getUserByLogin("jdarko");
-        // console.log(user.login);
-        const dayId = await utils.getDayIdByUser(user, 0);
-        // console.log(dayId);
-        const day = await utils.getDayByDayId(dayId);
-        // console.log(day);
-        await utils.printDay(day);
+        await c.correction(message, users, commandArgs.split(" "));
+        // const user = await utils.getUserByLogin("jdarko");
+        // // console.log(user.login);
+        // const dayId = await utils.getDayIdByUser(user, 0);
+        // // console.log(dayId);
+        // const day = await utils.getDayByDayId(dayId);
+        // // console.log(day);
+        // await utils.printDay(day);
       }
       else if (command === 'corrected')
         c.corrected(message, commandArgs.split(" "))
