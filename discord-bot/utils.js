@@ -3,6 +3,7 @@ const config = configFile.botConfig;
 const fs = require('fs');
 const dateFormat = require('dateformat');
 const { Users, Stat, Day } = require('./dbObject');
+var emoji = require('node-emoji')
 
 module.exports = {
     isAdmin(user) {
@@ -136,6 +137,27 @@ module.exports = {
         await this.createStatByDiscordId(User.discord_id);
     },
 
+    printInfo : async function(message, login) {
+        stat = await this.getStatByLogin(login);
+        str = "-----------------------------------------\n         __**" + login.toUpperCase() +
+        " INFO SHEET**__\n-----------------------------------------\n\n" +
+        "**Expected Mana** : " + stat.days_done * 40 + "\n\n" +
+        await this.DayInfo(stat, 0)
+        ;
+        message.channel.send(str);
+    },
+    DayInfo : async function(stat, dayNb) {
+        dayId = await this.getDayIdByStat(stat, dayNb);
+        day = await this.getDayByDayId(dayId);
+        str = "*Day00* :\n" + 
+        "Corrected by " + day.who_corrected;
+        if (day.corrected > 0)
+            str += emoji.get('white_check_mark');
+        else
+            str += emoji.get('x');
+        ;
+        return str;
+    },
     printStatByDiscordId : async function(discord_id) {
         const stat = await this.getStatByDiscordId(discord_id);
         await this.printStat(stat);

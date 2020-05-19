@@ -16,6 +16,7 @@
     "faker": "^4.1.0",
     "fetch": "^1.1.0",
     "node-cron": "^2.0.3",
+    "node-emoji": "^1.10.0",
     "sequelize": "^5.21.9",
     "sqlite3": "^4.2.0",
     "xcode": "^3.0.0"

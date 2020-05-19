@@ -10,6 +10,7 @@ const config = configFile.botConfig;
 const client = new Discord.Client();
 var faker = require('faker');
 var users = new Array();
+var emoji = require('node-emoji')
 const PREFIX = '!';
 
 
@@ -110,9 +111,11 @@ async function list(message)
     utils.logs("You should be admin to this");
 }
 
-async function info(message, argv)
+async function status(message, argv)
 {
   let LoginList = await utils.AllLogin();
+  if (!utils.isAdmin(message.member))
+    return;
   if (!argv[0])
       utils.printUserInfoByLoginInChannel(message, message.member.nickname)
   else {
@@ -122,6 +125,23 @@ async function info(message, argv)
       else 
         message.channel.send("```Could not find user with " + element + " username```");
   })
+  }
+}
+
+async function info(message, argv)
+{
+  let LoginList = await utils.AllLogin();
+  if (!utils.isAdmin(message.member))
+    return;
+  if (!argv[0])
+    utils.printInfo(message, message.member.nickname)
+  else {
+    argv.forEach(element => {
+    if (LoginList.includes(element))
+      utils.printInfo(message, element);
+    else 
+      message.channel.send("```Could not find user with " + element + " username```");
+    })
   }
 }
 
@@ -176,6 +196,8 @@ client.on('message', async message => {
         subscribe(message);
       else if (command === 'info')
         info(message, commandArgs.split(" "));
+      else if (command === 'status')
+        status(message, commandArgs.split(" "));
       else if (command === 'unsubscribe')
         unsubscribe(message);
       else if (command === 'setCorrection')
@@ -208,7 +230,6 @@ client.on('message', async message => {
       else if (command === 'help')
         help(message);
       else {
-        message.delete();
         message.channel.send("```" + message.content + " is an unknown function, please try !help```")
         .then(msg => {
           msg.delete({ timeout: 10000 })

@@ -86,7 +86,7 @@ function sendCorrection(message, corrector, corrected)
 module.exports = {
 	async correction(message, usersSouce, commandArg) {
 		// if ()
-			let correcter = usersSouce.slice();
+		let correcter = usersSouce.slice();
 		let corrected = usersSouce.slice();
 		if (commandArg[0]){
 			let day = commandArg[0];
