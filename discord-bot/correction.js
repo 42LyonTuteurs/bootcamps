@@ -32,24 +32,35 @@ async function validatedSomeone(message, commandArgs) {
 	}
 }
 
-async function  setCorrection(corrector, corrected) {
+async function  setCorrection(corrector, corrected, day) {
 	// const correctorDay = await utils.getDayByDayId(await utils.getDayIdByUser(await utils.getUserByLogin(corrector)));
 	let correctorDay = await utils.getUserByLogin(corrector)
-	correctorDay = await utils.getDayIdByUser(correctorDay, 0);
+	correctorDay = await utils.getDayIdByUser(correctorDay, day);
 	correctorDay = await utils.getDayByDayId(correctorDay);
 
 	// const correctedDay = await utils.getDayByDayId(await utils.getDayIdByUser(await utils.getUserByLogin(corrected), 0));
 	let correctedDay = await utils.getUserByLogin(corrected);
-	correctedDay = await utils.getDayIdByUser(correctedDay, 0);
+	correctedDay = await utils.getDayIdByUser(correctedDay, day);
 	correctedDay = await utils.getDayByDayId(correctedDay);
 
 	await utils.updateDayWhoCorrection(correctorDay, corrected)
 	await utils.updateDayWhoCorrected(correctedDay, corrector)
 }
 
+function sendCorrection(message, corrector, corrected)
+{
+	message.guild.channels.cache.forEach(element => {
+		if (element.name == "bootcamp-" + corrector)
+			element.send("You will correct " + corrected);
+		else if (element.name == "bootcamp-" + corrected)
+			element.send("You will be corrected by " + corrector);
+	});
+}
+
 module.exports = {
-	async correction(usersSouce) {
-		let correcter = usersSouce.slice();
+	async correction(message, usersSouce, day) {
+		// if ()
+			let correcter = usersSouce.slice();
 		let corrected = usersSouce.slice();
 		let userNb = corrected.length;
 		for (let i = 0; i < userNb; i++)
@@ -58,7 +69,8 @@ module.exports = {
 			while (correcter[random].username == corrected[i].username)
 				random = utils.getRandomArbitrary(0, correcter.length - 1);
 			console.log(corrected[i].username + " will be corrected by " + correcter[random].username);
-			await setCorrection(correcter[random].username, corrected[i].username);
+			await setCorrection(correcter[random].username, corrected[i].username, day);
+			sendCorrection(message, correcter[random].username, corrected[i].username);
 			correcter.splice(random, 1);
 		}
 	},

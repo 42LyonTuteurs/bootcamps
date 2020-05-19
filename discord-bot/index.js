@@ -10,7 +10,9 @@ const config = configFile.botConfig;
 const client = new Discord.Client();
 var faker = require('faker');
 var users = new Array();
+const antispam = require('better-discord-antispam'); // Requiring this module.
 const PREFIX = '!';
+
 
 // Cronjobs
 
@@ -98,21 +100,19 @@ async function list(message)
     utils.logs("You should be admin to this");
 }
 
-function info(message, argv)
+async function info(message, argv)
 {
-  if (!argv)
-  {
-    if (utils.isAdmin(message.member))
-      utils.printUserInfoByLogin(message.member.nickname)
-    else
+  let LoginList = await utils.AllLogin();
+  if (!argv[0])
       utils.printUserInfoByLoginInChannel(message, message.member.nickname)
-  }
-  argv.forEach(element => {
-    if (utils.isAdmin(message.member))
-      utils.printUserInfoByLogin(message.member.nickname)
-    else
-      utils.printUserInfoByLoginInChannel(message, element);
+  else {
+    argv.forEach(element => {
+      if (LoginList.includes(element))
+        utils.printUserInfoByLoginInChannel(message, element);
+      else 
+        message.channel.send("```Could not find user with " + element + " username```");
   })
+  }
 }
 
 function help(message)
@@ -133,6 +133,20 @@ async function fakerDb()
 }
 
 client.on('ready', async() => {
+  antispam(client, {
+    limitUntilWarn: 3, // The amount of messages allowed to send within the interval(time) before getting a warn.
+    limitUntilMuted: 5, // The amount of messages allowed to send within the interval(time) before getting a muted.
+    interval: 20000, // The interval(time) where the messages are sent. Practically if member X sent 5+ messages within 2 seconds, he get muted. (1000 milliseconds = 1 second, 2000 milliseconds = 2 seconds etc etc)
+    warningMessage: "if you don't stop from spamming, I'm going to punish you!", // Message you get when you are warned!
+    muteMessage: "was muted since we don't like too much advertisement type people!", // Message sent after member X was punished(muted).
+    maxDuplicatesWarning: 7,// When people are spamming the same message, this will trigger when member X sent over 7+ messages.
+    maxDuplicatesMute: 10, // The limit where member X get muted after sending too many messages(10+).
+    // ignoredRoles: ["Admin"], // The members with this role(or roles) will be ignored if they have it. Suggest to not add this to any random guys. Also it's case sensitive.
+    // ignoredMembers: ["Mavis#2389"], // These members are directly affected and they do not require to have the role above. Good for undercover pranks.
+    mutedRole: "muted", // Here you put the name of the role that should not let people write/speak or anything else in your server. If there is no role set, by default, the module will attempt to create the role for you & set it correctly for every channel in your server. It will be named "muted".
+    timeMuted: 1000 * 600, // This is how much time member X will be muted. if not set, default would be 10 min.
+    logChannel: "antispam-logs" // This is the channel where every report about spamming goes to. If it's not set up, it will attempt to create the channel.
+  });
   if (await utils.UserNb() < 20)
     await fakerDb();
   fs.writeFile('app.log', "", (err) => {
@@ -147,14 +161,15 @@ client.on('message', async message => {
   // console.log(message.guild.roles.cache);
   utils.logs("send : "+ message.content, message.member);
   LoginList = await utils.AllLogin();
-  if (message.author.username != "bootcamp" && !message.author.bot)
+  if (message.author.username != "bootcamp" && !message.author.bot && message.content.search("!mana") == -1)
   {
     if (!message.member) {
-      message.author.send('DM disable, please call me from 42 Lyon Server')
+      message.author.send('```DM disable, please call me from 42 Lyon Server```')
       return ;
     }
     if (message.content.startsWith(PREFIX))
     {
+      client.emit('checkMessage', message);
       const input = message.content.slice(PREFIX.length).split(' ');
       const command = input.shift();
       const commandArgs = input.join(' ');
@@ -178,7 +193,7 @@ client.on('message', async message => {
       }
       else if (command === 'correction')
       {
-        await c.correction(users);
+        await c.correction(message, users, 0);
         const user = await utils.getUserByLogin("jdarko");
         // console.log(user.login);
         const dayId = await utils.getDayIdByUser(user, 0);
