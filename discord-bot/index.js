@@ -141,8 +141,8 @@ client.on('ready', async() => {
     muteMessage: "was muted since we don't like too much advertisement type people!", // Message sent after member X was punished(muted).
     maxDuplicatesWarning: 7,// When people are spamming the same message, this will trigger when member X sent over 7+ messages.
     maxDuplicatesMute: 10, // The limit where member X get muted after sending too many messages(10+).
-    // ignoredRoles: ["Admin"], // The members with this role(or roles) will be ignored if they have it. Suggest to not add this to any random guys. Also it's case sensitive.
-    // ignoredMembers: ["Mavis#2389"], // These members are directly affected and they do not require to have the role above. Good for undercover pranks.
+    ignoredRoles: ["Admin"], // The members with this role(or roles) will be ignored if they have it. Suggest to not add this to any random guys. Also it's case sensitive.
+    ignoredMembers: ["Serronia#6575"], // These members are directly affected and they do not require to have the role above. Good for undercover pranks.
     mutedRole: "muted", // Here you put the name of the role that should not let people write/speak or anything else in your server. If there is no role set, by default, the module will attempt to create the role for you & set it correctly for every channel in your server. It will be named "muted".
     timeMuted: 1000 * 600, // This is how much time member X will be muted. if not set, default would be 10 min.
     logChannel: "antispam-logs" // This is the channel where every report about spamming goes to. If it's not set up, it will attempt to create the channel.
@@ -185,22 +185,22 @@ client.on('message', async message => {
         list(message);
       else if (command === 'print')
         await utils.printUserInfoByLogin("jdarko");
-      else if (command === 'setDay'){
-        const usr = await utils.getUserByLogin("jdarko")
-        const usr2 = await utils.getUserByLogin("")
-        await utils.createDay(usr, 0);
-        await utils.createDay(usr, 1);
-      }
+      // else if (command === 'setDay'){
+      //   const usr = await utils.getUserByLogin("jdarko")
+      //   // const usr2 = await utils.getUserByLogin("")
+      //   await utils.createDay(usr, 0);
+      //   await utils.createDay(usr, 1);
+      // }
       else if (command === 'correction')
       {
-        await c.correction(message, users, 0);
-        const user = await utils.getUserByLogin("jdarko");
-        // console.log(user.login);
-        const dayId = await utils.getDayIdByUser(user, 0);
-        // console.log(dayId);
-        const day = await utils.getDayByDayId(dayId);
-        // console.log(day);
-        await utils.printDay(day);
+        await c.correction(message, users, commandArgs.split(" "));
+        // const user = await utils.getUserByLogin("jdarko");
+        // // console.log(user.login);
+        // const dayId = await utils.getDayIdByUser(user, 0);
+        // // console.log(dayId);
+        // const day = await utils.getDayByDayId(dayId);
+        // // console.log(day);
+        // await utils.printDay(day);
       }
       else if (command === 'corrected')
         c.corrected(message, commandArgs.split(" "))

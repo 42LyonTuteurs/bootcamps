@@ -1,15 +1,369 @@
-Tue May 19 2020 11:20:17 :
+Tue May 19 2020 15:54:39 :
 Logged in as bootcamp#3825!
 
-Tue May 19 2020 11:20:22 :
-send : oui
+Tue May 19 2020 15:54:44 | undefined | UserId : 374265216608763907 :
+send : !validated Savanah 0
 
-Tue May 19 2020 11:20:22 :
-send : ```DM disable, please call me from 42 Lyon Server```
+Tue May 19 2020 15:54:48 | undefined | UserId : 374265216608763907 :
+send : !info
 
-Tue May 19 2020 11:20:23 :
-send : yo
+Tue May 19 2020 15:54:48 | undefined | UserId : 235088799074484224 :
+send : 
 
-Tue May 19 2020 11:20:23 :
-send : ```DM disable, please call me from 42 Lyon Server```
+Tue May 19 2020 15:54:48 | undefined | UserId : 709771830222651492 :
+send : ```login          : jdarko
+jours terminés : 0
+nb corrections : 0
+nb corrigé     : 0
+Day 0          : 101
+Day 1          : 102
+Day 2          : 103
+Day 3          : 104
+Day 4          : 105
+----------
+day id         : 101
+day nb         : 0
+correction     : 1
+correction on  : Savanah
+corrected      : 1
+corrected by   : Abdul
+day complete   : 0
+----------
+day id         : 102
+day nb         : 1
+correction     : 0
+correction on  : null
+corrected      : 0
+corrected by   : null
+day complete   : 0
+----------
+day id         : 103
+day nb         : 2
+correction     : 0
+correction on  : null
+corrected      : 0
+corrected by   : null
+day complete   : 0
+----------
+day id         : 104
+day nb         : 3
+correction     : 0
+correction on  : null
+corrected      : 0
+corrected by   : null
+day complete   : 0
+----------
+day id         : 105
+day nb         : 4
+correction     : 0
+correction on  : null
+corrected      : 0
+corrected by   : null
+day complete   : 0
+```
+
+Tue May 19 2020 15:54:48 | undefined | UserId : 709771830222651492 :
+send : ```login          : jdarko
+jours terminés : 0
+nb corrections : 0
+nb corrigé     : 0
+Day 0          : 186
+Day 1          : 187
+Day 2          : 188
+Day 3          : 189
+Day 4          : 190
+```
+
+Tue May 19 2020 15:55:12 | undefined | UserId : 374265216608763907 :
+send : !info Savanah Abdul
+
+Tue May 19 2020 15:55:13 | undefined | UserId : 235088799074484224 :
+send : 
+
+Tue May 19 2020 15:55:13 | undefined | UserId : 709771830222651492 :
+send : ```Could not find user with Savanah username```
+
+Tue May 19 2020 15:55:13 | undefined | UserId : 709771830222651492 :
+send : ```login          : Savanah
+jours terminés : 0
+nb corrections : 0
+nb corrigé     : 0
+Day 0          : 91
+Day 1          : 92
+Day 2          : 93
+Day 3          : 94
+Day 4          : 95
+----------
+day id         : 91
+day nb         : 0
+correction     : 0
+correction on  : Kamren
+corrected      : 1
+corrected by   : jdarko
+day complete   : 0
+----------
+day id         : 92
+day nb         : 1
+correction     : 0
+correction on  : null
+corrected      : 0
+corrected by   : null
+day complete   : 0
+----------
+day id         : 93
+day nb         : 2
+correction     : 0
+correction on  : null
+corrected      : 0
+corrected by   : null
+day complete   : 0
+----------
+day id         : 94
+day nb         : 3
+correction     : 0
+correction on  : null
+corrected      : 0
+corrected by   : null
+day complete   : 0
+----------
+day id         : 95
+day nb         : 4
+correction     : 0
+correction on  : null
+corrected      : 0
+corrected by   : null
+day complete   : 0
+```
+
+Tue May 19 2020 15:55:13 | undefined | UserId : 709771830222651492 :
+send : ```Could not find user with Abdul username```
+
+Tue May 19 2020 15:55:13 | undefined | UserId : 709771830222651492 :
+send : ```login          : Abdul
+jours terminés : 0
+nb corrections : 0
+nb corrigé     : 0
+Day 0          : 76
+Day 1          : 77
+Day 2          : 78
+Day 3          : 79
+Day 4          : 80
+----------
+day id         : 76
+day nb         : 0
+correction     : 1
+correction on  : jdarko
+corrected      : 0
+corrected by   : Maryse
+day complete   : 0
+----------
+day id         : 77
+day nb         : 1
+correction     : 0
+correction on  : null
+corrected      : 0
+corrected by   : null
+day complete   : 0
+----------
+day id         : 78
+day nb         : 2
+correction     : 0
+correction on  : null
+corrected      : 0
+corrected by   : null
+day complete   : 0
+----------
+day id         : 79
+day nb         : 3
+correction     : 0
+correction on  : null
+corrected      : 0
+corrected by   : null
+day complete   : 0
+----------
+day id         : 80
+day nb         : 4
+correction     : 0
+correction on  : null
+corrected      : 0
+corrected by   : null
+day complete   : 0
+```
+
+Tue May 19 2020 15:55:34 | undefined | UserId : 374265216608763907 :
+send : !validated Maryse 0
+
+Tue May 19 2020 15:55:34 | undefined | UserId : 709771830222651492 :
+send : Wrong Login
+
+Tue May 19 2020 15:57:58 | undefined | UserId : 220625639655473152 :
+send : !help
+
+Tue May 19 2020 15:57:59 | undefined | UserId : 235088799074484224 :
+send : ✅ **Check <https://rythmbot.co/features#list> for a list of commands**
+
+Tue May 19 2020 15:57:59 | undefined | UserId : 709771830222651492 :
+send : ```HELP MENU : ``````!subscribe``` to subscribe to the bootcamp, a private channel will be created
+```!info``` to diplay info from yourself or from other participant with `!info <login>````!unsubscribe``` to unsubscribe from the bootcamp```!validated <login> <day> <validated>``` to tell the bot that you corrected the <day> of <login> and <validated> or <not validated>```!corrected by <login> <day>``` to tell the bot that your <day> have been corrected by <login>
+
+Tue May 19 2020 15:57:59 | undefined | UserId : 709771830222651492 :
+send : !help
+
+Tue May 19 2020 15:58:28 | undefined | UserId : 220625639655473152 :
+send : !help
+
+Tue May 19 2020 15:58:28 | undefined | UserId : 709771830222651492 :
+send : !help
+
+Tue May 19 2020 15:58:29 | undefined | UserId : 709771830222651492 :
+send : ```HELP MENU : ``````!subscribe``` to subscribe to the bootcamp, a private channel will be created
+```!info``` to diplay info from yourself or from other participant with `!info <login>````!unsubscribe``` to unsubscribe from the bootcamp```!validated <login> <day> <validated>``` to tell the bot that you corrected the <day> of <login> and if the day is <validated> or <not validated>```!corrected by <login> <day>``` to tell the bot that your <day> have been corrected by <login>
+
+Tue May 19 2020 15:58:46 | undefined | UserId : 235088799074484224 :
+send : ✅ **Check <https://rythmbot.co/features#list> for a list of commands**
+
+Tue May 19 2020 15:59:32 | undefined | UserId : 220625639655473152 :
+send : !help
+
+Tue May 19 2020 15:59:32 | undefined | UserId : 235088799074484224 :
+send : ✅ **Check <https://rythmbot.co/features#list> for a list of commands**
+
+Tue May 19 2020 15:59:32 | undefined | UserId : 709771830222651492 :
+send : ```HELP MENU : ````!subscribe` to subscribe to the bootcamp, a private channel will be created
+`!info` to diplay info from yourself or from other participant with `!info <login>``!unsubscribe` to unsubscribe from the bootcamp`!validated <login> <day> <validated>` to tell the bot that you corrected the <day> of <login> and if the day is <validated> or <not validated>`!corrected by <login> <day>` to tell the bot that your <day> have been corrected by <login>
+
+Tue May 19 2020 15:59:32 | undefined | UserId : 709771830222651492 :
+send : !help
+
+Tue May 19 2020 16:00:03 | undefined | UserId : 220625639655473152 :
+send : !help
+
+Tue May 19 2020 16:00:03 | undefined | UserId : 235088799074484224 :
+send : ✅ **Check <https://rythmbot.co/features#list> for a list of commands**
+
+Tue May 19 2020 16:00:03 | undefined | UserId : 709771830222651492 :
+send : !help
+
+Tue May 19 2020 16:00:03 | undefined | UserId : 709771830222651492 :
+send : ```HELP MENU : ````!subscribe` to subscribe to the bootcamp, a private channel will be created
+`!info` to diplay info from yourself or from other participant with `!info <login>
+``!unsubscribe` to unsubscribe from the bootcamp
+`!validated <login> <day> <validated>` to tell the bot that you corrected the <day> of <login> and if the day is <validated> or <not validated>
+`!corrected by <login> <day>` to tell the bot that your <day> have been corrected by <login>
+
+Tue May 19 2020 16:00:30 | undefined | UserId : 220625639655473152 :
+send : !help
+
+Tue May 19 2020 16:00:31 | undefined | UserId : 235088799074484224 :
+send : ✅ **Check <https://rythmbot.co/features#list> for a list of commands**
+
+Tue May 19 2020 16:00:31 | undefined | UserId : 709771830222651492 :
+send : !help
+
+Tue May 19 2020 16:00:31 | undefined | UserId : 709771830222651492 :
+send : ```HELP MENU : ````!subscribe` to subscribe to the bootcamp, a private channel will be created
+`!info` to diplay info from yourself or from other participant with `!info <login>
+``!unsubscribe` to unsubscribe from the bootcamp
+`!validated <login> <day> <validated>` to tell the bot that you corrected the <day> of <login> and if the day is <validated> or <not validated>
+`!corrected by <login> <day>` to tell the bot that your <day> have been corrected by <login>
+
+Tue May 19 2020 16:04:26 | undefined | UserId : 220625639655473152 :
+send : !help
+
+Tue May 19 2020 16:04:26 | undefined | UserId : 235088799074484224 :
+send : ✅ **Check <https://rythmbot.co/features#list> for a list of commands**
+
+Tue May 19 2020 16:04:26 | undefined | UserId : 709771830222651492 :
+send : ```HELP MENU : ````!subscribe`> to subscribe to the bootcamp, a private channel will be created
+`!info` to diplay info from yourself or from other participant with `!info <login>
+``!unsubscribe` to unsubscribe from the bootcamp
+`!validated <login> <day> <validated>` to tell the bot that you corrected the <day> of <login> and if the day is <validated> or <not validated>
+`!corrected by <login> <day>` to tell the bot that your <day> have been corrected by <login>
+
+Tue May 19 2020 16:04:26 | undefined | UserId : 709771830222651492 :
+send : !help
+
+Tue May 19 2020 16:05:39 | undefined | UserId : 220625639655473152 :
+send : !help
+
+Tue May 19 2020 16:05:40 | undefined | UserId : 235088799074484224 :
+send : ✅ **Check <https://rythmbot.co/features#list> for a list of commands**
+
+Tue May 19 2020 16:05:40 | undefined | UserId : 709771830222651492 :
+send : ```Markdown HELP MENU : ````!subscribe`> to subscribe to the bootcamp, a private channel will be created
+`!info` to diplay info from yourself or from other participant with `!info <login>
+``!unsubscribe` to unsubscribe from the bootcamp
+`!validated <login> <day> <validated>` to tell the bot that you corrected the <day> of <login> and if the day is <validated> or <not validated>
+`!corrected by <login> <day>` to tell the bot that your <day> have been corrected by <login>
+
+Tue May 19 2020 16:05:40 | undefined | UserId : 709771830222651492 :
+send : <@220625639655473152>, if you don't stop from spamming, I'm going to punish you!
+
+Tue May 19 2020 16:05:40 | undefined | UserId : 709771830222651492 :
+send : !help
+
+Tue May 19 2020 16:06:09 | undefined | UserId : 220625639655473152 :
+send : !help
+
+Tue May 19 2020 16:06:09 | undefined | UserId : 235088799074484224 :
+send : ✅ **Check <https://rythmbot.co/features#list> for a list of commands**
+
+Tue May 19 2020 16:06:09 | undefined | UserId : 709771830222651492 :
+send : ```Markdown
+ HELP MENU : ````!subscribe`> to subscribe to the bootcamp, a private channel will be created
+`!info` to diplay info from yourself or from other participant with `!info <login>
+``!unsubscribe` to unsubscribe from the bootcamp
+`!validated <login> <day> <validated>` to tell the bot that you corrected the <day> of <login> and if the day is <validated> or <not validated>
+`!corrected by <login> <day>` to tell the bot that your <day> have been corrected by <login>
+
+Tue May 19 2020 16:06:09 | undefined | UserId : 709771830222651492 :
+send : !help
+
+Tue May 19 2020 16:06:45 | undefined | UserId : 220625639655473152 :
+send : !help
+
+Tue May 19 2020 16:06:45 | undefined | UserId : 235088799074484224 :
+send : ✅ **Check <https://rythmbot.co/features#list> for a list of commands**
+
+Tue May 19 2020 16:06:45 | undefined | UserId : 709771830222651492 :
+send : ```Markdown
+# HELP MENU : `!subscribe`> to subscribe to the bootcamp, a private channel will be created
+`!info` to diplay info from yourself or from other participant with `!info <login>
+``!unsubscribe` to unsubscribe from the bootcamp
+`!validated <login> <day> <validated>` to tell the bot that you corrected the <day> of <login> and if the day is <validated> or <not validated>
+`!corrected by <login> <day>` to tell the bot that your <day> have been corrected by <login>
+
+Tue May 19 2020 16:06:45 | undefined | UserId : 709771830222651492 :
+send : !help
+
+Tue May 19 2020 16:07:52 | undefined | UserId : 220625639655473152 :
+send : !help
+
+Tue May 19 2020 16:07:52 | undefined | UserId : 235088799074484224 :
+send : ✅ **Check <https://rythmbot.co/features#list> for a list of commands**
+
+Tue May 19 2020 16:07:53 | undefined | UserId : 709771830222651492 :
+send : ```Markdown# HELP MENU : `!subscribe`> to subscribe to the bootcamp, a private channel will be created
+`!info` to diplay info from yourself or from other participant with `!info <login>
+``!unsubscribe` to unsubscribe from the bootcamp
+`!validated <login> <day> <validated>` to tell the bot that you corrected the <day> of <login> and if the day is <validated> or <not validated>
+`!corrected by <login> <day>` to tell the bot that your <day> have been corrected by <login>
+
+Tue May 19 2020 16:07:53 | undefined | UserId : 709771830222651492 :
+send : !help
+
+Tue May 19 2020 16:07:53 | undefined | UserId : 709771830222651492 :
+send : Created **`anti-spam-Logs`** channel since a channel for reports wasn't provided from beginning when setting up the module.
+
+Tue May 19 2020 16:07:53 | undefined | UserId : 709771830222651492 :
+send : <@!220625639655473152>, was muted since we don't like too much advertisement type people!
+
+Tue May 19 2020 16:07:54 :
+send : Oops, seems like i don't have sufficient permissions to mute <@!220625639655473152>!
+ It can be that or another type of error happened! Tell me on github: https://github.com/MirageZoe/ 
+ Everything happened on Tuesday, 5/19/2020 at 16:07:52 PM with message:
+
+`ReportChannel.send is not a function`
+
+ *P.S: If this is the first time getting something like this, most likely because it was not set up good the log channel at beginning and didn't know where to send the reports. Do not panic, next time it will work since he created the channel where to send the reports!*
 
