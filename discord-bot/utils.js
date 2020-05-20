@@ -23,7 +23,7 @@ module.exports = {
         var date = dateFormat();
         let output;
         if (user)
-            output = date + " | " + user.username + " | UserId : " + user.id + " :\n" + string + "\n\n";
+            output = date + " | " + user.nickname + " | UserId : " + user.id + " :\n" + string + "\n\n";
         else
             output = date + " :\n" + string + "\n\n";
         fs.appendFile('app.log', output, (err) => {
@@ -141,21 +141,28 @@ module.exports = {
         stat = await this.getStatByLogin(login);
         str = "-----------------------------------------\n         __**" + login.toUpperCase() +
         " INFO SHEET**__\n-----------------------------------------\n\n" +
-        "**Expected Mana** : " + stat.days_done * 40 + "\n\n" +
-        await this.DayInfo(stat, 0)
-        ;
+        "**Expected Mana** : " + stat.days_done * 40 + "\n\n";
+        for (let i = 0; i < 5; i++) {
+            str += await this.DayInfo(stat, i);
+        };
         message.channel.send(str);
     },
     DayInfo : async function(stat, dayNb) {
         dayId = await this.getDayIdByStat(stat, dayNb);
         day = await this.getDayByDayId(dayId);
-        str = "*Day00* :\n" + 
-        "Corrected by " + day.who_corrected;
-        if (day.corrected > 0)
+        str = "*Day0" + dayNb + "* :\n" +
+        "Validates " + day.who_correction + " ";
+        if (day.correction == 2)
             str += emoji.get('white_check_mark');
         else
             str += emoji.get('x');
-        ;
+        str += " (" + day.correction + "/2)\n" +
+        "Corrected by " + day.who_corrected + " ";
+        if (day.corrected == 2)
+            str += emoji.get('white_check_mark');
+        else
+            str += emoji.get('x');
+        str += " (" + day.corrected + "/2)\n\n";
         return str;
     },
     printStatByDiscordId : async function(discord_id) {
@@ -346,7 +353,10 @@ module.exports = {
         + "correction on  : " + day.who_correction+ "\n"
         + "corrected      : " + day.corrected+ "\n"
         + "corrected by   : " + day.who_corrected+ "\n"
-        + "day complete   : " + day.day_complete+ "\n";
+        + "day complete   : " + day.day_complete+ "\n"
+        + "correction send: " + day.correction_send+ "\n"
+        + "corrected send : " + day.corrected_send+ "\n"
+        + "validate day   : " + day.day_validated+ "\n";
         return str;
     },
 
@@ -380,6 +390,31 @@ module.exports = {
         }
     },
 
+    updateDayCorrectedSend : async function(day){
+        try {
+            await Day.update({ corrected_send: 1 }, { where: { day_id: day.day_id } });
+        } catch (e) {
+            this.logs("ERROR : function updateDayCorrected : " + e);
+        }
+    },
+
+    updateDayCorrectionSend : async function(day){
+        try {
+            await Day.update({ correction_send: 1 }, { where: { day_id: day.day_id } });
+        } catch (e) {
+            this.logs("ERROR : function updateDayCorrected : " + e);
+        }
+    },
+
+    updateDayValidated : async function(day, value){
+        try {
+            await Day.update({ day_validated: value }, { where: { day_id: day.day_id } });
+        } catch (e) {
+            this.logs("ERROR : function updateDayCorrected : " + e);
+        }
+    },
+
+
     updateDayWhoCorrected : async function(day, login){
         try {
             await Day.update({ who_corrected: login }, { where: { day_id: day.day_id } });
@@ -390,6 +425,7 @@ module.exports = {
 
     updateDayComplete : async function(day){
         try {
+            console.log(day);
             await Day.update({ day_complete: 1 }, { where: { day_id: day.day_id } });
         } catch (e) {
             this.logs("ERROR : function updateDayComplete : " + e);

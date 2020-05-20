@@ -13,6 +13,10 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.INTEGER,
             defaultValue: 0,
         },
+        correction_send: {
+            type: DataTypes.INTEGER,
+            defaultValue: 0,
+        },
         who_correction: {
             type: DataTypes.STRING,
             defaultValue: null,
@@ -21,9 +25,17 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.INTEGER,
             defaultValue: 0,
         },
+        corrected_send: {
+            type: DataTypes.INTEGER,
+            defaultValue: 0,
+        },
         who_corrected:{
             type: DataTypes.STRING,
             defaultValue: null,
+        },
+        day_validated:{
+            type: DataTypes.INTEGER,
+            defaultValue: 0,
         },
         day_complete: {
             type: DataTypes.INTEGER,
