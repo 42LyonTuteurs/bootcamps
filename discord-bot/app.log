@@ -1,96 +1,21 @@
-Wed May 20 2020 09:43:44 :
+Wed May 20 2020 10:41:33 :
 Logged in as bootcamp#3825!
 
-Wed May 20 2020 09:43:49 | jdarko | UserId : 374265216608763907 :
-!subscribe
-
-Wed May 20 2020 09:43:49 :
-subscribtion of :jdarko 374265216608763907
-
-Wed May 20 2020 09:43:56 :
-subscribtion of :DarkoDuCul 224257378529312770
-
-Wed May 20 2020 09:43:56 | DarkoDuCul | UserId : 224257378529312770 :
-!subscribe
-
-Wed May 20 2020 09:44:11 | jdarko | UserId : 374265216608763907 :
+Wed May 20 2020 10:41:37 | tclaudel
 !list
 
-Wed May 20 2020 09:44:16 | jdarko | UserId : 374265216608763907 :
-!correction 0
+Wed May 20 2020 10:41:50 | tclaudel
+!unsubscribe
 
-Wed May 20 2020 09:44:20 | jdarko | UserId : 374265216608763907 :
-!info
-
-Wed May 20 2020 09:44:40 | jdarko | UserId : 374265216608763907 :
-!validates DarkoDuCul 0 validated
-
-Wed May 20 2020 09:44:43 | jdarko | UserId : 374265216608763907 :
-!info
-
-Wed May 20 2020 09:44:55 | jdarko | UserId : 374265216608763907 :
-!status
-
-Wed May 20 2020 09:44:55 | DarkoDuCul | UserId : 224257378529312770 :
-!corrected by jdarko 0
-
-Wed May 20 2020 09:45:03 | jdarko | UserId : 374265216608763907 :
-!status
-
-Wed May 20 2020 09:45:23 | jdarko | UserId : 374265216608763907 :
-!corrected by DarkoDuCul 0
-
-Wed May 20 2020 09:45:29 | jdarko | UserId : 374265216608763907 :
-!status
-
-Wed May 20 2020 09:45:44 | DarkoDuCul | UserId : 224257378529312770 :
-!validates jdarko 0 vallidated
-
-Wed May 20 2020 09:46:15 | DarkoDuCul | UserId : 224257378529312770 :
-!validates jdarko 0 validated
-
-Wed May 20 2020 09:46:50 | jdarko | UserId : 374265216608763907 :
-!status
-
-Wed May 20 2020 09:47:09 | jdarko | UserId : 374265216608763907 :
-!status DarkoDuCul
-
-Wed May 20 2020 09:49:34 | null | UserId : 220625639655473152 :
+Wed May 20 2020 10:42:12 | tclaudel
 !subscribe
 
-Wed May 20 2020 09:49:34 :
-subscribtion of :null 220625639655473152
+Wed May 20 2020 10:42:12 :
+subscribtion of :tclaudel 220625639655473152
 
-Wed May 20 2020 09:49:34 :
-ERROR : function addUser : SequelizeValidationError: notNull Violation: users_list.login cannot be null
+Wed May 20 2020 10:42:12 :
+ERROR : function createStatByDiscordId : SequelizeUniqueConstraintError: Validation error
 
-Wed May 20 2020 09:49:34 :
-ERROR : function createDay : TypeError: Cannot read property 'discord_id' of null
-
-Wed May 20 2020 09:49:34 :
-ERROR : function createDay : TypeError: Cannot read property 'discord_id' of null
-
-Wed May 20 2020 09:49:34 :
-ERROR : function createDay : TypeError: Cannot read property 'discord_id' of null
-
-Wed May 20 2020 09:49:34 :
-ERROR : function createDay : TypeError: Cannot read property 'discord_id' of null
-
-Wed May 20 2020 09:49:34 :
-ERROR : function createDay : TypeError: Cannot read property 'discord_id' of null
-
-Wed May 20 2020 09:49:41 | null | UserId : 220625639655473152 :
-!info
-
-Wed May 20 2020 09:49:41 :
-ERROR : function getStatByUser : TypeError: Cannot read property 'discord_id' of null
-
-Wed May 20 2020 09:50:50 | null | UserId : 220625639655473152 :
-!info
-
-Wed May 20 2020 09:50:50 :
-ERROR : function getStatByUser : TypeError: Cannot read property 'discord_id' of null
-
-Wed May 20 2020 09:55:19 | jdarko | UserId : 374265216608763907 :
-!print
+Wed May 20 2020 10:42:17 | tclaudel
+!list
 

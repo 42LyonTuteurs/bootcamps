@@ -1,8 +1,8 @@
 const utils = require('./utils.js');
 
-async function correctedBy(message, commandArgs) {
+async function correctedBy(message, commandArgs, name) {
 	let corrector = commandArgs[1];
-	let corrected = message.member.nickname;
+	let corrected = name;
 	let day = commandArgs[2];
 	if (!day)
 		message.channel.send('Please tell me witch day you corected :\n```!corrected by ' + corrector + ' <Day Corrected>```');
@@ -45,15 +45,15 @@ async function correctedBy(message, commandArgs) {
 	}
 }
 
-async function validatedSomeone(message, commandArgs) {
+async function validatedSomeone(message, commandArgs, name) {
 	let corrected = commandArgs[0];
-	let corrector = message.member.nickname;
+	let corrector = name;
 	let day = commandArgs[1];
 	let validated = commandArgs[2];
 	if (!day){
-		message.channel.send('Please tell me witch day you corected :\n```!corrected ' + corrected + ' <Day Corrected> <Validated>```');
+		message.channel.send('Please tell me witch day you corected :\n```!validates ' + corrected + ' <Day Corrected> <Validated>```');
 	} else if(!validated) {
-		message.channel.send('Please tell me if the day is done or not :\n```!corrected ' + corrected + ' <Day Corrected> <Validated>```');
+		message.channel.send('Please tell me if the day is done or not :\n```!validates ' + corrected + ' <Day Corrected> <Validated>```');
 	} else{
 		corrected = await utils.getUserByLogin(corrected);
 		corrector = await utils.getUserByLogin(corrector);
@@ -66,9 +66,9 @@ async function validatedSomeone(message, commandArgs) {
 			message.channel.send('Wrong Login');
 		} else if(dayCorrector.correction_send == 1){
 			message.channel.send('The correction is already finished');
-		} else if(validated !== "validated" && day !== "validated"){
+		} else if(validated !== "validated" && validated !== "notvalidated"){
 			message.channel.send('Please tell me if the day is done or not :\n```!corrected ' + corrected.login + ' <Day Corrected> <Validated>```');
-		}else {
+		} else {
 			await utils.updateDayCorrected(dayCorrected);
 			await utils.updateDayCorrection(dayCorrector);
 			if (validated === "validated"){
@@ -163,19 +163,19 @@ module.exports = {
 		}
 
 	},
-	corrected : async function(message, commandArgs) {
+	corrected : async function(message, commandArgs, name) {
 		// console.log("commands : " + commandArgs);
 		let LoginList = await utils.AllLogin();
 		if (commandArgs[0] == 'by' && LoginList.includes(commandArgs[1]))
-			await correctedBy(message, commandArgs);
+			await correctedBy(message, commandArgs, name);
 		else
 			console.log("Could not find matching correction");
 	},
 
-	validated : async function(message, commandArgs) {
+	validated : async function(message, commandArgs, name) {
 		let LoginList = await utils.AllLogin();
 		if (LoginList.includes(commandArgs[0]))
-			await validatedSomeone(message, commandArgs);
+			await validatedSomeone(message, commandArgs, name);
 		else
 			console.log("Could not find matching correction")
 	},
