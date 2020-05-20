@@ -149,6 +149,8 @@ module.exports = {
     DayInfo : async function(stat, dayNb) {
         dayId = await this.getDayIdByStat(stat, dayNb);
         day = await this.getDayByDayId(dayId);
+        if (day.who_corrected == null)
+            return "";
         str = "*Day0" + dayNb + "* :\n" +
         "Validates " + day.who_correction + " ";
         if (day.correction == 2)

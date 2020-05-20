@@ -13,7 +13,6 @@ var faker = require('faker');
 var emoji = require('node-emoji')
 const PREFIX = '!';
 
-
 // Cronjobs
 
 cron.schedule("42 8 18 * * ", function() {
@@ -81,7 +80,6 @@ async function subscribe(message, name)
         this.logs("ERROR : subscription failed : " + e);
         message.channel.send("ERROR : subscription failed : " + e);
     }
-
 };
 
 async function unsubscribe(message, name)
@@ -90,7 +88,7 @@ async function unsubscribe(message, name)
     let channelToDestroy;
     if (message.guild.channels.cache.map(t => t.name).includes("bootcamp-" + name)) {
         message.guild.channels.cache.forEach(element => {
-            if (element.name == "bootcamp-" + name)
+            if (element.name === "bootcamp-" + name)
                 channelToDestroy = element;
         });
     }
@@ -274,6 +272,7 @@ client.on('message', async message => {
             if (error == 1){
                 help(message);
             }
+
             // const user = await utils.getUserByLogin("jdarko");
             // // console.log(user.login);
             // const dayId = await utils.getDayIdByUser(user, 0);
