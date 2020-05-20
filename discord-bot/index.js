@@ -12,7 +12,6 @@ var faker = require('faker');
 var emoji = require('node-emoji')
 const PREFIX = '!';
 
-
 // Cronjobs
 
 cron.schedule("42 8 18 * * ", function() {
@@ -80,7 +79,6 @@ async function subscribe(message, name)
         this.logs("ERROR : subscription failed : " + e);
         message.channel.send("ERROR : subscription failed : " + e);
     }
-
 };
 
 async function unsubscribe(message, name)

@@ -110,13 +110,21 @@ async function  setCorrection(corrector, corrected, day) {
 	await utils.updateDayWhoCorrected(correctedDay, corrector)
 }
 
-function sendCorrection(message, corrector, corrected)
+function sendCorrection(message, corrector, corrected, day)
 {
 	message.guild.channels.cache.forEach(element => {
-		if (element.name == "bootcamp-" + corrector)
-			element.send("You will correct " + corrected);
+		let str = "";
+		if (element.name == "bootcamp-" + corrector) {
+			str += "\nYou will correct __**" + corrected + "**__'s day " + day +
+				"\nenter the following command to validate " + corrected + " day " + day + "\n" +
+				"```!validates " + corrected + " " + day + " <validated/notvalidated>```\n";
+		}
 		else if (element.name == "bootcamp-" + corrected)
-			element.send("You will be corrected by " + corrector);
+			str += "\nYou will be corrected by __**" + corrector + "**__ on your day " + day +
+				"\nenter the following command to certificate that " + corrected + " corrected your day " + day + "\n" +
+				"```!corrected by " + corrector + " " + day + "```\n";
+		if (str)
+			element.send(str);
 	});
 }
 
@@ -151,11 +159,11 @@ module.exports = {
 			for (let i = 0; i < userNb; i++)
 			{
 				let random = utils.getRandomArbitrary(0, correcter.length - 1);
-				while (correcter[random] == corrected[i])
+				while (correcter[random] == corrected[i] && correcter[random])
 					random = utils.getRandomArbitrary(0, correcter.length - 1);
 				console.log(corrected[i] + " will be corrected by " + correcter[random]);
 				await setCorrection(correcter[random], corrected[i], day);
-				sendCorrection(message, correcter[random], corrected[i]);
+				sendCorrection(message, correcter[random], corrected[i], day);
 				correcter.splice(random, 1);
 			}
 		} else {

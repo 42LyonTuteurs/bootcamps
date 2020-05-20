@@ -1,21 +1,12 @@
-Wed May 20 2020 10:41:33 :
+Wed May 20 2020 12:28:53 :
 Logged in as bootcamp#3825!
 
-Wed May 20 2020 10:41:37 | tclaudel
-!list
+Wed May 20 2020 12:28:56 | tclaudel
+!info
 
-Wed May 20 2020 10:41:50 | tclaudel
-!unsubscribe
+Wed May 20 2020 12:29:05 | tclaudel
+!correction 4
 
-Wed May 20 2020 10:42:12 | tclaudel
-!subscribe
-
-Wed May 20 2020 10:42:12 :
-subscribtion of :tclaudel 220625639655473152
-
-Wed May 20 2020 10:42:12 :
-ERROR : function createStatByDiscordId : SequelizeUniqueConstraintError: Validation error
-
-Wed May 20 2020 10:42:17 | tclaudel
-!list
+Wed May 20 2020 12:29:08 | tclaudel
+!info
 
