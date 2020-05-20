@@ -232,6 +232,7 @@ client.on('ready', async() => {
 client.on('message', async message => {
     if (message.author.username != "bootcamp" && !message.author.bot && message.content.search("!mana") == -1 && message.content.startsWith(PREFIX))
     {
+        message.channel.send("https://tenor.com/view/cat-driving-serious-cat-driving-focus-driving-gif-15519638");
         if (!message.member) {
             message.author.send('```DM disable, please call me from 42 Lyon Server```')
             return;
