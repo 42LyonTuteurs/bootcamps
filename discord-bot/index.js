@@ -9,7 +9,7 @@ const fs = require("fs");
 const config = configFile.botConfig;
 const client = new Discord.Client();
 var faker = require('faker');
-var users = new Array();
+var emoji = require('node-emoji')
 const PREFIX = '!';
 
 
@@ -49,7 +49,6 @@ async function subscribe(message)
     message.member.roles.add(myRole).catch(console.error);
     var user = new User(message.member.id, message.member.nickname);
     utils.logs("subscribtion of :" + user.username + " " + user.id);
-    users.push(user);
     await utils.addUser(user.id, user.username);
     if (!message.guild.channels.cache.map(t => t.name).includes("bootcamp-" + message.member.nickname)) {
       const everyoneRole = message.guild.roles.cache.get(config.everyoneRoleId);
@@ -88,9 +87,6 @@ async function unsubscribe(message)
 {0
   await utils.deleteUserByLogin(message.member.nickname);
   let channelToDestroy;
-  let index = users.findIndex(u => u.username == message.member.nickname);
-  if (index != -1)
-    users.splice(index, 1);
   if (message.guild.channels.cache.map(t => t.name).includes("bootcamp-" + message.member.nickname)) {
     message.guild.channels.cache.forEach(element => {
       if (element.name == "bootcamp-" + message.member.nickname)
@@ -110,9 +106,11 @@ async function list(message)
     utils.logs("You should be admin to this");
 }
 
-async function info(message, argv)
+async function status(message, argv)
 {
   let LoginList = await utils.AllLogin();
+  if (!utils.isAdmin(message.member))
+    return;
   if (!argv[0])
       utils.printUserInfoByLoginInChannel(message, message.member.nickname)
   else {
@@ -125,6 +123,21 @@ async function info(message, argv)
   }
 }
 
+async function info(message, argv)
+{
+  let LoginList = await utils.AllLogin();
+  if (!argv[0])
+    utils.printInfo(message, message.member.nickname)
+  else {
+    argv.forEach(element => {
+    if (LoginList.includes(element))
+      utils.printInfo(message, element);
+    else 
+      message.channel.send("```Could not find user with " + element + " username```");
+    })
+  }
+}
+
 function help(message)
 {
   let str = "__**HELP MENU**__\n\n"+
@@ -132,19 +145,18 @@ function help(message)
   "**!subscribe**\n> to subscribe to the bootcamp, a private channel will be created\n\n" +
   "**!info**\n> to diplay info from yourself or from other participant with *!info <login>*\n\n" +
   "**!unsubscribe**\n> to unsubscribe from the bootcamp\n\n" +
-  "**!validated <login> <day> <validated>**\n> to tell the bot that you corrected the <day> of <login> and if the day is <validated> or <notvalidated>\n\n" +
+  "**!validates <login> <day> <validated>**\n> to tell the bot that you corrected the <day> of <login> and if the day is <validated> or <notvalidated>\n\n" +
   "**!corrected by <login> <day>**\n> to tell the bot that your <day> have been corrected by <login>\n\n";
   message.channel.send(str);
 }
 
 async function fakerDb()
 {
-  for (let i = 0; i < 20; i++)
-  {
-    var user = new User(faker.finance.account(18), faker.name.firstName());
-    await utils.addUser(user.id, user.username);
-    users.push(user);
-  }
+  // for (let i = 0; i < 20; i++)
+  // {
+  //   var user = new User(faker.finance.account(18), faker.name.firstName());
+  //   await utils.addUser(user.id, user.username);
+  // }
 }
 
 client.on('ready', async() => {
@@ -159,7 +171,7 @@ client.on('ready', async() => {
 });
 
 client.on('message', async message => {
-  LoginList = await utils.AllLogin();
+
   if (message.author.username != "bootcamp" && !message.author.bot && message.content.search("!mana") == -1)
   {
     if (!message.member) {
@@ -168,6 +180,8 @@ client.on('message', async message => {
     }
     if (message.content.startsWith(PREFIX))
     {
+      LoginList = await utils.AllLogin();
+      utils.logs(message.content, message.member);
       client.emit('checkMessage', message);
       const input = message.content.slice(PREFIX.length).split(' ');
       const command = input.shift();
@@ -176,6 +190,8 @@ client.on('message', async message => {
         subscribe(message);
       else if (command === 'info')
         info(message, commandArgs.split(" "));
+      else if (command === 'status')
+        status(message, commandArgs.split(" "));
       else if (command === 'unsubscribe')
         unsubscribe(message);
       else if (command === 'setCorrection')
@@ -192,7 +208,7 @@ client.on('message', async message => {
       // }
       else if (command === 'correction')
       {
-        await c.correction(message, users, commandArgs.split(" "));
+        await c.correction(message, LoginList, commandArgs.split(" "));
         // const user = await utils.getUserByLogin("jdarko");
         // // console.log(user.login);
         // const dayId = await utils.getDayIdByUser(user, 0);
@@ -203,12 +219,11 @@ client.on('message', async message => {
       }
       else if (command === 'corrected')
         c.corrected(message, commandArgs.split(" "))
-      else if (command === 'validated')
+      else if (command === 'validates')
         c.validated(message, commandArgs.split(" "))
       else if (command === 'help')
         help(message);
       else {
-        message.delete();
         message.channel.send("```" + message.content + " is an unknown function, please try !help```")
         .then(msg => {
           msg.delete({ timeout: 10000 })
