@@ -207,9 +207,11 @@ module.exports = {
 
     printStatInChannel : async function (message, stat, login) {
         if (stat != null){
+            let user = await this.getUserByLogin(login);
             let str;
             // message.channel.send(
             str ="```login          : " + login + "\n" +
+            "is actif ?     : " + user.actif + "\n"+
             "jours terminés : " + stat.days_done + "\n" +
             "nb corrections : " + stat.correction + "\n" +
             "nb corrigé     : " + stat.corrected + "\n" +
@@ -325,12 +327,14 @@ module.exports = {
     },
 
     getDayIdByUser : async function(user, nb){
-        console.log("login => " +user);
         const stat = await this.getStatByUser(user);
-        console.log("stat => " +stat);
         const day_id = await this.getDayIdByStat(stat, nb);
-        console.log("day_id => " +day_id);
         return (day_id);
+    },
+
+    getActivityByUser : async function(login){
+        let user = await Users.findOne({where: {login: login}});
+        return (user.actif);
     },
 
     printDay : async function(day){
@@ -370,6 +374,14 @@ module.exports = {
     updateDayCorrection : async function(day){
         try {
             await Day.update({ correction: day.correction + 1 }, { where: { day_id: day.day_id } });
+        } catch (e) {
+            this.logs("ERROR : function updateDayCorrection : " + e);
+        }
+    },
+
+    updateUserAtivity : async function(user){
+        try {
+            await Users.update({ actif: 0 }, { where: { discord_id: user.discord_id } });
         } catch (e) {
             this.logs("ERROR : function updateDayCorrection : " + e);
         }
@@ -433,16 +445,23 @@ module.exports = {
         }
     },
     printAll : async function(message) {
-      const List = await Users.findAll();
-      console.log(List.map(t => t.dataValues));
-      message.channel.send(List.map(t => t.dataValues.login));
+      const List = await this.AllLogin();
+      message.channel.send(List);
+    },
+    printAllAllActivity : async function(message) {
+        const List = await this.AllLoginAllActivity();
+        message.channel.send(List);
     },
     UserNb : async function() {
       const nbOfUsers = await Users.findAll();
       return (nbOfUsers.length)
     },
-    AllLogin : async function(){
-      const List = await Users.findAll();
-      return await List.map(t => t.dataValues.login);
-  },
+    AllLogin : async function() {
+        const List = await Users.findAll({where: {actif: 1}});
+        return await List.map(t => t.dataValues.login);
+    },
+    AllLoginAllActivity : async function(){
+            const List = await Users.findAll();
+            return await List.map(t => t.dataValues.login);
+            },
 }
