@@ -1,9 +1,147 @@
-Wed May 20 2020 15:29:07 :
+Wed May 20 2020 16:47:02 :
 Logged in as bootcamp#3825!
 
-Wed May 20 2020 15:29:11 | dgascon
-!info
+Wed May 20 2020 16:47:07 | jdarko
+!validates dgascon 0 validated
 
-Wed May 20 2020 15:29:12 | lazare
-!corrected by dgascon
+Wed May 20 2020 16:48:10 | jdarko
+!validates dgascon 0 validated
+
+Wed May 20 2020 16:48:15 | jdarko
+!validates dgascon 00 validated
+
+Wed May 20 2020 16:48:15 :
+ERROR : function getDayIdByStat : Error: WHERE parameter "day_id" has invalid "undefined" value
+
+Wed May 20 2020 16:48:15 :
+ERROR : function getDayIdByStat : Error: WHERE parameter "day_id" has invalid "undefined" value
+
+Wed May 20 2020 16:48:22 | jdarko
+!validates dgascon ! validated
+
+Wed May 20 2020 16:48:22 :
+ERROR : function getDayIdByStat : Error: WHERE parameter "day_id" has invalid "undefined" value
+
+Wed May 20 2020 16:48:22 :
+ERROR : function getDayIdByStat : Error: WHERE parameter "day_id" has invalid "undefined" value
+
+Wed May 20 2020 16:48:39 | jdarko
+!validates dgascon 0 validated
+
+Wed May 20 2020 16:48:44 | jdarko
+!validates dgascon 1 validated
+
+Wed May 20 2020 16:48:51 | jdarko
+!validates dgascon & validated
+
+Wed May 20 2020 16:48:51 :
+ERROR : function getDayIdByStat : Error: WHERE parameter "day_id" has invalid "undefined" value
+
+Wed May 20 2020 16:48:51 :
+ERROR : function getDayIdByStat : Error: WHERE parameter "day_id" has invalid "undefined" value
+
+Wed May 20 2020 16:48:51 | dgascon
+!bootcamp
+
+Wed May 20 2020 16:49:02 | dgascon
+!validates dgascon 0qwerqwer validated
+
+Wed May 20 2020 16:49:02 :
+ERROR : function getDayIdByStat : Error: WHERE parameter "day_id" has invalid "undefined" value
+
+Wed May 20 2020 16:49:02 :
+ERROR : function getDayIdByStat : Error: WHERE parameter "day_id" has invalid "undefined" value
+
+Wed May 20 2020 16:49:07 | dgascon
+!validates dgascon 0 validated
+
+Wed May 20 2020 16:49:12 | dgascon
+!validates dgascon qwerqwer validated
+
+Wed May 20 2020 16:49:12 :
+ERROR : function getDayIdByStat : Error: WHERE parameter "day_id" has invalid "undefined" value
+
+Wed May 20 2020 16:49:12 :
+ERROR : function getDayIdByStat : Error: WHERE parameter "day_id" has invalid "undefined" value
+
+Wed May 20 2020 16:49:18 | jdarko
+!validates dgascon 0asfasva validated
+
+Wed May 20 2020 16:49:18 :
+ERROR : function getDayIdByStat : Error: WHERE parameter "day_id" has invalid "undefined" value
+
+Wed May 20 2020 16:49:18 :
+ERROR : function getDayIdByStat : Error: WHERE parameter "day_id" has invalid "undefined" value
+
+Wed May 20 2020 16:49:18 | dgascon
+!validates dgascon 0e validated
+
+Wed May 20 2020 16:49:18 :
+ERROR : function getDayIdByStat : Error: WHERE parameter "day_id" has invalid "undefined" value
+
+Wed May 20 2020 16:49:18 :
+ERROR : function getDayIdByStat : Error: WHERE parameter "day_id" has invalid "undefined" value
+
+Wed May 20 2020 16:49:24 | dgascon
+!validates dgascon e validated
+
+Wed May 20 2020 16:49:24 :
+ERROR : function getDayIdByStat : Error: WHERE parameter "day_id" has invalid "undefined" value
+
+Wed May 20 2020 16:49:24 :
+ERROR : function getDayIdByStat : Error: WHERE parameter "day_id" has invalid "undefined" value
+
+Wed May 20 2020 16:49:29 | dgascon
+!validates dgascon `` validated
+
+Wed May 20 2020 16:49:29 :
+ERROR : function getDayIdByStat : Error: WHERE parameter "day_id" has invalid "undefined" value
+
+Wed May 20 2020 16:49:29 :
+ERROR : function getDayIdByStat : Error: WHERE parameter "day_id" has invalid "undefined" value
+
+Wed May 20 2020 16:49:31 | jdarko
+!validates dgascon -1 validated
+
+Wed May 20 2020 16:49:34 | dgascon
+!validates dgascon `` validated!validates dgascon `` validated
+
+Wed May 20 2020 16:49:34 :
+ERROR : function getDayIdByStat : Error: WHERE parameter "day_id" has invalid "undefined" value
+
+Wed May 20 2020 16:49:34 :
+ERROR : function getDayIdByStat : Error: WHERE parameter "day_id" has invalid "undefined" value
+
+Wed May 20 2020 16:49:39 | dgascon
+!validates dgascon ``0`` validated
+
+Wed May 20 2020 16:49:39 :
+ERROR : function getDayIdByStat : Error: WHERE parameter "day_id" has invalid "undefined" value
+
+Wed May 20 2020 16:49:39 :
+ERROR : function getDayIdByStat : Error: WHERE parameter "day_id" has invalid "undefined" value
+
+Wed May 20 2020 16:49:41 | jdarko
+!validates dgascon 6 validated
+
+Wed May 20 2020 16:49:51 | dgascon
+!validates dgascon -1 validated
+
+Wed May 20 2020 16:49:56 | dgascon
+!validates dgascon ----1 validated
+
+Wed May 20 2020 16:49:56 :
+ERROR : function getDayIdByStat : Error: WHERE parameter "day_id" has invalid "undefined" value
+
+Wed May 20 2020 16:49:56 :
+ERROR : function getDayIdByStat : Error: WHERE parameter "day_id" has invalid "undefined" value
+
+Wed May 20 2020 16:50:05 | dgascon
+!validates dgascon ----1-+ validated
+
+Wed May 20 2020 16:50:05 :
+ERROR : function getDayIdByStat : Error: WHERE parameter "day_id" has invalid "undefined" value
+
+Wed May 20 2020 16:50:05 :
+ERROR : function getDayIdByStat : Error: WHERE parameter "day_id" has invalid "undefined" value
 
