@@ -236,6 +236,10 @@ client.on('message', async message => {
             message.author.send('```DM disable, please call me from 42 Lyon Server```')
             return;
         }
+        if (message.content.length > 100){
+            message.channel.send("NOPE");
+            return ;
+        }
         let LoginList = await utils.AllLogin();
         let name = message.member.nickname == null ? message.author.username : message.member.nickname;
         let discord_id = message.member.id;
@@ -283,10 +287,14 @@ client.on('message', async message => {
         }
         else if (command === 'admin')
             force(message, commandArgs.split(" "), name, discord_id);
-        else if (command === 'corrected')
-            c.corrected(message, commandArgs.split(" "), name)
-        else if (command === 'validates')
-            c.validated(message, commandArgs.split(" "), name)
+        else if (command === 'corrected'){
+            if (await c.corrected(message, commandArgs.split(" "), name) == 1)
+                help(message);
+        }
+        else if (command === 'validates'){
+            if (await c.validated(message, commandArgs.split(" "), name) == 1)
+                help(message);
+        }
         else if (command === 'help')
             help(message);
         else {
