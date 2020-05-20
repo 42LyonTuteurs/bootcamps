@@ -3,6 +3,7 @@ const { Users, Stat, Day } = require('./dbObject');
 const { Op } = require('sequelize');
 const utils = require('./utils.js');
 const c = require('./correction.js');
+const admin = require('./administrator.js');
 const configFile = require ('./config.json');
 const cron = require("node-cron");
 const fs = require("fs");
@@ -87,16 +88,16 @@ async function unsubscribe(message, name)
     let channelToDestroy;
     if (message.guild.channels.cache.map(t => t.name).includes("bootcamp-" + name)) {
         message.guild.channels.cache.forEach(element => {
-            if (element.name == "bootcamp-" + name)
+            if (element.name === "bootcamp-" + name)
                 channelToDestroy = element;
         });
     }
     channelToDestroy.delete();
 }
 
-async function list(message, name)
+async function list(message, name, discord_id)
 {
-    if (utils.isAdmin(name))
+    if (utils.isAdmin(discord_id))
     {
         await utils.printAll(message);
     }
@@ -104,11 +105,13 @@ async function list(message, name)
         utils.logs("You should be admin to this");
 }
 
-async function status(message, argv, name)
+async function status(message, argv, name, discord_id)
 {
     let LoginList = await utils.AllLogin();
-    if (!utils.isAdmin(name))
+    if (!utils.isAdmin(discord_id)){
+        help(message);
         return;
+    }
     if (!argv[0])
         utils.printUserInfoByLoginInChannel(message, name)
     else {
@@ -157,6 +160,64 @@ async function fakerDb()
     // }
 }
 
+async function adminHelp(message){
+    let str = "__**HELP ADMIN MENU**__\n\n"+
+        "You will find all the commands you can use in this discord just behind :\n\n" +
+        "**!admin dayCorrection <login> <day>**\n> set day correction = 2 \n\n" +
+        "**!admin dayCorrected <login> <day>**\n> set day corrected = 2 \n\n" +
+        "**!admin dayValidated <login> <day>**\n> set day validated = 2 \n\n" +
+        "**!admin dayComplete <login> <day>**\n> set day complete = 2 \n\n" +
+        "**!admin statCorrection <login>**\n> set stat correction = +1 \n\n" +
+        "**!admin statCorrected <login>**\n> set stat corrected = +1\n\n" +
+        "**!admin statDaysDone <login>**\n> set stat days done = +1 \n\n";
+    message.channel.send(str);
+}
+
+async function force(message, argv, name, discord_id){
+    if (utils.isAdmin(discord_id))
+    {
+        const login = argv[1];
+        const nbDay = argv[2];
+        if (login === undefined){
+            await adminHelp(message);
+            return (0);
+        }
+        if (argv[0] === 'dayCorrection'){
+            if (nbDay === undefined)
+                await adminHelp(message);
+            await admin.forceCorrectionDone(login, nbDay);
+        }
+        else if (argv[0] === 'dayCorrected'){
+            if (nbDay === undefined)
+                await adminHelp(message);
+            await admin.forceCorrectedDone(login, nbDay);
+        }
+        else if (argv[0] === 'dayValidated'){
+            if (nbDay === undefined)
+                await adminHelp(message);
+            await admin.forceDayValidated(login, nbDay);
+        }
+        else if (argv[0] === 'dayComplete'){
+            if (nbDay === undefined)
+                await adminHelp(message);
+            await admin.forceDayComplete(login, nbDay);
+        }
+        else if (argv[0] === 'statCorrection'){
+            await admin.forceSetStatCorrection(login);
+        }
+        else if (argv[0] === 'statCorrected'){
+            await admin.forceSetStatCorrected(login);
+        }
+        else if (argv[0] === 'statDaysDone'){
+            await admin.forceSetStatDaysDone(login);
+        }
+        else
+            await adminHelp(message);
+    }
+    else
+        help(message);
+}
+
 client.on('ready', async() => {
     if (await utils.UserNb() < 20)
         await fakerDb();
@@ -177,6 +238,7 @@ client.on('message', async message => {
         }
         let LoginList = await utils.AllLogin();
         let name = message.member.nickname == null ? message.author.username : message.member.nickname;
+        let discord_id = message.member.id;
         if (message.content != "!subscribe" && !LoginList.includes(name)) {
             message.channel.send("Please !subscribe to access the commands")
             return ;
@@ -191,13 +253,13 @@ client.on('message', async message => {
         else if (command === 'info')
             info(message, commandArgs.split(" "), name);
         else if (command === 'status')
-            status(message, commandArgs.split(" "), name);
+            status(message, commandArgs.split(" "), name, discord_id);
         else if (command === 'unsubscribe')
             unsubscribe(message, name);
-        else if (command === 'setCorrection')
-            setCorrection(message, name);
+        // else if (command === 'setCorrection')
+        //     setCorrection(message, name);
         else if (command === 'list')
-            list(message, name);
+            list(message, name, discord_id);
             // else if (command === 'setDay'){
             //   const usr = await utils.getUserByLogin("jdarko")
             //   // const usr2 = await utils.getUserByLogin("")
@@ -206,7 +268,11 @@ client.on('message', async message => {
         // }
         else if (command === 'correction')
         {
-            await c.correction(message, LoginList, commandArgs.split(" "), name);
+            let error = await c.correction(message, LoginList, commandArgs.split(" "), discord_id);
+            if (error == 1){
+                help(message);
+            }
+
             // const user = await utils.getUserByLogin("jdarko");
             // // console.log(user.login);
             // const dayId = await utils.getDayIdByUser(user, 0);
@@ -215,6 +281,8 @@ client.on('message', async message => {
             // // console.log(day);
             // await utils.printDay(day);
         }
+        else if (command === 'admin')
+            force(message, commandArgs.split(" "), name, discord_id);
         else if (command === 'corrected')
             c.corrected(message, commandArgs.split(" "), name)
         else if (command === 'validates')
