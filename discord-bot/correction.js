@@ -37,8 +37,8 @@ async function correctedBy(message, commandArgs) {
 			await updateDay(dayCorrected);
 			dayCorrected = await utils.getDayByDayId(await utils.getDayIdByUser(corrected, day));
 			dayCorrector = await utils.getDayByDayId(await utils.getDayIdByUser(corrector, day));
-			await updateStat(corrected.login, dayCorrected);
-			await updateStat(corrector.login, dayCorrector);
+			await updateStat(corrected.login, dayCorrected, "corrected");
+			await updateStat(corrector.login, dayCorrector, "corrector");
 		}
 		console.log(corrector.login + " corrected day " + day + " of " + corrected.login);
 
@@ -88,8 +88,8 @@ async function validatedSomeone(message, commandArgs) {
 
 			dayCorrector = await utils.getDayIdByUser(corrector, day);
 			dayCorrector = await utils.getDayByDayId(dayCorrector);
-			await updateStat(corrected.login, dayCorrected);
-			await updateStat(corrector.login, dayCorrector);
+			await updateStat(corrected.login, dayCorrected, "corrected");
+			await updateStat(corrector.login, dayCorrector, "corrector");
 		}
 		console.log(corrector.login + " corrected day " + day + " of " + corrected.login);
 	}
@@ -120,12 +120,12 @@ function sendCorrection(message, corrector, corrected)
 	});
 }
 
-async function updateStat(login, day){
+async function updateStat(login, day, role){
 	const stat = await utils.getStatByLogin(login);
-	if (day.corrected == 2){
+	if (day.corrected == 2 && role === "corrected"){
 		await utils.updateStatCorrected(stat);
 	}
-	if (day.correction == 2){
+	if (day.correction == 2 && role === "corrector"){
 		await utils.updateStatCorrection(stat);
 	}
 	if (day.day_complete == 1){
