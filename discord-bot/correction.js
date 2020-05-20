@@ -37,8 +37,8 @@ async function correctedBy(message, commandArgs, name) {
 			await updateDay(dayCorrected);
 			dayCorrected = await utils.getDayByDayId(await utils.getDayIdByUser(corrected, day));
 			dayCorrector = await utils.getDayByDayId(await utils.getDayIdByUser(corrector, day));
-			await updateStat(corrected.login, dayCorrected);
-			await updateStat(corrector.login, dayCorrector);
+			await updateStat(corrected.login, dayCorrected, "corrected");
+			await updateStat(corrector.login, dayCorrector, "corrector");
 		}
 		console.log(corrector.login + " corrected day " + day + " of " + corrected.login);
 
@@ -88,8 +88,8 @@ async function validatedSomeone(message, commandArgs, name) {
 
 			dayCorrector = await utils.getDayIdByUser(corrector, day);
 			dayCorrector = await utils.getDayByDayId(dayCorrector);
-			await updateStat(corrected.login, dayCorrected);
-			await updateStat(corrector.login, dayCorrector);
+			await updateStat(corrected.login, dayCorrected, "corrected");
+			await updateStat(corrector.login, dayCorrector, "corrector");
 		}
 		console.log(corrector.login + " corrected day " + day + " of " + corrected.login);
 	}
@@ -120,12 +120,12 @@ function sendCorrection(message, corrector, corrected)
 	});
 }
 
-async function updateStat(login, day){
+async function updateStat(login, day, role){
 	const stat = await utils.getStatByLogin(login);
-	if (day.corrected == 2){
+	if (day.corrected == 2 && role === "corrected"){
 		await utils.updateStatCorrected(stat);
 	}
-	if (day.correction == 2){
+	if (day.correction == 2 && role === "corrector"){
 		await utils.updateStatCorrection(stat);
 	}
 	if (day.day_complete == 1){
@@ -140,26 +140,30 @@ async function updateDay(day){
 }
 
 module.exports = {
-	async correction(message, usersSouce, commandArg) {
+	async correction(message, usersSouce, commandArg, discord_id) {
 		// if ()
-		let correcter = usersSouce.slice();
-		let corrected = usersSouce.slice();
-		if (commandArg[0]){
-			let day = commandArg[0];
-			let userNb = corrected.length;
-			console.log(corrected);
-			for (let i = 0; i < userNb; i++)
-			{
-				let random = utils.getRandomArbitrary(0, correcter.length - 1);
-				while (correcter[random] == corrected[i])
-					random = utils.getRandomArbitrary(0, correcter.length - 1);
-				console.log(corrected[i] + " will be corrected by " + correcter[random]);
-				await setCorrection(correcter[random], corrected[i], day);
-				sendCorrection(message, correcter[random], corrected[i]);
-				correcter.splice(random, 1);
+		if (utils.isAdmin(discord_id)) {
+			let correcter = usersSouce.slice();
+			let corrected = usersSouce.slice();
+			if (commandArg[0]){
+				let day = commandArg[0];
+				let userNb = corrected.length;
+				console.log(corrected);
+				for (let i = 0; i < userNb; i++)
+				{
+					let random = utils.getRandomArbitrary(0, correcter.length - 1);
+					while (correcter[random] == corrected[i])
+						random = utils.getRandomArbitrary(0, correcter.length - 1);
+					console.log(corrected[i] + " will be corrected by " + correcter[random]);
+					await setCorrection(correcter[random], corrected[i], day);
+					sendCorrection(message, correcter[random], corrected[i]);
+					correcter.splice(random, 1);
+				}
+			} else {
+				message.channel.send('Please tell me witch day you create :\n```!correction <Day Corrected>```');
 			}
-		} else {
-			message.channel.send('Please tell me witch day you create :\n```!correction <Day Corrected>```');
+		} else{
+			return (1);
 		}
 
 	},
