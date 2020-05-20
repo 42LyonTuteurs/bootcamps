@@ -6,7 +6,11 @@ async function correctedBy(message, commandArgs, name) {
     let corrected = name;
     let day = commandArgs[2];
     if (!day)
-        message.channel.send('Please tell me witch day you corected :\n```!corrected by ' + corrector + ' <Day Corrected>```');
+        message.channel.send('Please tell me witch day you corrected :\n```!corrected by ' + corrector + ' <Day Corrected>```');
+    else if (day < 0 || day > 4) {
+        message.channel.send("wrong day");
+        return;
+    }
     else{
         // console.log("login corrected :" + corrected);
         // console.log("login corrector :" + corrector);
@@ -21,7 +25,6 @@ async function correctedBy(message, commandArgs, name) {
         // console.log("day corrector:" + dayCorrector);
         // console.log("whoCorrection" + dayCorrected.who_corrected);
         // console.log("whoCorrected" + dayCorrector.who_correction);
-
 
         if (dayCorrected.who_corrected != corrector.login || dayCorrector.who_correction != corrected.login){
             message.channel.send('Wrong Login');
@@ -50,11 +53,15 @@ async function validatedSomeone(message, commandArgs, name) {
     let corrected = commandArgs[0];
     let corrector = name;
     let day = commandArgs[1];
+    if (day < 0 || day > 4) {
+        message.channel.send("wrong day");
+        return;
+    }
     let validated = commandArgs[2];
     if (!day){
-        message.channel.send('Please tell me witch day you corected :\n```!validates ' + corrected + ' <Day Corrected> <Validated>```');
+        message.channel.send('Please tell me witch day you corected :\n```!validates ' + corrected + ' <Day Corrected> <validated/notvalidated>```');
     } else if(!validated) {
-        message.channel.send('Please tell me if the day is done or not :\n```!validates ' + corrected + ' <Day Corrected> <Validated>```');
+        message.channel.send('Please tell me if the day is done or not :\n```!validates ' + corrected + ' <Day Corrected> <validated/notvalidated>```');
     } else{
         corrected = await utils.getUserByLogin(corrected);
         corrector = await utils.getUserByLogin(corrector);
@@ -68,7 +75,7 @@ async function validatedSomeone(message, commandArgs, name) {
         } else if(dayCorrector.correction_send == 1){
             message.channel.send('The correction is already finished');
         } else if(validated !== "validated" && validated !== "notvalidated"){
-            message.channel.send('Please tell me if the day is done or not :\n```!corrected ' + corrected.login + ' <Day Corrected> <Validated>```');
+            message.channel.send('Please tell me if the day is done or not :\n```!validates ' + corrected.login + ' <Day Corrected> <validated/notvalidated>```');
         } else {
             await utils.updateDayCorrected(dayCorrected);
             await utils.updateDayCorrection(dayCorrector);
@@ -124,7 +131,7 @@ function sendCorrection(message, corrector, corrected, day)
         else if (element.name == "bootcamp-" + corrected)
             str += "\n----------------------------------------------------------------------" +
                 "\nYou will be corrected by __**" + corrector + "**__ on your day " + day +
-                "\nenter the following command to certificate that " + corrected + " corrected your day " + day + "\n" +
+                "\nenter the following command to certificate that " + corrector + " corrected your day " + day + "\n" +
                 "```!corrected by " + corrector + " " + day + "```\n";
         if (str)
             element.send(str);
@@ -176,7 +183,7 @@ module.exports = {
             for (let i = 0; i < correctionArray.length; i++) {
                 console.log(correctionArray[i].corrected + " will be corrected by " + correctionArray[i].correcter);
                 await setCorrection(correctionArray[i].correcter, correctionArray[i].corrected, day);
-                sendCorrection(message, correctionArray[i].correcter, correctionArray[i].corrected);
+                sendCorrection(message, correctionArray[i].correcter, correctionArray[i].corrected, day);
             }
         } else{
             return (1);
