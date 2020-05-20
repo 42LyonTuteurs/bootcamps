@@ -1,30 +1,21 @@
-Tue May 19 2020 19:17:07 :
+Wed May 20 2020 10:41:33 :
 Logged in as bootcamp#3825!
 
-Tue May 19 2020 19:17:11 | tclaudel | UserId : 220625639655473152 :
-!info
+Wed May 20 2020 10:41:37 | tclaudel
+!list
 
-Tue May 19 2020 19:17:17 | mjalenqu | UserId : 224257378529312770 :
-!validates tclaudel 0 validated
+Wed May 20 2020 10:41:50 | tclaudel
+!unsubscribe
 
-Tue May 19 2020 19:17:21 | tclaudel | UserId : 220625639655473152 :
-!corrected by mjalenqu 0
+Wed May 20 2020 10:42:12 | tclaudel
+!subscribe
 
-Tue May 19 2020 19:17:30 | tclaudel | UserId : 220625639655473152 :
-!validates mjalenqu 0 validated
+Wed May 20 2020 10:42:12 :
+subscribtion of :tclaudel 220625639655473152
 
-Tue May 19 2020 19:17:34 | mjalenqu | UserId : 224257378529312770 :
-!corrected by tclaudel 0
+Wed May 20 2020 10:42:12 :
+ERROR : function createStatByDiscordId : SequelizeUniqueConstraintError: Validation error
 
-Tue May 19 2020 19:17:35 | tclaudel | UserId : 220625639655473152 :
-!info
-
-Tue May 19 2020 19:17:49 | tclaudel | UserId : 220625639655473152 :
-!status
-
-Tue May 19 2020 19:18:22 | mjalenqu | UserId : 224257378529312770 :
-!info
-
-Tue May 19 2020 19:18:29 | tclaudel | UserId : 220625639655473152 :
-!status mjalenqu
+Wed May 20 2020 10:42:17 | tclaudel
+!list
 

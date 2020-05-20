@@ -6,8 +6,8 @@ const { Users, Stat, Day } = require('./dbObject');
 var emoji = require('node-emoji')
 
 module.exports = {
-    isAdmin(user) {
-        return (config.admin.includes(user.nickname))
+    isAdmin(name) {
+        return (config.admin.includes(name))
     },
 
     getRandomArbitrary(min, max) {
@@ -18,12 +18,12 @@ module.exports = {
         //
     },
 
-    logs(string, user)
+    logs(string, login)
     {
         var date = dateFormat();
         let output;
-        if (user)
-            output = date + " | " + user.nickname + " | UserId : " + user.id + " :\n" + string + "\n\n";
+        if (login)
+            output = date + " | " + login + "\n" + string + "\n\n";
         else
             output = date + " :\n" + string + "\n\n";
         fs.appendFile('app.log', output, (err) => {
@@ -65,7 +65,6 @@ module.exports = {
     },
 
     printUserInfoByLoginInChannel: async function (message, login) {
-        console.log("LOGIN" + login)
         const user = await this.getUserByLogin(login)
 
         // message.channel.send("```login          : " + user.login + "```");
@@ -431,9 +430,10 @@ module.exports = {
             this.logs("ERROR : function updateDayComplete : " + e);
         }
     },
-    printAll : async function() {
+    printAll : async function(message) {
       const List = await Users.findAll();
       console.log(List.map(t => t.dataValues));
+      message.channel.send(List.map(t => t.dataValues.login));
     },
     UserNb : async function() {
       const nbOfUsers = await Users.findAll();
