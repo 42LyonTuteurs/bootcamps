@@ -16,6 +16,10 @@ module.exports = (sequelize, DataTypes) => {
             unique: true,
             allowNull: false,
         },
+        actif: {
+            type: DataTypes.INTEGER,
+            defaultValue: 1,
+        },
     }, {
         timestamps: false,
     });

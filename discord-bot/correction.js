@@ -5,7 +5,7 @@ async function correctedBy(message, commandArgs, name) {
     let corrector = commandArgs[1];
     let corrected = name;
     let day = commandArgs[2];
-    if (day.length != 1){
+    if (day == null || day.length != 1) {
         message.channel.send("wrong day");
     }
     if (day === undefined || corrected === undefined || corrector === undefined)
@@ -15,19 +15,10 @@ async function correctedBy(message, commandArgs, name) {
         return;
     }
     else{
-        // console.log("login corrected :" + corrected);
-        // console.log("login corrector :" + corrector);
-        // correction done
         corrected = await utils.getUserByLogin(corrected);
         corrector = await utils.getUserByLogin(corrector);
-        // console.log("user corrected :" + corrected);
-        // console.log("user corrector:" + corrector);
         let dayCorrected = await utils.getDayByDayId(await utils.getDayIdByUser(corrected, day));
         let dayCorrector = await utils.getDayByDayId(await utils.getDayIdByUser(corrector, day));
-        // console.log("day corrected :" + dayCorrected);
-        // console.log("day corrector:" + dayCorrector);
-        // console.log("whoCorrection" + dayCorrected.who_corrected);
-        // console.log("whoCorrected" + dayCorrector.who_correction);
         if (dayCorrected == null || dayCorrected.who_corrected == null){
             message.channel.send('This day doesn\'t exist');
         } else if (dayCorrected.who_corrected != corrector.login || dayCorrector.who_correction != corrected.login){
@@ -57,7 +48,7 @@ async function validatedSomeone(message, commandArgs, name) {
     let corrected = commandArgs[0];
     let corrector = name;
     let day = commandArgs[1];
-    if (day.length != 1) {
+    if (day == null || day.length != 1) {
         message.channel.send('This day doesn\'t exist');
     }
     if (day < 0 || day > 4) {

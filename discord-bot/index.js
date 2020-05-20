@@ -4,7 +4,7 @@ const { Op } = require('sequelize');
 const utils = require('./utils.js');
 const c = require('./correction.js');
 const admin = require('./administrator.js');
-const configFile = require ('./config.json');
+const configFile = require ('./configprod.json');
 const cron = require("node-cron");
 const fs = require("fs");
 const config = configFile.botConfig;
@@ -45,6 +45,14 @@ function User(id, username) {
 async function subscribe(message, name)
 {
     try {
+        if (await utils.getUserByLogin(name) != null) {
+            usr = await utils.getUserByLogin(name);
+            if (!usr.actif)
+                message.channel.send("You Gave Up !");
+            else
+                message.channel.send("You already subscribed !");
+            return ;
+        }
         let myRole = message.guild.roles.cache.get(config.bootcampRoleId);
         message.member.roles.add(myRole).catch(console.error);
         var user = new User(message.member.id, name);
@@ -77,14 +85,15 @@ async function subscribe(message, name)
                 msg.delete({ timeout: 15000 })
             });
     } catch (e) {
-        this.logs("ERROR : subscription failed : " + e);
+        utils.logs("ERROR : subscription failed : " + e);
         message.channel.send("ERROR : subscription failed : " + e);
     }
 };
 
 async function unsubscribe(message, name)
 {
-    await utils.deleteUserByLogin(name);
+    // await utils.deleteUserByLogin(name);
+    await utils.updateUserAtivity(await utils.getUserByLogin(name));
     let channelToDestroy;
     if (message.guild.channels.cache.map(t => t.name).includes("bootcamp-" + name)) {
         message.guild.channels.cache.forEach(element => {
@@ -93,13 +102,17 @@ async function unsubscribe(message, name)
         });
     }
     channelToDestroy.delete();
+    message.channel.send("You succesfully unsubscribed !");
 }
 
-async function list(message, name, discord_id)
+async function list(message, name, discord_id, commandArgs)
 {
     if (utils.isAdmin(discord_id))
     {
-        await utils.printAll(message);
+        if (commandArgs === "all")
+            await utils.printAllAllActivity(message);
+        else
+            await utils.printAll(message);
     }
     else
         utils.logs("You should be admin to this");
@@ -107,7 +120,7 @@ async function list(message, name, discord_id)
 
 async function status(message, argv, name, discord_id)
 {
-    let LoginList = await utils.AllLogin();
+    let LoginList = await utils.AllLoginAllActivity();
     if (!utils.isAdmin(discord_id)){
         help(message);
         return;
@@ -149,15 +162,6 @@ function help(message)
         "**!validates <login> <day> <validated>**\n> to tell the bot that you corrected the <day> of <login> and if the day is <validated> or <notvalidated>\n\n" +
         "**!corrected by <login> <day>**\n> to tell the bot that your <day> have been corrected by <login>\n\n";
     message.channel.send(str);
-}
-
-async function fakerDb()
-{
-    // for (let i = 0; i < 20; i++)
-    // {
-    //   var user = new User(faker.finance.account(18), faker.name.firstName());
-    //   await utils.addUser(user.id, user.username);
-    // }
 }
 
 async function adminHelp(message){
@@ -219,8 +223,6 @@ async function force(message, argv, name, discord_id){
 }
 
 client.on('ready', async() => {
-    if (await utils.UserNb() < 20)
-        await fakerDb();
     fs.writeFile('app.log', "", (err) => {
         if (err) throw err;
     })
@@ -243,7 +245,7 @@ client.on('message', async message => {
         let LoginList = await utils.AllLogin();
         let name = message.member.nickname == null ? message.author.username : message.member.nickname;
         let discord_id = message.member.id;
-        if (message.content != "!subscribe" && !LoginList.includes(name)) {
+        if (message.content !== "!help" && message.content !== "!subscribe" && !LoginList.includes(name)) {
             message.channel.send("Please !subscribe to access the commands")
             return ;
         }
@@ -263,7 +265,7 @@ client.on('message', async message => {
         // else if (command === 'setCorrection')
         //     setCorrection(message, name);
         else if (command === 'list')
-            list(message, name, discord_id);
+            list(message, name, discord_id, commandArgs);
             // else if (command === 'setDay'){
             //   const usr = await utils.getUserByLogin("jdarko")
             //   // const usr2 = await utils.getUserByLogin("")
