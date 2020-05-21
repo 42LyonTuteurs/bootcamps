@@ -11,7 +11,7 @@ const config = configFile.botConfig;
 const client = new Discord.Client();
 var faker = require('faker');
 var emoji = require('node-emoji')
-const PREFIX = '-';
+const PREFIX = ':';
 
 // Cronjobs
 
@@ -111,12 +111,12 @@ async function subscribe(message, name)
                     r.send("<@" + message.member.id + ">\n> **Here is your private channel with the bot, please enter here your commands to interract with the bot**" +
                         "\n\n__**HELP MENU**__\n\n"+
                         "You will find all the commands you can use in this discord just behind :\n\n" +
-                        "**-subscribe**\n> to subscribe to the bootcamp, a private channel will be created\n\n" +
-                        "**-info**\n> to diplay info from yourself or from other participant with *-info <login>*\n\n" +
-                        "**-validates <login> <day> <validated/notvalidated>**\n> to tell the bot that you corrected the <day> of <login> and if the day is <validated> or <notvalidated>\n\n" +
-                        "**-corrected by <login> <day>**\n> to tell the bot that your <day> have been corrected by <login>\n\n" +
-                        "**-unsubscribe**\n> __**THIS COMMAND IS A DEFINITIVE UNSUBSCRIPTION FROM THE BOOTCAMP**__\n\n" +
-                        "\n__**-help**__ to to diplay all the commands you can use !"
+                        "**:subscribe**\n> to subscribe to the bootcamp, a private channel will be created\n\n" +
+                        "**:info**\n> to diplay info from yourself or from other participant with *:info <login>*\n\n" +
+                        "**:validates <login> <day> <validated/notvalidated>**\n> to tell the bot that you corrected the <day> of <login> and if the day is <validated> or <notvalidated>\n\n" +
+                        "**:corrected by <login> <day>**\n> to tell the bot that your <day> have been corrected by <login>\n\n" +
+                        "**:unsubscribe**\n> __**THIS COMMAND IS A DEFINITIVE UNSUBSCRIPTION FROM THE BOOTCAMP**__\n\n" +
+                        "\n__**:help**__ to to diplay all the commands you can use !"
                     );
                 })
                 .catch(console.error);
@@ -198,11 +198,11 @@ function help(message)
 {
     let str = "__**HELP MENU**__\n\n"+
         "You will find all the commands you can use in this discord just behind :\n\n" +
-        "**-subscribe**\n> to subscribe to the bootcamp, a private channel will be created\n\n" +
-        "**-info**\n> to diplay info from yourself or from other participant with *-info <login>*\n\n" +
-        "**-validates <login> <day> <validated/notvalidated>**\n> to tell the bot that you corrected the <day> of <login> and if the day is <validated> or <notvalidated>\n\n" +
-        "**-corrected by <login> <day>**\n> to tell the bot that your <day> have been corrected by <login>\n\n" +
-        "**-unsubscribe**\n> __**THIS COMMAND IS A DEFINITIVE UNSUBSCRIPTION FROM THE BOOTCAMP**__\n\n"
+        "**:subscribe**\n> to subscribe to the bootcamp, a private channel will be created\n\n" +
+        "**:info**\n> to diplay info from yourself or from other participant with *:info <login>*\n\n" +
+        "**:validates <login> <day> <validated/notvalidated>**\n> to tell the bot that you corrected the <day> of <login> and if the day is <validated> or <notvalidated>\n\n" +
+        "**:corrected by <login> <day>**\n> to tell the bot that your <day> have been corrected by <login>\n\n" +
+        "**:unsubscribe**\n> __**THIS COMMAND IS A DEFINITIVE UNSUBSCRIPTION FROM THE BOOTCAMP**__\n\n"
     ;
     message.channel.send(str);
 }
@@ -210,13 +210,13 @@ function help(message)
 async function adminHelp(message){
     let str = "__**HELP ADMIN MENU**__\n\n"+
         "You will find all the commands you can use in this discord just behind :\n\n" +
-        "**-admin dayCorrection <login> <day>**\n> set day correction = 2 \n\n" +
-        "**-admin dayCorrected <login> <day>**\n> set day corrected = 2 \n\n" +
-        "**-admin dayValidated <login> <day>**\n> set day validated = 2 \n\n" +
-        "**-admin dayComplete <login> <day>**\n> set day complete = 2 \n\n" +
-        "**-admin statCorrection <login>**\n> set stat correction = +1 \n\n" +
-        "**-admin statCorrected <login>**\n> set stat corrected = +1\n\n" +
-        "**-admin statDaysDone <login>**\n> set stat days done = +1 \n\n";
+        "**:admin dayCorrection <login> <day>**\n> set day correction = 2 \n\n" +
+        "**:admin dayCorrected <login> <day>**\n> set day corrected = 2 \n\n" +
+        "**:admin dayValidated <login> <day>**\n> set day validated = 2 \n\n" +
+        "**:admin dayComplete <login> <day>**\n> set day complete = 2 \n\n" +
+        "**:admin statCorrection <login>**\n> set stat correction = +1 \n\n" +
+        "**:admin statCorrected <login>**\n> set stat corrected = +1\n\n" +
+        "**:admin statDaysDone <login>**\n> set stat days done = +1 \n\n";
     message.channel.send(str);
 }
 
@@ -289,7 +289,7 @@ client.on('message', async message => {
         let LoginList = await utils.AllLogin();
         let name = message.member.nickname == null ? message.author.username : message.member.nickname;
         let discord_id = message.member.id;
-        if (message.content !== "-help" && message.content !== "-subscribe" && !LoginList.includes(name)) {
+        if (message.content !== ":help" && message.content !== ":subscribe" && !LoginList.includes(name)) {
             message.channel.send("Please !subscribe to access the commands")
             return ;
         }
