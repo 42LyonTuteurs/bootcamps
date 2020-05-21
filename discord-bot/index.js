@@ -26,16 +26,46 @@ cron.schedule("42 8 26 * * ", function() {
     client.channels.cache.get(config.testChannelId).send("here is the Day01 subject", {files: ["./day01.pdf"]});
 });
 
+cron.schedule("42 23 26 * * ", async function() {
+    // Correction
+    let LoginList = await utils.AllLogin();
+    await c.correction(LoginList, 0, "374265216608763907", client);
+});
+
 cron.schedule("42 8 27 * * ", function() {
     client.channels.cache.get(config.testChannelId).send("here is the Day02 subject", {files: ["./day02.pdf"]});
+});
+
+cron.schedule("42 23 27 * * ", async function() {
+    // Correction
+    let LoginList = await utils.AllLogin();
+    await c.correction(LoginList, 1, "374265216608763907", client);
 });
 
 cron.schedule("42 8 28 * * ", function() {
     client.channels.cache.get(config.testChannelId).send("here is the Day03 subject", {files: ["./day03.pdf"]});
 });
 
+cron.schedule("42 23 28 * * ", async function() {
+    // Correction
+    let LoginList = await utils.AllLogin();
+    await c.correction(LoginList, 2, "374265216608763907", client);
+});
+
 cron.schedule("42 8 29 * * ", function() {
     client.channels.cache.get(config.testChannelId).send("here is the Day04 subject", {files: ["./day04.pdf"]});
+});
+
+cron.schedule("42 23 29 * * ", async function() {
+    // Correction
+    let LoginList = await utils.AllLogin();
+    await c.correction(LoginList, 3, "374265216608763907", client);
+});
+
+cron.schedule("42 23 30 * * ", async function() {
+    // Correction
+    let LoginList = await utils.AllLogin();
+    await c.correction(LoginList, 4, "374265216608763907", client);
 });
 
 // End Cronjobs
@@ -286,18 +316,10 @@ client.on('message', async message => {
         // }
         else if (command === 'correction')
         {
-            let error = await c.correction(message, LoginList, commandArgs.split(" "), discord_id);
+            let error = await c.correction(LoginList, commandArgs, discord_id, client);
             if (error == 1){
                 help(message);
             }
-
-            // const user = await utils.getUserByLogin("jdarko");
-            // // console.log(user.login);
-            // const dayId = await utils.getDayIdByUser(user, 0);
-            // // console.log(dayId);
-            // const day = await utils.getDayByDayId(dayId);
-            // // console.log(day);
-            // await utils.printDay(day);
         }
         else if (command === 'admin')
             force(message, commandArgs.split(" "), name, discord_id);

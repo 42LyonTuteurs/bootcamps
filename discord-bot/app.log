@@ -1,27 +1,3 @@
-Thu May 21 2020 09:39:12 :
+Thu May 21 2020 11:28:11 :
 Logged in as bot-camp#3825!
-
-Thu May 21 2020 09:39:18 | tclaudel
-!subscribe
-
-Thu May 21 2020 09:39:18 :
-subscribtion of :tclaudel 220625639655473152
-
-Thu May 21 2020 09:39:29 | tintin
-!subscribe
-
-Thu May 21 2020 09:39:29 :
-subscribtion of :tintin 224257378529312770
-
-Thu May 21 2020 09:41:50 | mjalenqu
-!subscribe
-
-Thu May 21 2020 09:41:50 :
-subscribtion of :mjalenqu 224257378529312770
-
-Thu May 21 2020 09:41:50 :
-ERROR : function addUser : SequelizeUniqueConstraintError: Validation error
-
-Thu May 21 2020 09:41:50 :
-ERROR : function createStatByDiscordId : SequelizeUniqueConstraintError: Validation error
 
