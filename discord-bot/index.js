@@ -15,24 +15,27 @@ const PREFIX = '!';
 
 // Cronjobs
 
-cron.schedule("42 8 18 * * ", function() {
-    client.channels.cache.get(config.testChannelId).send("here is the Day01 subject", {files: ["./day00.pdf"]});
+cron.schedule("42 8 25 * * ", function() {
+    client.channels.cache.get(config.testChannelId).send("here is the day00 subject !\nTo install anaconda in the ex00, you have to change some lines on linux : ```1. curl -LO \"https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh\"\n" +
+        "2. sh Miniconda3-latest-Linux-x86_64.sh -b -p ~/Miniconda3\n" +
+        "3. conda install -y \"jupyter\" \"numpy\" \"pandas\"\n" +
+        "6. which python\n```", {files: ["./day00.pdf"]});
 });
 
-cron.schedule("42 8 19 * * ", function() {
-    client.channels.cache.get(config.testChannelId).send("here is the Day02 subject", {files: ["./day01.pdf"]});
+cron.schedule("42 8 26 * * ", function() {
+    client.channels.cache.get(config.testChannelId).send("here is the Day01 subject", {files: ["./day01.pdf"]});
 });
 
-cron.schedule("42 8 20 * * ", function() {
-    client.channels.cache.get(config.testChannelId).send("here is the Day03 subject", {files: ["./day02.pdf"]});
+cron.schedule("42 8 27 * * ", function() {
+    client.channels.cache.get(config.testChannelId).send("here is the Day02 subject", {files: ["./day02.pdf"]});
 });
 
-cron.schedule("42 8 21 * * ", function() {
-    client.channels.cache.get(config.testChannelId).send("here is the Day04 subject", {files: ["./day03.pdf"]});
+cron.schedule("42 8 28 * * ", function() {
+    client.channels.cache.get(config.testChannelId).send("here is the Day03 subject", {files: ["./day03.pdf"]});
 });
 
-cron.schedule("42 8 22 * * ", function() {
-    client.channels.cache.get(config.testChannelId).send("here is the Day0 subject", {files: ["./day04.pdf"]});
+cron.schedule("42 8 29 * * ", function() {
+    client.channels.cache.get(config.testChannelId).send("here is the Day04 subject", {files: ["./day04.pdf"]});
 });
 
 // End Cronjobs
@@ -75,7 +78,16 @@ async function subscribe(message, name)
                     },
                 ],})
                 .then(r => {
-                    r.send("<@" + message.member.id + ">\n```Here is your private channel with the bot, please enter here your commands to interract with the bot```");
+                    r.send("<@" + message.member.id + ">\n> **Here is your private channel with the bot, please enter here your commands to interract with the bot**" +
+                        "\n\n__**HELP MENU**__\n\n"+
+                        "You will find all the commands you can use in this discord just behind :\n\n" +
+                        "**!subscribe**\n> to subscribe to the bootcamp, a private channel will be created\n\n" +
+                        "**!info**\n> to diplay info from yourself or from other participant with *!info <login>*\n\n" +
+                        "**!unsubscribe**\n> to unsubscribe from the bootcamp\n\n" +
+                        "**!validates <login> <day> <validated/notvalidated>**\n> to tell the bot that you corrected the <day> of <login> and if the day is <validated> or <notvalidated>\n\n" +
+                        "**!corrected by <login> <day>**\n> to tell the bot that your <day> have been corrected by <login>\n\n" +
+                        "\n__**!help**__ to to diplay all the commands you can use !"
+                    );
                 })
                 .catch(console.error);
         }
@@ -159,7 +171,7 @@ function help(message)
         "**!subscribe**\n> to subscribe to the bootcamp, a private channel will be created\n\n" +
         "**!info**\n> to diplay info from yourself or from other participant with *!info <login>*\n\n" +
         "**!unsubscribe**\n> to unsubscribe from the bootcamp\n\n" +
-        "**!validates <login> <day> <validated>**\n> to tell the bot that you corrected the <day> of <login> and if the day is <validated> or <notvalidated>\n\n" +
+        "**!validates <login> <day> <validated/notvalidated>**\n> to tell the bot that you corrected the <day> of <login> and if the day is <validated> or <notvalidated>\n\n" +
         "**!corrected by <login> <day>**\n> to tell the bot that your <day> have been corrected by <login>\n\n";
     message.channel.send(str);
 }
