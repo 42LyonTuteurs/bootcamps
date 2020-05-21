@@ -70,7 +70,7 @@ async function validatedSomeone(message, commandArgs, name) {
 
         let dayCorrector = await utils.getDayIdByUser(corrector, day);
         dayCorrector = await utils.getDayByDayId(dayCorrector);
-        if (dayCorrected == null || dayCorrected.who_corrected == null){
+        if (dayCorrected == null || dayCorrected.who_corrected == null) {
             message.channel.send('This day doesn\'t exist');
         }else if (dayCorrected.who_corrected != corrector.login || dayCorrector.who_correction != corrected.login){
             message.channel.send('Wrong Login');
@@ -121,9 +121,9 @@ async function  setCorrection(corrector, corrected, day) {
     await utils.updateDayWhoCorrected(correctedDay, corrector)
 }
 
-function sendCorrection(message, corrector, corrected, day)
+function sendCorrection(client, corrector, corrected, day)
 {
-    message.guild.channels.cache.forEach(element => {
+    client.channels.cache.forEach(element => {
         let str = "";
         if (element.name == "bootcamp-" + corrector) {
             str += "\n----------------------------------------------------------------------" +
@@ -165,12 +165,12 @@ function Correction(correcter, corrected) {
 }
 
 module.exports = {
-    correction : async function(message, usersSouce, commandArg, discord_id) {
+    correction : async function(usersSouce, commandArg, discord_id, client) {
         if (utils.isAdmin(discord_id)) {
             let users = shuffle(usersSouce.slice());
             var correctionArray = [];
-            let day = commandArg[0];
-            if (commandArg[0]) {
+            let day = commandArg;
+            if (day != undefined) {
                 for (let i = 0; i < users.length; i++) {
                     if (i == users.length - 1)
                         correctionArray.push(new Correction(users[i], users[0]));
@@ -178,14 +178,11 @@ module.exports = {
                         correctionArray.push(new Correction(users[i], users[i + 1]));
                 }
             }
-            else {
-                message.channel.send('Please tell me which day you create :\n```!correction <Day Corrected>```');
-            }
             console.log(correctionArray);
             for (let i = 0; i < correctionArray.length; i++) {
                 console.log(correctionArray[i].corrected + " will be corrected by " + correctionArray[i].correcter);
                 await setCorrection(correctionArray[i].correcter, correctionArray[i].corrected, day);
-                sendCorrection(message, correctionArray[i].correcter, correctionArray[i].corrected, day);
+                sendCorrection(client, correctionArray[i].correcter, correctionArray[i].corrected, day);
             }
         } else{
             return (1);
