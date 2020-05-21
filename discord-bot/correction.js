@@ -38,8 +38,10 @@ async function correctedBy(message, commandArgs, name) {
             dayCorrector = await utils.getDayByDayId(await utils.getDayIdByUser(corrector, day));
             await updateStat(corrected.login, dayCorrected, "corrected");
             await updateStat(corrector.login, dayCorrector, "corrector");
+            console.log(corrector.login + " corrected day " + day + " of " + corrected.login);
+            message.channel.send("You validated " + corrector.login + "'s correction on day " + day);
         }
-        console.log(corrector.login + " corrected day " + day + " of " + corrected.login);
+
 
     }
 }
@@ -98,8 +100,9 @@ async function validatedSomeone(message, commandArgs, name) {
             dayCorrector = await utils.getDayByDayId(dayCorrector);
             await updateStat(corrected.login, dayCorrected, "corrected");
             await updateStat(corrector.login, dayCorrector, "corrector");
+            message.channel.send("You " + validated + " " + corrected.login + " day " + day);
         }
-        console.log(corrector.login + " corrected day " + day + " of " + corrected.login);
+
     }
 }
 
@@ -152,7 +155,6 @@ async function updateStat(login, day, role){
 }
 
 async function updateDay(day){
-    console.log(day.correction + " " + day.corrected + " " + day.day_validated);
     if (day.correction == 2 && day.corrected == 2 && day.day_validated == 1)
         await utils.updateDayComplete(day);
 }

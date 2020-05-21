@@ -151,8 +151,12 @@ module.exports = {
         day = await this.getDayByDayId(dayId);
         if (day.who_corrected == null)
             return "";
-        str = "*Day0" + dayNb + "* :\n" +
-        "Validates " + day.who_correction + " ";
+        str = "*Day0" + dayNb + "* : ";
+        if (day.complete == 1)
+            str += emoji.get('white_check_mark');
+        else
+            str += emoji.get('x');
+        str += "\nValidates " + day.who_correction + " ";
         if (day.correction == 2)
             str += emoji.get('white_check_mark');
         else
