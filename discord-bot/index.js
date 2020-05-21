@@ -4,7 +4,7 @@ const { Op } = require('sequelize');
 const utils = require('./utils.js');
 const c = require('./correction.js');
 const admin = require('./administrator.js');
-const configFile = require ('./configprod.json');
+const configFile = require ('./config.json');
 const cron = require("node-cron");
 const fs = require("fs");
 const config = configFile.botConfig;
@@ -75,7 +75,7 @@ async function subscribe(message, name)
                     },
                 ],})
                 .then(r => {
-                    r.send("@" + name + "\n```Here is your private channel with the bot, please enter here your commands to interract with the bot```");
+                    r.send("<@" + message.member.id + ">\n```Here is your private channel with the bot, please enter here your commands to interract with the bot```");
                 })
                 .catch(console.error);
         }
