@@ -15,24 +15,27 @@ const PREFIX = '!';
 
 // Cronjobs
 
-cron.schedule("42 8 18 * * ", function() {
-    client.channels.cache.get(config.testChannelId).send("here is the Day01 subject", {files: ["./day00.pdf"]});
+cron.schedule("42 8 25 * * ", function() {
+    client.channels.cache.get(config.testChannelId).send("here is the day00 subject !\nTo install anaconda in the ex00, you have to change some lines on linux : ```1. curl -LO \"https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh\"\n" +
+        "2. sh Miniconda3-latest-Linux-x86_64.sh -b -p ~/Miniconda3\n" +
+        "3. conda install -y \"jupyter\" \"numpy\" \"pandas\"\n" +
+        "6. which python\n```", {files: ["./day00.pdf"]});
 });
 
-cron.schedule("42 8 19 * * ", function() {
-    client.channels.cache.get(config.testChannelId).send("here is the Day02 subject", {files: ["./day01.pdf"]});
+cron.schedule("42 8 26 * * ", function() {
+    client.channels.cache.get(config.testChannelId).send("here is the Day01 subject", {files: ["./day01.pdf"]});
 });
 
-cron.schedule("42 8 20 * * ", function() {
-    client.channels.cache.get(config.testChannelId).send("here is the Day03 subject", {files: ["./day02.pdf"]});
+cron.schedule("42 8 27 * * ", function() {
+    client.channels.cache.get(config.testChannelId).send("here is the Day02 subject", {files: ["./day02.pdf"]});
 });
 
-cron.schedule("42 8 21 * * ", function() {
-    client.channels.cache.get(config.testChannelId).send("here is the Day04 subject", {files: ["./day03.pdf"]});
+cron.schedule("42 8 28 * * ", function() {
+    client.channels.cache.get(config.testChannelId).send("here is the Day03 subject", {files: ["./day03.pdf"]});
 });
 
-cron.schedule("42 8 22 * * ", function() {
-    client.channels.cache.get(config.testChannelId).send("here is the Day0 subject", {files: ["./day04.pdf"]});
+cron.schedule("42 8 29 * * ", function() {
+    client.channels.cache.get(config.testChannelId).send("here is the Day04 subject", {files: ["./day04.pdf"]});
 });
 
 // End Cronjobs
@@ -45,6 +48,14 @@ function User(id, username) {
 async function subscribe(message, name)
 {
     try {
+        if (await utils.getUserByLogin(name) != null) {
+            usr = await utils.getUserByLogin(name);
+            if (!usr.actif)
+                message.channel.send("You Gave Up !");
+            else
+                message.channel.send("You already subscribed !");
+            return ;
+        }
         let myRole = message.guild.roles.cache.get(config.bootcampRoleId);
         message.member.roles.add(myRole).catch(console.error);
         var user = new User(message.member.id, name);
@@ -67,7 +78,16 @@ async function subscribe(message, name)
                     },
                 ],})
                 .then(r => {
-                    r.send("@" + name + "\n```Here is your private channel with the bot, please enter here your commands to interract with the bot```");
+                    r.send("<@" + message.member.id + ">\n> **Here is your private channel with the bot, please enter here your commands to interract with the bot**" +
+                        "\n\n__**HELP MENU**__\n\n"+
+                        "You will find all the commands you can use in this discord just behind :\n\n" +
+                        "**!subscribe**\n> to subscribe to the bootcamp, a private channel will be created\n\n" +
+                        "**!info**\n> to diplay info from yourself or from other participant with *!info <login>*\n\n" +
+                        "**!unsubscribe**\n> to unsubscribe from the bootcamp\n\n" +
+                        "**!validates <login> <day> <validated/notvalidated>**\n> to tell the bot that you corrected the <day> of <login> and if the day is <validated> or <notvalidated>\n\n" +
+                        "**!corrected by <login> <day>**\n> to tell the bot that your <day> have been corrected by <login>\n\n" +
+                        "\n__**!help**__ to to diplay all the commands you can use !"
+                    );
                 })
                 .catch(console.error);
         }
@@ -77,14 +97,15 @@ async function subscribe(message, name)
                 msg.delete({ timeout: 15000 })
             });
     } catch (e) {
-        this.logs("ERROR : subscription failed : " + e);
+        utils.logs("ERROR : subscription failed : " + e);
         message.channel.send("ERROR : subscription failed : " + e);
     }
 };
 
 async function unsubscribe(message, name)
 {
-    await utils.deleteUserByLogin(name);
+    // await utils.deleteUserByLogin(name);
+    await utils.updateUserAtivity(await utils.getUserByLogin(name));
     let channelToDestroy;
     if (message.guild.channels.cache.map(t => t.name).includes("bootcamp-" + name)) {
         message.guild.channels.cache.forEach(element => {
@@ -93,13 +114,17 @@ async function unsubscribe(message, name)
         });
     }
     channelToDestroy.delete();
+    message.channel.send("You succesfully unsubscribed !");
 }
 
-async function list(message, name, discord_id)
+async function list(message, name, discord_id, commandArgs)
 {
     if (utils.isAdmin(discord_id))
     {
-        await utils.printAll(message);
+        if (commandArgs === "all")
+            await utils.printAllAllActivity(message);
+        else
+            await utils.printAll(message);
     }
     else
         utils.logs("You should be admin to this");
@@ -107,7 +132,7 @@ async function list(message, name, discord_id)
 
 async function status(message, argv, name, discord_id)
 {
-    let LoginList = await utils.AllLogin();
+    let LoginList = await utils.AllLoginAllActivity();
     if (!utils.isAdmin(discord_id)){
         help(message);
         return;
@@ -146,18 +171,9 @@ function help(message)
         "**!subscribe**\n> to subscribe to the bootcamp, a private channel will be created\n\n" +
         "**!info**\n> to diplay info from yourself or from other participant with *!info <login>*\n\n" +
         "**!unsubscribe**\n> to unsubscribe from the bootcamp\n\n" +
-        "**!validates <login> <day> <validated>**\n> to tell the bot that you corrected the <day> of <login> and if the day is <validated> or <notvalidated>\n\n" +
+        "**!validates <login> <day> <validated/notvalidated>**\n> to tell the bot that you corrected the <day> of <login> and if the day is <validated> or <notvalidated>\n\n" +
         "**!corrected by <login> <day>**\n> to tell the bot that your <day> have been corrected by <login>\n\n";
     message.channel.send(str);
-}
-
-async function fakerDb()
-{
-    // for (let i = 0; i < 20; i++)
-    // {
-    //   var user = new User(faker.finance.account(18), faker.name.firstName());
-    //   await utils.addUser(user.id, user.username);
-    // }
 }
 
 async function adminHelp(message){
@@ -219,8 +235,6 @@ async function force(message, argv, name, discord_id){
 }
 
 client.on('ready', async() => {
-    if (await utils.UserNb() < 20)
-        await fakerDb();
     fs.writeFile('app.log', "", (err) => {
         if (err) throw err;
     })
@@ -236,10 +250,14 @@ client.on('message', async message => {
             message.author.send('```DM disable, please call me from 42 Lyon Server```')
             return;
         }
+        if (message.content.length > 100){
+            message.channel.send("NOPE");
+            return ;
+        }
         let LoginList = await utils.AllLogin();
         let name = message.member.nickname == null ? message.author.username : message.member.nickname;
         let discord_id = message.member.id;
-        if (message.content != "!subscribe" && !LoginList.includes(name)) {
+        if (message.content !== "!help" && message.content !== "!subscribe" && !LoginList.includes(name)) {
             message.channel.send("Please !subscribe to access the commands")
             return ;
         }
@@ -259,7 +277,7 @@ client.on('message', async message => {
         // else if (command === 'setCorrection')
         //     setCorrection(message, name);
         else if (command === 'list')
-            list(message, name, discord_id);
+            list(message, name, discord_id, commandArgs);
             // else if (command === 'setDay'){
             //   const usr = await utils.getUserByLogin("jdarko")
             //   // const usr2 = await utils.getUserByLogin("")
@@ -283,10 +301,14 @@ client.on('message', async message => {
         }
         else if (command === 'admin')
             force(message, commandArgs.split(" "), name, discord_id);
-        else if (command === 'corrected')
-            c.corrected(message, commandArgs.split(" "), name)
-        else if (command === 'validates')
-            c.validated(message, commandArgs.split(" "), name)
+        else if (command === 'corrected'){
+            if (await c.corrected(message, commandArgs.split(" "), name) == 1)
+                help(message);
+        }
+        else if (command === 'validates'){
+            if (await c.validated(message, commandArgs.split(" "), name) == 1)
+                help(message);
+        }
         else if (command === 'help')
             help(message);
         else {
