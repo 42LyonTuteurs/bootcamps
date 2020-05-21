@@ -129,13 +129,13 @@ function sendCorrection(client, corrector, corrected, day)
             str += "\n----------------------------------------------------------------------" +
                 "\nYou will correct __**" + corrected + "**__'s day " + day +
                 "\nenter the following command to validate " + corrected + " day " + day + "\n" +
-                "```-validates " + corrected + " " + day + " <validated/notvalidated>```\n";
+                "```:validates " + corrected + " " + day + " <validated/notvalidated>```\n";
         }
         else if (element.name == "bootcamp-" + corrected)
             str += "\n----------------------------------------------------------------------" +
                 "\nYou will be corrected by __**" + corrector + "**__ on your day " + day +
                 "\nenter the following command to certificate that " + corrector + " corrected your day " + day + "\n" +
-                "```-corrected by " + corrector + " " + day + "```\n";
+                "```:corrected by " + corrector + " " + day + "```\n";
         if (str)
             element.send(str);
     });
