@@ -112,7 +112,7 @@ async function subscribe(message, name)
                         "\n\n__**HELP MENU**__\n\n"+
                         "You will find all the commands you can use in this discord just behind :\n\n" +
                         "**-subscribe**\n> to subscribe to the bootcamp, a private channel will be created\n\n" +
-                        "**-info**\n> to diplay info from yourself or from other participant with *!info <login>*\n\n" +
+                        "**-info**\n> to diplay info from yourself or from other participant with *-info <login>*\n\n" +
                         "**-validates <login> <day> <validated/notvalidated>**\n> to tell the bot that you corrected the <day> of <login> and if the day is <validated> or <notvalidated>\n\n" +
                         "**-corrected by <login> <day>**\n> to tell the bot that your <day> have been corrected by <login>\n\n" +
                         "**-unsubscribe**\n> __**THIS COMMAND IS A DEFINITIVE UNSUBSCRIPTION FROM THE BOOTCAMP**__\n\n" +
@@ -199,7 +199,7 @@ function help(message)
     let str = "__**HELP MENU**__\n\n"+
         "You will find all the commands you can use in this discord just behind :\n\n" +
         "**-subscribe**\n> to subscribe to the bootcamp, a private channel will be created\n\n" +
-        "**-info**\n> to diplay info from yourself or from other participant with *!info <login>*\n\n" +
+        "**-info**\n> to diplay info from yourself or from other participant with *-info <login>*\n\n" +
         "**-validates <login> <day> <validated/notvalidated>**\n> to tell the bot that you corrected the <day> of <login> and if the day is <validated> or <notvalidated>\n\n" +
         "**-corrected by <login> <day>**\n> to tell the bot that your <day> have been corrected by <login>\n\n" +
         "**-unsubscribe**\n> __**THIS COMMAND IS A DEFINITIVE UNSUBSCRIPTION FROM THE BOOTCAMP**__\n\n"
@@ -289,7 +289,7 @@ client.on('message', async message => {
         let LoginList = await utils.AllLogin();
         let name = message.member.nickname == null ? message.author.username : message.member.nickname;
         let discord_id = message.member.id;
-        if (message.content !== "!help" && message.content !== "!subscribe" && !LoginList.includes(name)) {
+        if (message.content !== "-help" && message.content !== "-subscribe" && !LoginList.includes(name)) {
             message.channel.send("Please !subscribe to access the commands")
             return ;
         }
