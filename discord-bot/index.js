@@ -113,9 +113,9 @@ async function subscribe(message, name)
                         "You will find all the commands you can use in this discord just behind :\n\n" +
                         "**!subscribe**\n> to subscribe to the bootcamp, a private channel will be created\n\n" +
                         "**!info**\n> to diplay info from yourself or from other participant with *!info <login>*\n\n" +
-                        "**!unsubscribe**\n> to unsubscribe from the bootcamp\n\n" +
                         "**!validates <login> <day> <validated/notvalidated>**\n> to tell the bot that you corrected the <day> of <login> and if the day is <validated> or <notvalidated>\n\n" +
                         "**!corrected by <login> <day>**\n> to tell the bot that your <day> have been corrected by <login>\n\n" +
+                        "**!unsubscribe**\n> __**THIS COMMAND IS A DEFINITIVE UNSUBSCRIPTION FROM THE BOOTCAMP**__\n\n" +
                         "\n__**!help**__ to to diplay all the commands you can use !"
                     );
                 })
@@ -200,9 +200,10 @@ function help(message)
         "You will find all the commands you can use in this discord just behind :\n\n" +
         "**!subscribe**\n> to subscribe to the bootcamp, a private channel will be created\n\n" +
         "**!info**\n> to diplay info from yourself or from other participant with *!info <login>*\n\n" +
-        "**!unsubscribe**\n> to unsubscribe from the bootcamp\n\n" +
         "**!validates <login> <day> <validated/notvalidated>**\n> to tell the bot that you corrected the <day> of <login> and if the day is <validated> or <notvalidated>\n\n" +
-        "**!corrected by <login> <day>**\n> to tell the bot that your <day> have been corrected by <login>\n\n";
+        "**!corrected by <login> <day>**\n> to tell the bot that your <day> have been corrected by <login>\n\n" +
+        "**!unsubscribe**\n> __**THIS COMMAND IS A DEFINITIVE UNSUBSCRIPTION FROM THE BOOTCAMP**__\n\n"
+    ;
     message.channel.send(str);
 }
 
