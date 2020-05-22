@@ -65,4 +65,30 @@ module.exports = {
             utils.logs("ERROR : function forceSetStatCorrection : " + e);
         }
     },
+
+    forceSetDayNull : async function(day){
+        await Day.update({correction: 0, correction_send:0, who_correction:null, corrected:0, corrected_send:0, who_corrected:null, day_validated:0, day_complete:0}, {where: {day_id: day.day_id}});
+    },
+
+    forceSetAllDaysNull: async function(){
+        let users = await utils.AllLogin();
+        await utils.asyncForEach( users, async (element) => {
+           let user = await utils.getUserByLogin(element);
+           for (let i = 0; i < 5; i++) {
+               let day_id = await utils.getDayIdByUser(user, i);
+               let day = await utils.getDayByDayId(day_id);
+               await this.forceSetDayNull(day);
+           }
+        })
+    },
+
+    forceSetSpecificDayNull: async function(nbDay){
+        let users = await utils.AllLogin();
+        await utils.asyncForEach( users, async (element) => {
+            let user = await utils.getUserByLogin(element);
+                let day_id = await utils.getDayIdByUser(user, nbDay);
+                let day = await utils.getDayByDayId(day_id);
+                await this.forceSetDayNull(day);
+        })
+    },
 }

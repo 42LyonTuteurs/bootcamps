@@ -451,10 +451,13 @@ module.exports = {
     printAll : async function(message) {
       const List = await this.AllLogin();
       message.channel.send(List);
+      message.channel.send("Total : " + List.length);
+
     },
     printAllAllActivity : async function(message) {
         const List = await this.AllLoginAllActivity();
         message.channel.send(List);
+        message.channel.send("Total : " + List.length);
     },
     UserNb : async function() {
       const nbOfUsers = await Users.findAll();
@@ -465,7 +468,13 @@ module.exports = {
         return await List.map(t => t.dataValues.login);
     },
     AllLoginAllActivity : async function(){
-            const List = await Users.findAll();
-            return await List.map(t => t.dataValues.login);
-            },
+        const List = await Users.findAll();
+        return await List.map(t => t.dataValues.login);
+    },
+
+    asyncForEach: async function (array, callback) {
+        for (let index = 0; index < array.length; index++) {
+            await callback(array[index], index, array);
+        }
+    },
 }
