@@ -117,7 +117,8 @@ module.exports = {
     All : async function() {
         try {
             const List = await Users.findAll();
-            console.log(List.map(t => t.dataValues));
+            //console.log(List.map(t => t.dataValues));
+            return List;
         } catch (e) {
             this.logs("ERROR : function All : " + e);
         };
@@ -476,5 +477,9 @@ module.exports = {
         for (let index = 0; index < array.length; index++) {
             await callback(array[index], index, array);
         }
+    },
+    AllData : async function(){
+        const List = await Users.findAll();
+        return await List.map(t => t.dataValues);
     },
 }
