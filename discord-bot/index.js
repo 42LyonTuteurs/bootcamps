@@ -12,6 +12,7 @@ const client = new Discord.Client();
 var faker = require('faker');
 var emoji = require('node-emoji')
 const PREFIX = ':';
+const categories = [config.privateChannelCategoryId1, config.privateChannelCategoryId2, config.privateChannelCategoryId3];
 
 // Cronjobs
 
@@ -77,6 +78,13 @@ function User(id, username) {
 
 async function subscribe(message, name)
 {
+
+	let nbCur = 0;
+	message.guild.channels.cache.forEach(element => {
+		if (element.name.startsWith("bootcamp-") == true)
+			nbCur++;
+	})
+	utils.logs("There is "+ nbCur +" channel for the bootcamp at the moment.");
 	try {
 		if (await utils.getUserByLogin(name) != null) {
 			usr = await utils.getUserByLogin(name);
@@ -96,7 +104,7 @@ async function subscribe(message, name)
 			const PrivateChannelWithBot = "bootcamp " + name;
 			message.guild.channels.create(PrivateChannelWithBot, {
 				type: "text",
-				parent: config.privateChannelCategoryId,
+				parent: categories[Math.round(nbCur / 50)],
 				permissionOverwrites: [
 					{
 						id: everyoneRole,
@@ -131,6 +139,34 @@ async function subscribe(message, name)
 		message.channel.send("ERROR : subscription failed : " + e);
 	}
 };
+
+async function createNewChanMass(message)
+{
+	const everyoneRole = message.guild.roles.cache.get(config.everyoneRoleId);
+	
+	for (let count = 1; count < 50; count++)
+	{
+		var nbCur = 0;
+		message.guild.channels.cache.forEach(element => {
+			if (element.name.startsWith("bootcamp-") == true)
+				nbCur++;
+		})
+		utils.logs(nbCur);
+		message.guild.channels.create("bootcamp " + "test-" + count, {
+		type: "text",
+		parent: categories[Math.round(nbCur / 50)],
+		permissionOverwrites: [
+			{
+				id: everyoneRole,
+				deny: ['VIEW_CHANNEL'],
+			},
+			{
+				id: message.author.id,
+				allow: ['VIEW_CHANNEL'],
+			},
+		],});
+	}
+}
 
 async function unsubscribe(message, name)
 {
@@ -320,6 +356,8 @@ client.on('message', async message => {
 			status(message, commandArgs.split(" "), name, discord_id);
 		else if (command === 'unsubscribe')
 			unsubscribe(message, name);
+		//else if (command === 'ccm')
+		//	createNewChanMass(message);
 		// else if (command === 'setCorrection')
 		//     setCorrection(message, name);
 		else if (command === 'list')
