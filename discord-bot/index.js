@@ -319,7 +319,9 @@ async function adminHelp(message){
         "**:admin statCorrected <login>**\n> set stat corrected = +1\n\n" +
         "**:admin statDaysDone <login>**\n> set stat days done = +1 \n\n" +
         "**:admin resetAllDays confirm **\n> set all days null for all users\n\n" +
-        "**:admin resetSpecificDays confirm <day>**\n> set <day> null for all users \n\n";
+        "**:admin resetSpecificDays confirm <day>**\n> set <day> null for all users \n\n"+
+        "**:admin destroyChans confirm **\n> destroy all channels \n\n"+
+        "**:admin recoverChans confirm **\n> create channels for all users subscribed \n\n";
     message.channel.send(str);
 }
 
@@ -328,7 +330,7 @@ async function force(message, argv, name, discord_id){
     {
         const login = argv[1];
         const nbDay = argv[2];
-        if (login === undefined && argv[0] !== 'resetAllDays'){
+        if (login === undefined){
             await adminHelp(message);
             return (0);
         }
@@ -367,6 +369,12 @@ async function force(message, argv, name, discord_id){
         else if (argv[0] === 'resetSpecificDays' && login === "confirm"){
             await admin.forceSetSpecificDayNull(nbDay);
         }
+		else if (argv[0] === 'destroyChans' && login === "confirm"){
+			await destroyPrivateChan(message, discord_id);
+		}
+		else if (argv[0] === 'recoverChans' && login === "confirm"){
+			await recoverPrivateChan(message, discord_id);
+		}
         else
             await adminHelp(message);
     }
@@ -415,8 +423,8 @@ client.on('message', async message => {
 			status(message, commandArgs.split(" "), name, discord_id);
 		else if (command === 'unsubscribe')
 			unsubscribe(message, name);
-		else if (command === 'ccm')
-			createNewChanMass(message, discord_id);
+		// else if (command === 'ccm')
+		// 	createNewChanMass(message, discord_id);
 		// else if (command === 'setCorrection')
 		//     setCorrection(message, name);
 		else if (command === 'list')
@@ -427,10 +435,7 @@ client.on('message', async message => {
 			//   await utils.createDay(usr, 0);
 			//   await utils.createDay(usr, 1);
 		// }
-		else if (command === 'destroychans')
-			destroyPrivateChan(message, discord_id);
-		else if (command === 'recoverchans')
-			recoverPrivateChan(message, discord_id);
+
 		else if (command === 'correction')
 		{
 			let error = await c.correction(LoginList, commandArgs, discord_id, client);
