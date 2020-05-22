@@ -1,4 +1,4 @@
-const configFile = require ('./configprod.json');
+const configFile = require ('./config.json');
 const config = configFile.botConfig;
 const fs = require('fs');
 const dateFormat = require('dateformat');
