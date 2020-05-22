@@ -140,32 +140,37 @@ async function subscribe(message, name)
 	}
 };
 
-async function createNewChanMass(message)
+async function createNewChanMass(message, discord_id)
 {
-	const everyoneRole = message.guild.roles.cache.get(config.everyoneRoleId);
-	
-	for (let count = 1; count < 50; count++)
+	if (utils.isAdmin(discord_id))
 	{
-		var nbCur = 0;
-		message.guild.channels.cache.forEach(element => {
-			if (element.name.startsWith("bootcamp-") == true)
-				nbCur++;
-		})
-		utils.logs(nbCur);
-		message.guild.channels.create("bootcamp " + "test-" + count, {
-		type: "text",
-		parent: categories[Math.round(nbCur / 50)],
-		permissionOverwrites: [
-			{
-				id: everyoneRole,
-				deny: ['VIEW_CHANNEL'],
-			},
-			{
-				id: message.author.id,
-				allow: ['VIEW_CHANNEL'],
-			},
-		],});
+		const everyoneRole = message.guild.roles.cache.get(config.everyoneRoleId);
+		
+		for (let count = 1; count < 50; count++)
+		{
+			var nbCur = 0;
+			message.guild.channels.cache.forEach(element => {
+				if (element.name.startsWith("bootcamp-") == true)
+					nbCur++;
+			})
+			utils.logs(nbCur);
+			message.guild.channels.create("bootcamp " + "test-" + count, {
+			type: "text",
+			parent: categories[Math.round(nbCur / 50)],
+			permissionOverwrites: [
+				{
+					id: everyoneRole,
+					deny: ['VIEW_CHANNEL'],
+				},
+				{
+					id: message.author.id,
+					allow: ['VIEW_CHANNEL'],
+				},
+			],});
+		}
 	}
+	else
+	 help(message);
 }
 
 async function unsubscribe(message, name)
@@ -179,7 +184,53 @@ async function unsubscribe(message, name)
 	message.channel.send("You succesfully unsubscribed !");
 }
 
-async function destroyPrivateChan(message, name, discord_id)
+async function recoverPrivateChan(message, discord_id)
+{
+	if (utils.isAdmin(discord_id))
+	{
+		destroyPrivateChan(message, discord_id);
+		let nbCur = 0;
+		let data = await utils.All();
+		data.forEach(t => {
+			if (t.actif)
+			{
+				const everyoneRole = message.guild.roles.cache.get(config.everyoneRoleId);
+				const PrivateChannelWithBot = "bootcamp " + t.login;
+				message.guild.channels.create(PrivateChannelWithBot, {
+					type: "text",
+					parent: categories[Math.round(nbCur / 50)],
+					permissionOverwrites: [
+					{
+						id: everyoneRole,
+						deny: ['VIEW_CHANNEL'],
+					},
+					{
+						id: t.discord_id,
+						allow: ['VIEW_CHANNEL'],
+					},
+					],})
+					.then(r => {
+						r.send("<@" + t.discord_id + ">\n> **Here is your private channel with the bot, please enter here your commands to interract with the bot**" +
+							"\n\n__**HELP MENU**__\n\n"+
+							"You will find all the commands you can use in this discord just behind :\n\n" +
+							"**:subscribe**\n> to subscribe to the bootcamp, a private channel will be created\n\n" +
+							"**:info**\n> to diplay info from yourself or from other participant with *:info <login>*\n\n" +
+							"**:validates <login> <day> <validated/notvalidated>**\n> to tell the bot that you corrected the <day> of <login> and if the day is <validated> or <notvalidated>\n\n" +
+							"**:corrected by <login> <day>**\n> to tell the bot that your <day> have been corrected by <login>\n\n" +
+							"**:unsubscribe**\n> __**THIS COMMAND IS A DEFINITIVE UNSUBSCRIPTION FROM THE BOOTCAMP**__\n\n" +
+							"\n__**:help**__ to to diplay all the commands you can use !"
+						);
+					})
+					.catch(console.error);
+					nbCur++;
+			}
+		});
+	}
+	else
+		help(message);
+}
+
+async function destroyPrivateChan(message, discord_id)
 {
 	if (utils.isAdmin(discord_id))
 	{
@@ -357,7 +408,7 @@ client.on('message', async message => {
 		else if (command === 'unsubscribe')
 			unsubscribe(message, name);
 		else if (command === 'ccm')
-			createNewChanMass(message);
+			createNewChanMass(message, discord_id);
 		// else if (command === 'setCorrection')
 		//     setCorrection(message, name);
 		else if (command === 'list')
@@ -369,9 +420,9 @@ client.on('message', async message => {
 			//   await utils.createDay(usr, 1);
 		// }
 		else if (command === 'destroychans')
-		{
-			destroyPrivateChan(message, name, discord_id);
-		}
+			destroyPrivateChan(message, discord_id);
+		else if (command === 'recoverchans')
+			recoverPrivateChan(message, discord_id);
 		else if (command === 'correction')
 		{
 			let error = await c.correction(LoginList, commandArgs, discord_id, client);

@@ -117,11 +117,11 @@ module.exports = {
     All : async function() {
         try {
             const List = await Users.findAll();
-            console.log(List.map(t => t.dataValues));
+            //console.log(List.map(t => t.dataValues));
+            return List;
         } catch (e) {
             this.logs("ERROR : function All : " + e);
         };
-
     },
 
     createStatByDiscordId : async function(discord_id) {
@@ -468,4 +468,8 @@ module.exports = {
             const List = await Users.findAll();
             return await List.map(t => t.dataValues.login);
             },
+    AllData : async function(){
+        const List = await Users.findAll();
+        return await List.map(t => t.dataValues);
+    },
 }
