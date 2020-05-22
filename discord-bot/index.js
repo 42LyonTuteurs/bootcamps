@@ -340,7 +340,7 @@ client.on('message', async message => {
 		let name = message.member.nickname == null ? message.author.username : message.member.nickname;
 		let discord_id = message.member.id;
 		if (message.content !== ":help" && message.content !== ":subscribe" && !LoginList.includes(name)) {
-			message.channel.send("Please !subscribe to access the commands")
+			message.channel.send("Please :subscribe to access the commands")
 			return ;
 		}
 		utils.logs(message.content, name);
@@ -356,8 +356,8 @@ client.on('message', async message => {
 			status(message, commandArgs.split(" "), name, discord_id);
 		else if (command === 'unsubscribe')
 			unsubscribe(message, name);
-		//else if (command === 'ccm')
-		//	createNewChanMass(message);
+		else if (command === 'ccm')
+			createNewChanMass(message);
 		// else if (command === 'setCorrection')
 		//     setCorrection(message, name);
 		else if (command === 'list')
@@ -392,7 +392,7 @@ client.on('message', async message => {
 		else if (command === 'help')
 			help(message);
 		else {
-			message.channel.send("```" + message.content + " is an unknown function, please try !help```")
+			message.channel.send("```" + message.content + " is an unknown function, please try :help```")
 				.then(msg => {
 					msg.delete({timeout: 10000})
 				});

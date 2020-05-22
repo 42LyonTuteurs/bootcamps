@@ -125,13 +125,13 @@ function sendCorrection(client, corrector, corrected, day)
 {
     client.channels.cache.forEach(element => {
         let str = "";
-        if (element.name == "bootcamp-" + corrector) {
+        if (element.name == "bootcamp-" + corrector.toLowerCase()) {
             str += "\n----------------------------------------------------------------------" +
                 "\nYou will correct __**" + corrected + "**__'s day " + day +
                 "\nenter the following command to validate " + corrected + " day " + day + "\n" +
                 "```:validates " + corrected + " " + day + " <validated/notvalidated>```\n";
         }
-        else if (element.name == "bootcamp-" + corrected)
+        else if (element.name == "bootcamp-" + corrected.toLowerCase())
             str += "\n----------------------------------------------------------------------" +
                 "\nYou will be corrected by __**" + corrector + "**__ on your day " + day +
                 "\nenter the following command to certificate that " + corrector + " corrected your day " + day + "\n" +
