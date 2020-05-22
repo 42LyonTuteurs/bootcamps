@@ -168,7 +168,7 @@ async function status(message, argv, name, discord_id)
         return;
     }
     if (!argv[0])
-        utils.printUserInfoByLoginInChannel(message, name)
+        await utils.printUserInfoByLoginInChannel(message, name)
     else {
         argv.forEach(element => {
             if (LoginList.includes(element))
@@ -216,7 +216,9 @@ async function adminHelp(message){
         "**:admin dayComplete <login> <day>**\n> set day complete = 2 \n\n" +
         "**:admin statCorrection <login>**\n> set stat correction = +1 \n\n" +
         "**:admin statCorrected <login>**\n> set stat corrected = +1\n\n" +
-        "**:admin statDaysDone <login>**\n> set stat days done = +1 \n\n";
+        "**:admin statDaysDone <login>**\n> set stat days done = +1 \n\n" +
+        "**:admin resetAllDays confirm **\n> set all days null for all users\n\n" +
+        "**:admin resetSpecificDays confirm <day>**\n> set <day> null for all users \n\n";
     message.channel.send(str);
 }
 
@@ -225,7 +227,7 @@ async function force(message, argv, name, discord_id){
     {
         const login = argv[1];
         const nbDay = argv[2];
-        if (login === undefined){
+        if (login === undefined && argv[0] !== 'resetAllDays'){
             await adminHelp(message);
             return (0);
         }
@@ -257,6 +259,12 @@ async function force(message, argv, name, discord_id){
         }
         else if (argv[0] === 'statDaysDone'){
             await admin.forceSetStatDaysDone(login);
+        }
+        else if (argv[0] === 'resetAllDays' && login === "confirm"){
+            await admin.forceSetAllDaysNull();
+        }
+        else if (argv[0] === 'resetSpecificDays' && login === "confirm"){
+            await admin.forceSetSpecificDayNull(nbDay);
         }
         else
             await adminHelp(message);
