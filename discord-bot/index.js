@@ -136,14 +136,10 @@ async function unsubscribe(message, name)
 {
 	// await utils.deleteUserByLogin(name);
 	await utils.updateUserAtivity(await utils.getUserByLogin(name));
-	let channelToDestroy;
-	if (message.guild.channels.cache.map(t => t.name).includes("bootcamp-" + name)) {
-		message.guild.channels.cache.forEach(element => {
-			if (element.name === "bootcamp-" + name)
-				channelToDestroy = element;
-		});
-	}
-	channelToDestroy.delete();
+	message.guild.channels.cache.forEach(element => {
+		if (element.name === "bootcamp-" + name.toLowerCase())
+			element.delete();
+	});
 	message.channel.send("You succesfully unsubscribed !");
 }
 

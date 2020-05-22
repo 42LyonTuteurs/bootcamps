@@ -1,15 +1,24 @@
-Fri May 22 2020 12:08:42 :
+Fri May 22 2020 12:28:08 :
 Logged in as Bootcamp#0454!
 
-Fri May 22 2020 12:08:48 | Mylhow
-:destroychans
+Fri May 22 2020 12:28:59 | Mylhow
+:subscribe
 
-Fri May 22 2020 12:08:54 | Mylhow
-:list
+Fri May 22 2020 12:28:59 :
+subscribtion of :Mylhow 195566676064993280
 
-Fri May 22 2020 12:09:00 | Mylhow
-:info
+Fri May 22 2020 12:29:03 | Serronia
+:subscribe
 
-Fri May 22 2020 12:09:28 | Mylhow
+Fri May 22 2020 12:29:03 :
+subscribtion of :Serronia 374265216608763907
+
+Fri May 22 2020 12:29:28 | Serronia
+:unsubscribe
+
+Fri May 22 2020 12:29:32 | Mylhow
 :status
+
+Fri May 22 2020 12:29:39 | Mylhow
+:status Serronia
 
