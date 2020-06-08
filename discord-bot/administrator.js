@@ -9,7 +9,7 @@ module.exports = {
         try {
             await Day.update({correction: 2}, {where: {day_id: day.day_id}});
         } catch (e) {
-            utils.logs("ERROR : function forceCorrectionDone : " + e);
+            i.logs("ERROR : function forceCorrectionDone : " + e);
         }
     },
 
@@ -18,7 +18,7 @@ module.exports = {
         try {
             await Day.update({corrected: 2}, {where: {day_id: day.day_id}});
         } catch (e) {
-            utils.logs("ERROR : function forceCorrectedDone : " + e);
+            i.logs("ERROR : function forceCorrectedDone : " + e);
         }
     },
 
@@ -27,7 +27,7 @@ module.exports = {
         try {
             await Day.update({day_validated: 1}, {where: {day_id: day.day_id}});
         } catch (e) {
-            utils.logs("ERROR : function forceCorrectedDone : " + e);
+            i.logs("ERROR : function forceCorrectedDone : " + e);
         }
     },
 
@@ -36,7 +36,7 @@ module.exports = {
         try {
             await Day.update({day_complete: 1}, {where: {day_id: day.day_id}});
         } catch (e) {
-            utils.logs("ERROR : function forceCorrectedDone : " + e);
+            i.logs("ERROR : function forceCorrectedDone : " + e);
         }
     },
 
@@ -46,7 +46,7 @@ module.exports = {
         try {
             await Stat.update({correction: stat.correction + 1}, {where: {user_id: stat.user_id}});
         } catch (e) {
-            utils.logs("ERROR : function forceSetStatCorrection : " + e);
+            i.logs("ERROR : function forceSetStatCorrection : " + e);
         }
     },
 
@@ -55,7 +55,7 @@ module.exports = {
         try {
             await Stat.update({corrected: stat.corrected + 1}, {where: {user_id: stat.user_id}});
         } catch (e) {
-            utils.logs("ERROR : function forceSetStatCorrection : " + e);
+            i.logs("ERROR : function forceSetStatCorrection : " + e);
         }
     },
 
@@ -64,7 +64,7 @@ module.exports = {
         try {
             await Stat.update({days_done: stat.days_done + 1}, {where: {user_id: stat.user_id}});
         } catch (e) {
-            utils.logs("ERROR : function forceSetStatCorrection : " + e);
+            i.logs("ERROR : function forceSetStatCorrection : " + e);
         }
     },
 
@@ -123,7 +123,7 @@ module.exports = {
                     if (element.name.startsWith("bootcamp-") == true)
                         nbCur++;
                 })
-                utils.logs(nbCur);
+                i.logs(nbCur);
                 message.guild.channels.create("bootcamp " + "test-" + count, {
                     type: "text",
                     parent: categories[Math.round(nbCur / 50)],

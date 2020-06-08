@@ -1,13 +1,11 @@
-const configFile = require ('./config.json');
-const config = configFile.botConfig;
 const fs = require('fs');
-const dateFormat = require('dateformat');
+const i = require('./index');
 const { Users, Stat, Day } = require('./dbObject');
 var emoji = require('node-emoji')
 
 module.exports = {
     isAdmin(name) {
-        return (config.admin.includes(name))
+        return (i.config.admin.includes(name))
     },
 
     getRandomArbitrary(min, max) {
@@ -18,24 +16,13 @@ module.exports = {
         //
     },
 
-    logs(string, login)
-    {
-        var date = dateFormat();
-        let output;
-        if (login)
-            output = date + " | " + login + "\n" + string + "\n\n";
-        else
-            output = date + " :\n" + string + "\n\n";
-        fs.appendFile('app.log', output, (err) => {
-            if (err) throw err;
-        })
-    },
+
 
     addUser: async function (discord_id, login) {
         try {
             await Users.create({discord_id: discord_id, login: login});
         } catch (e) {
-            this.logs("ERROR : function addUser : " + e);
+            i.logs("ERROR : function addUser : " + e);
         }
         await this.createStatByDiscordId(discord_id);
         const user = await this.getUserByDiscordId(discord_id);
@@ -50,7 +37,7 @@ module.exports = {
             const ListString = List.map(t => t.login).join(' : ') || 'No tags set.';
             console.log(ListString);
         } catch (e) {
-            this.logs("ERROR : function printAllLogin : " + e);
+            i.logs("ERROR : function printAllLogin : " + e);
         }
     },
 
@@ -80,7 +67,7 @@ module.exports = {
             const user = await Users.findOne({where: {login: login}});
             return (user);
         } catch (e) {
-            this.logs("ERROR : function getUserByLogin : " + e);
+            i.logs("ERROR : function getUserByLogin : " + e);
         };
     },
 
@@ -89,7 +76,7 @@ module.exports = {
             const user = await Users.findOne({where: {discord_id: discord_id}});
             return (user);
         } catch (e) {
-            this.logs("ERROR : function getUserByDiscordId : " + e);
+            i.logs("ERROR : function getUserByDiscordId : " + e);
         };
     },
 
@@ -101,7 +88,7 @@ module.exports = {
         try {
             await Users.destroy({ where: { discord_id: discord_id } });
         } catch (e) {
-            this.logs("ERROR : function deleteUserByDiscordId : " + e);
+            i.logs("ERROR : function deleteUserByDiscordId : " + e);
         };
 
     },
@@ -110,7 +97,7 @@ module.exports = {
         try {
             await Users.destroy({ where: { login: login } });
         } catch (e) {
-            this.logs("ERROR : function deleteUserByLogin : " + e);
+            i.logs("ERROR : function deleteUserByLogin : " + e);
         };
     },
 
@@ -120,7 +107,7 @@ module.exports = {
             //console.log(List.map(t => t.dataValues));
             return List;
         } catch (e) {
-            this.logs("ERROR : function All : " + e);
+            i.logs("ERROR : function All : " + e);
         };
 
     },
@@ -136,7 +123,7 @@ module.exports = {
                 str += (user.login === lpieri ? cpieri : user.login) + "," + (stat.days_done * 40 > 200 ? 200 : stat.days_done * 40) + "," + stat.days_done + "\n"
             }
         } catch (e) {
-            this.logs("ERROR : function All : " + e);
+            i.logs("ERROR : function All : " + e);
         }
         message.channel.send(str);
         fs.writeFile('mana.csv', str, (err) => {
@@ -148,7 +135,7 @@ module.exports = {
         try {
             await Stat.create({ user_id: discord_id});
         } catch (e) {
-            this.logs("ERROR : function createStatByDiscordId : " + e);
+            i.logs("ERROR : function createStatByDiscordId : " + e);
         };
     },
 
@@ -262,7 +249,7 @@ module.exports = {
             try{
                 await Stat.update({ days_done: stat.days_done + 1 }, { where: { user_id: stat.user_id } });
             } catch (e) {
-                this.logs("ERROR : function updateStatDaysDone : " + e);
+                i.logs("ERROR : function updateStatDaysDone : " + e);
             }
     },
 
@@ -271,7 +258,7 @@ module.exports = {
             try{
                 await Stat.update({ corrected: stat.corrected + 1 }, { where: { user_id: stat.user_id } });
             } catch (e) {
-                this.logs("ERROR : function updateStatCorrected : " + e);
+                i.logs("ERROR : function updateStatCorrected : " + e);
             }
     },
 
@@ -280,7 +267,7 @@ module.exports = {
             try{
                 await Stat.update({ correction: stat.correction + 1 }, { where: { user_id: stat.user_id } });
             } catch (e) {
-                this.logs("ERROR : function updateStatCorrection : " + e);
+                i.logs("ERROR : function updateStatCorrection : " + e);
             }
     },
 
@@ -289,7 +276,7 @@ module.exports = {
             const stat = await Stat.findOne({where: {user_id: user.discord_id}});
             return (stat);
         } catch (e) {
-            this.logs("ERROR : function getStatByUser : " + e);
+            i.logs("ERROR : function getStatByUser : " + e);
             return null;
         }
     },
@@ -321,7 +308,7 @@ module.exports = {
                 await Stat.update({ day4_id: newDay.day_id }, { where: { user_id: User.discord_id } });
             }
         } catch (e) {
-            this.logs("ERROR : function createDay : " + e);
+            i.logs("ERROR : function createDay : " + e);
         }
     },
 
@@ -330,7 +317,7 @@ module.exports = {
             const day = await Day.findOne({where: {day_id: id_day}});
             return (day);
         } catch (e) {
-            this.logs("ERROR : function getDayByDayId : " + e);
+            i.logs("ERROR : function getDayByDayId : " + e);
             return null;
         }
 
@@ -343,7 +330,7 @@ module.exports = {
             day = await Day.findOne({where: {day_id: tab[nb]}});
             return (day.day_id);
         } catch (e) {
-            this.logs("ERROR : function getDayIdByStat : " + e);
+            i.logs("ERROR : function getDayIdByStat : " + e);
             return null;
         }
     },
@@ -397,7 +384,7 @@ module.exports = {
         try {
             await Day.update({ correction: day.correction + 1 }, { where: { day_id: day.day_id } });
         } catch (e) {
-            this.logs("ERROR : function updateDayCorrection : " + e);
+            i.logs("ERROR : function updateDayCorrection : " + e);
         }
     },
 
@@ -405,7 +392,7 @@ module.exports = {
         try {
             await Users.update({ actif: 0 }, { where: { discord_id: user.discord_id } });
         } catch (e) {
-            this.logs("ERROR : function updateDayCorrection : " + e);
+            i.logs("ERROR : function updateDayCorrection : " + e);
         }
     },
 
@@ -413,7 +400,7 @@ module.exports = {
         try {
             await Day.update({ who_correction: login }, { where: { day_id: day.day_id } });
         } catch (e) {
-            this.logs("ERROR : function updateDayWhoCorrection : " + e);
+            i.logs("ERROR : function updateDayWhoCorrection : " + e);
         }
     },
 
@@ -421,7 +408,7 @@ module.exports = {
         try {
             await Day.update({ corrected: day.corrected + 1 }, { where: { day_id: day.day_id } });
         } catch (e) {
-            this.logs("ERROR : function updateDayCorrected : " + e);
+            i.logs("ERROR : function updateDayCorrected : " + e);
         }
     },
 
@@ -429,7 +416,7 @@ module.exports = {
         try {
             await Day.update({ corrected_send: 1 }, { where: { day_id: day.day_id } });
         } catch (e) {
-            this.logs("ERROR : function updateDayCorrected : " + e);
+            i.logs("ERROR : function updateDayCorrected : " + e);
         }
     },
 
@@ -437,7 +424,7 @@ module.exports = {
         try {
             await Day.update({ correction_send: 1 }, { where: { day_id: day.day_id } });
         } catch (e) {
-            this.logs("ERROR : function updateDayCorrected : " + e);
+            i.logs("ERROR : function updateDayCorrected : " + e);
         }
     },
 
@@ -445,7 +432,7 @@ module.exports = {
         try {
             await Day.update({ day_validated: value }, { where: { day_id: day.day_id } });
         } catch (e) {
-            this.logs("ERROR : function updateDayCorrected : " + e);
+            i.logs("ERROR : function updateDayCorrected : " + e);
         }
     },
 
@@ -454,7 +441,7 @@ module.exports = {
         try {
             await Day.update({ who_corrected: login }, { where: { day_id: day.day_id } });
         } catch (e) {
-            this.logs("ERROR : function updateDayWhoCorrected : " + e);
+            i.logs("ERROR : function updateDayWhoCorrected : " + e);
         }
     },
 
@@ -463,7 +450,7 @@ module.exports = {
             console.log(day);
             await Day.update({ day_complete: 1 }, { where: { day_id: day.day_id } });
         } catch (e) {
-            this.logs("ERROR : function updateDayComplete : " + e);
+            i.logs("ERROR : function updateDayComplete : " + e);
         }
     },
     printAll : async function(message) {
