@@ -76,6 +76,28 @@ const config  = configFile.development
 
 // End Cronjobs
 
+function User(id, username) {
+	this.id = id;
+	this.username = username;
+}
+
+async function fakerDb()
+{
+	let LoginList = await utils.AllLogin();
+	let userNb = LoginList.length;
+	if (userNb < 20) {
+		for (let i = 0; i < 20; i++) {
+			var user = new User(faker.finance.account(18), faker.name.firstName(undefined).toLowerCase());
+			await utils.addUser(user.id, user.username);
+			await userCmd.createChan(client, user.username, 1)
+		}
+	}
+}
+
+function debug(message, commandArgs) {
+	console.log(message.guild.channels.cache.find(chan => chan.name === "Bootcamp1"))
+}
+
 function logs(string, login) {
 	var date = dateFormat();
 	let output;
@@ -100,35 +122,40 @@ client.on('ready', async() => {
 	if (!guild.channels.cache.find(guild => guild.name === "Bootcamp")) {
 		await cm.initCategories(guild)
 	}
+	fakerDb();
 	console.log(`Logged in as ${client.user.tag}!`);
 	logs(`Logged in as ${client.user.tag}!`);
 
 });
 
 client.on('message', async message => {
-	if (message.author.username != "bootcamp" && !message.author.bot && message.content.search("!mana") == -1 && message.content.startsWith(PREFIX))
-	{
+	if (message.author.username != "bootcamp" && !message.author.bot && message.content.search("!mana") == -1 && message.content.startsWith(PREFIX)) {
 		// console.log(message.guild.channels.cache)
 		if (!message.member) {
 			message.author.send('```DM disable, please call me from 42 Lyon Server```')
 			return;
 		}
-		if (message.content.length > 100){
+		if (message.content.length > 100) {
 			message.channel.send("NOPE");
-			return ;
+			return;
 		}
 		let LoginList = await utils.AllLogin();
 		let name = message.member.nickname == null ? message.author.username : message.member.nickname;
 		let discord_id = message.member.id;
-		if (message.content !== PREFIX + "help" && message.content !== PREFIX + "subscribe" && !LoginList.includes(name)) {
+		if (config.env != "dev" || (message.content !== PREFIX + "help" && message.content !== PREFIX + "debug" &&
+			message.content !== PREFIX + "subscribe" && !LoginList.includes(name))) {
 			message.channel.send("Please " + PREFIX + "subscribe to access the commands")
-			return ;
+			return;
 		}
 		logs(message.content, name);
 		client.emit("checkMessage", message);
 		const input = message.content.slice(PREFIX.length).split(' ');
 		const command = input.shift();
 		const commandArgs = input.join(' ');
+		if (command === 'debug') {
+			debug(message, commandArgs);
+			return;
+		}
 		if (command === 'admin')
 			admin.adminCommands(message, commandArgs.split(" "), name, discord_id);
 		else
