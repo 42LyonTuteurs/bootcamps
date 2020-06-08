@@ -501,4 +501,9 @@ module.exports = {
         const List = await Users.findAll();
         return await List.map(t => t.dataValues);
     },
+
+    init: async function(message) {
+
+    },
+
 }
