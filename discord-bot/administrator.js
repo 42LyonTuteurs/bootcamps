@@ -91,4 +91,12 @@ module.exports = {
                 await this.forceSetDayNull(day);
         })
     },
+
+    init: async function(message) {
+
+    },
+
+    getLogs(message){
+
+    }
 }

@@ -1,1 +1,6 @@
-```Here is your private channel with the bot, please enter here your commands to interract with the bot```
+D00 The goal of the day is to get started with the Python language.
+D01 The goal of the day is to get familiar with object-oriented programming and much more.
+D02 Let’s continue practicing with more advanced Python programming exercises.
+D03 Today you will learn how to use the Python library that will allow you to manipulate multidimensional arrays
+    (vectors, matrices, tensors. . . ) and perform complex mathematical operations on them.
+D04 Today you will learn how to use a Python library that will allow you to manipulate dataframes.

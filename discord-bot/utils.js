@@ -125,6 +125,25 @@ module.exports = {
 
     },
 
+    allwithMana : async function(message) {
+        try {
+            str = "login,mana,daysdone\n"
+            let user;
+            let list = await this.allLoginAllActivity()
+            for (user in list)
+            {
+                stat = await this.getStatByLogin(user.login)
+                str += (user.login === lpieri ? cpieri : user.login) + "," + (stat.days_done * 40 > 200 ? 200 : stat.days_done * 40) + "," + stat.days_done + "\n"
+            }
+        } catch (e) {
+            this.logs("ERROR : function All : " + e);
+        }
+        message.channel.send(str);
+        fs.writeFile('mana.csv', str, (err) => {
+            if (err) throw err;
+        })
+    },
+
     createStatByDiscordId : async function(discord_id) {
         try {
             await Stat.create({ user_id: discord_id});
@@ -184,9 +203,7 @@ module.exports = {
     printStatByUser : async function(user) {
         const stat = this.getStatByUser(user);
         this.printStat(stat);
-    },
-
-    printStat : async function (stat) {
+    }, printStat : async function (stat) {
         if (stat != null){
             console.log("discord id     : " + stat.user_id);
             console.log("jours terminés : " + stat.days_done);
@@ -464,11 +481,13 @@ module.exports = {
       const nbOfUsers = await Users.findAll();
       return (nbOfUsers.length)
     },
+
     AllLogin : async function() {
         const List = await Users.findAll({where: {actif: 1}});
         return await List.map(t => t.dataValues.login);
     },
-    AllLoginAllActivity : async function(){
+
+    allLoginAllActivity : async function(){
         const List = await Users.findAll();
         return await List.map(t => t.dataValues.login);
     },
