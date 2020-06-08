@@ -5,7 +5,7 @@ var emoji = require('node-emoji')
 
 module.exports = {
     isAdmin(name) {
-        return (i.config.admin.includes(name))
+        return (i.botConfig.admin.includes(name))
     },
 
     getRandomArbitrary(min, max) {
@@ -15,9 +15,6 @@ module.exports = {
     alreadySubscribed(user) {
         //
     },
-
-
-
     addUser: async function (discord_id, login) {
         try {
             await Users.create({discord_id: discord_id, login: login});
