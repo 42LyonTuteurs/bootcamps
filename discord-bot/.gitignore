@@ -1,6 +1,7 @@
 config.json
 configprod.json
 .idea/
+../.idea/
 day00.pdf
 day01.pdf
 day02.pdf
