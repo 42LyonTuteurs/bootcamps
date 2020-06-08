@@ -7,7 +7,50 @@ function User(id, username) {
     this.username = username;
 }
 
-async function subscribe(message, name)
+async function createChan(client, name, faker) {
+    const guild = client.guilds.cache.find(guild => guild.name === i.config.ServerName);
+    const everyoneRole = guild.roles.cache.get(i.config.everyoneRoleId);
+    const PrivateChannelWithBot = "bootcamp " + name;
+    let LoginList = await utils.AllLogin();
+    let userNb = LoginList.length;
+    var user = await utils.getUserByLogin(name)
+    if (faker)
+        discord_id = i.botConfig.admin[0];
+    else
+        discord_id = user.discord_id;
+    // console.log(user.login)
+    // console.log(typeof user.discord_id)
+    // console.log();
+    guild.channels.create(PrivateChannelWithBot, {
+        type: "text",
+        parent: guild.channels.cache.find(chan => chan.name == "Bootcamp" + [Math.trunc(1 + userNb / 50)]),
+        permissionOverwrites: [
+            {
+                id: everyoneRole,
+                deny: ['VIEW_CHANNEL'],
+            },
+            {
+                id: discord_id,
+                allow: ['VIEW_CHANNEL'],
+            },
+        ],
+    })
+        .then(r => {
+            r.send("<@" + user.discord_id + ">\n> **Here is your private channel with the bot, please enter here your commands to interract with the bot**" +
+                "\n\n__**HELP MENU**__\n\n" +
+                "You will find all the commands you can use in this discord just behind :\n\n" +
+                "**" + i.PREFIX + "subscribe**\n> to subscribe to the bootcamp, a private channel will be created\n\n" +
+                "**" + i.PREFIX + "info**\n> to diplay info from yourself or from other participant with *:info <login>*\n\n" +
+                "**" + i.PREFIX + "validates <login> <day> <validated/notvalidated>**\n> to tell the bot that you corrected the <day> of <login> and if the day is <validated> or <notvalidated>\n\n" +
+                "**" + i.PREFIX + "corrected by <login> <day>**\n> to tell the bot that your <day> have been corrected by <login>\n\n" +
+                "**" + i.PREFIX + "unsubscribe**\n> __**THIS COMMAND IS A DEFINITIVE UNSUBSCRIPTION FROM THE BOOTCAMP**__\n\n" +
+                "\n__**" + i.PREFIX + "help**__ to to diplay all the commands you can use !"
+            );
+        })
+        .catch(console.error);
+}
+
+async function subscribe(client, name, message)
 {
     let nbCur = 0;
     message.guild.channels.cache.forEach(element => {
@@ -31,35 +74,7 @@ async function subscribe(message, name)
         i.logs("subscription of :" + user.username + " " + user.id);
         await utils.addUser(user.id, user.username);
         if (!message.guild.channels.cache.map(t => t.name).includes("bootcamp-" + name)) {
-            const everyoneRole = message.guild.roles.cache.get(i.config.everyoneRoleId);
-            const PrivateChannelWithBot = "bootcamp " + name;
-            message.guild.channels.create(PrivateChannelWithBot, {
-                type: "text",
-                parent: categories[Math.round(nbCur / 50)],
-                permissionOverwrites: [
-                    {
-                        id: everyoneRole,
-                        deny: ['VIEW_CHANNEL'],
-                    },
-                    {
-                        id: message.author.id,
-                        allow: ['VIEW_CHANNEL'],
-                    },
-                ],
-            })
-                .then(r => {
-                    r.send("<@" + message.member.id + ">\n> **Here is your private channel with the bot, please enter here your commands to interract with the bot**" +
-                        "\n\n__**HELP MENU**__\n\n" +
-                        "You will find all the commands you can use in this discord just behind :\n\n" +
-                        "**" + PREFIX + "subscribe**\n> to subscribe to the bootcamp, a private channel will be created\n\n" +
-                        "**" + PREFIX + "info**\n> to diplay info from yourself or from other participant with *:info <login>*\n\n" +
-                        "**" + PREFIX + "validates <login> <day> <validated/notvalidated>**\n> to tell the bot that you corrected the <day> of <login> and if the day is <validated> or <notvalidated>\n\n" +
-                        "**" + PREFIX + "corrected by <login> <day>**\n> to tell the bot that your <day> have been corrected by <login>\n\n" +
-                        "**" + PREFIX + "unsubscribe**\n> __**THIS COMMAND IS A DEFINITIVE UNSUBSCRIPTION FROM THE BOOTCAMP**__\n\n" +
-                        "\n__**" + PREFIX + "help**__ to to diplay all the commands you can use !"
-                    );
-                })
-                .catch(console.error);
+            createChan(client, name, 0)
         }
         message.channel.send("```" + name + " has been successfully subscribed !\nA Channel has just been created for you in Bootcamp " +
             "category\nPlease write your commands there to interact with the bot\nThis message will self-destroyed in 10s```")
@@ -98,7 +113,7 @@ async function list(message, name, discord_id, commandArgs)
 
 async function status(message, argv, name, discord_id)
 {
-    let LoginList = await utils.AllLoginAllActivity();
+    let LoginList = await utils.allLoginAllActivity();
     if (!utils.isAdmin(discord_id)){
         help(message);
         return;
@@ -146,7 +161,7 @@ function help(message)
 async function userCommands(command, message, commandArgs, name, discord_id, client) {
     let LoginList = await utils.AllLogin();
     if (command === 'subscribe')
-        subscribe(message, name);
+        subscribe(client, name, message);
     else if (command === 'info')
         info(message, commandArgs.split(" "), name);
     else if (command === 'status')
@@ -177,4 +192,5 @@ async function userCommands(command, message, commandArgs, name, discord_id, cli
 }
 
 module.exports.userCommands = userCommands;
+module.exports.createChan = createChan;
 
