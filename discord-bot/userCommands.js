@@ -1,6 +1,6 @@
 const utils = require('./utils.js');
-const configFile = require ('./config.json');
-const config = configFile.botConfig;
+const c = require('./correction.js');
+const i = require('./index');
 
 function User(id, username) {
     this.id = id;
@@ -14,7 +14,8 @@ async function subscribe(message, name)
         if (element.name.startsWith("bootcamp-") === true)
             nbCur++;
     })
-    utils.logs(`There is ${nbCur} channel for the bootcamp at the moment.`);
+    i.logs(`There is ${nbCur} channel for the bootcamp at the moment.`);
+    let usr;
     try {
         if (await utils.getUserByLogin(name) != null) {
             usr = await utils.getUserByLogin(name);
@@ -22,19 +23,19 @@ async function subscribe(message, name)
                 message.channel.send("You Gave Up !");
             else
                 message.channel.send("You already subscribed !");
-            return ;
+            return;
         }
-        let myRole = message.guild.roles.cache.get(config.bootcampRoleId);
+        let myRole = message.guild.roles.cache.get(i.config.bootcampRoleId);
         message.member.roles.add(myRole).catch(console.error);
         var user = new User(message.member.id, name);
-        utils.logs("subscription of :" + user.username + " " + user.id);
+        i.logs("subscription of :" + user.username + " " + user.id);
         await utils.addUser(user.id, user.username);
         if (!message.guild.channels.cache.map(t => t.name).includes("bootcamp-" + name)) {
-            const everyoneRole = message.guild.roles.cache.get(config.everyoneRoleId);
+            const everyoneRole = message.guild.roles.cache.get(i.config.everyoneRoleId);
             const PrivateChannelWithBot = "bootcamp " + name;
             message.guild.channels.create(PrivateChannelWithBot, {
                 type: "text",
-                parent: categories[1 + Math.round(nbCur / 50)],
+                parent: categories[Math.round(nbCur / 50)],
                 permissionOverwrites: [
                     {
                         id: everyoneRole,
@@ -44,10 +45,11 @@ async function subscribe(message, name)
                         id: message.author.id,
                         allow: ['VIEW_CHANNEL'],
                     },
-                ],})
+                ],
+            })
                 .then(r => {
                     r.send("<@" + message.member.id + ">\n> **Here is your private channel with the bot, please enter here your commands to interract with the bot**" +
-                        "\n\n__**HELP MENU**__\n\n"+
+                        "\n\n__**HELP MENU**__\n\n" +
                         "You will find all the commands you can use in this discord just behind :\n\n" +
                         "**" + PREFIX + "subscribe**\n> to subscribe to the bootcamp, a private channel will be created\n\n" +
                         "**" + PREFIX + "info**\n> to diplay info from yourself or from other participant with *:info <login>*\n\n" +
@@ -62,10 +64,10 @@ async function subscribe(message, name)
         message.channel.send("```" + name + " has been successfully subscribed !\nA Channel has just been created for you in Bootcamp " +
             "category\nPlease write your commands there to interact with the bot\nThis message will self-destroyed in 10s```")
             .then(msg => {
-                msg.delete({ timeout: 15000 })
+                msg.delete({timeout: 15000})
             });
     } catch (e) {
-        utils.logs("ERROR : subscription failed : " + e);
+        i.logs("ERROR : subscription failed : " + e);
         message.channel.send("ERROR : subscription failed : " + e);
     }
 };
@@ -141,7 +143,8 @@ function help(message)
     message.channel.send(str);
 }
 
-async function userCommands(command, message, commandArgs, name, discord_id) {
+async function userCommands(command, message, commandArgs, name, discord_id, client) {
+    let LoginList = await utils.AllLogin();
     if (command === 'subscribe')
         subscribe(message, name);
     else if (command === 'info')
@@ -158,10 +161,10 @@ async function userCommands(command, message, commandArgs, name, discord_id) {
             help(message);
         }
     } else if (command === 'corrected') {
-        if (await c.corrected(message, commandArgs.split(" "), name) == 1)
+        if (await c.corrected(message, commandArgs.split(" "), name) === 1)
             help(message);
     } else if (command === 'validates') {
-        if (await c.validated(message, commandArgs.split(" "), name) == 1)
+        if (await c.validated(message, commandArgs.split(" "), name) === 1)
             help(message);
     } else if (command === 'help')
         help(message);
