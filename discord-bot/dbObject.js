@@ -10,6 +10,7 @@ const sequelize = new Sequelize('database', 'username', 'password', {
 const Users = sequelize.import('models/Users');
 const Day = sequelize.import('models/Day');
 const Stat =  sequelize.import('models/Stat');
+const Correc =  sequelize.import('models/Correc');
 
 // Users.belongsTo(Stat, { foreignKey: 'id', as: 'user' });
 //
@@ -47,4 +48,4 @@ const Stat =  sequelize.import('models/Stat');
 // };
 //
 
-module.exports = { Users, Day, Stat };
+module.exports = { Users, Day, Stat, Correc };

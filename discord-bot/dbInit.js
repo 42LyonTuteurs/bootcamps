@@ -10,6 +10,7 @@ const sequelize = new Sequelize('database', 'username', 'password', {
 const Users = sequelize.import('models/Users');
 const Day = sequelize.import('models/Day');
 const Stat =  sequelize.import('models/Stat');
+const Correc =  sequelize.import('models/Correc');
 
 const force = process.argv.includes('--force') || process.argv.includes('-f');
 sequelize.sync({ force }).then(async () => {
