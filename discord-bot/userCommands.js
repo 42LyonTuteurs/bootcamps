@@ -90,7 +90,7 @@ async function subscribe(client, name, message)
 async function unsubscribe(message, name)
 {
     // await utils.deleteUserByLogin(name);
-    await utils.updateUserAtivity(await utils.getUserByLogin(name));
+    await utils.userGiveUpActivity(await utils.getUserByLogin(name));
     message.guild.channels.cache.forEach(element => {
         if (element.name === "bootcamp-" + name.toLowerCase())
             element.delete();
@@ -113,7 +113,7 @@ async function list(message, name, discord_id, commandArgs)
 
 async function status(message, argv, name, discord_id)
 {
-    let LoginList = await utils.allLoginAllActivity();
+    let LoginList = await utils.AllLoginAllActivity();
     if (!utils.isAdmin(discord_id)){
         help(message);
         return;

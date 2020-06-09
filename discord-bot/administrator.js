@@ -1,6 +1,7 @@
 const utils = require('./utils.js');
 const usrCmd = require('./userCommands')
 const i = require('./index');
+var userCtrl = require("./controllers/UsersCtrl")
 const { Users, Stat, Day } = require('./dbObject');
 
 module.exports = {
@@ -149,7 +150,7 @@ module.exports = {
         {
             destroyPrivateChan(message, discord_id);
             let nbCur = 0;
-            let data = await utils.All();
+            let data = await userCtrl.getAllUser();
             data.forEach(t => {
                 if (t.actif)
                 {
