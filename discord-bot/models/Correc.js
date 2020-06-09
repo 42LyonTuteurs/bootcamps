@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
         },
         corrector_id: {
             type: DataTypes.STRING,
-            defaultValue: 0,
+            defaultValue: null,
         },
         corrected_id: {
             type: DataTypes.STRING,
@@ -19,15 +19,19 @@ module.exports = (sequelize, DataTypes) => {
         },
         corrector_validation: {
             type: DataTypes.INTEGER,
-            defaultValue: null,
+            defaultValue: 0,
         },
         corrected_validation: {
             type: DataTypes.INTEGER,
-            defaultValue: null,
+            defaultValue: 0,
+        },
+        validated_correc: {
+            type: DataTypes.INTEGER,
+            defaultValue: 0,
         },
         outstanding: {
             type: DataTypes.INTEGER,
-            defaultValue: null,
+            defaultValue: 0,
         },
     }, {
         timestamps: false,
