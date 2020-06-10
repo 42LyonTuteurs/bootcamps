@@ -10,6 +10,14 @@ module.exports = {
         }
     },
 
+    getCorrectionsNotDoneByCorrector : async function(discord_id){
+        try{
+            return await Correc.find({where : {validated_correc: 0, corrector_id: discord_id}})
+        } catch (e) {
+            i.logs("ERROR : function getCorrectionsNotDoneByCorrector : " + e);
+        }
+    },
+
     getCorrectionByUser : async function(corrector_id, corrected_id) {
         try {
             return await Correc.findOne({where : {corrector_id: corrector_id, corrected_id: corrected_id}});

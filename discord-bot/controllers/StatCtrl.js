@@ -77,4 +77,11 @@ module.exports = {
             }
     },
 
+    getStatCorrection : async function(nbCorrection){
+      try{
+           return await Stat.findAll({where : {correction : nbCorrection}})
+      }  catch (e) {
+          i.logs("ERROR : function getStatMinCorrection : " + e);
+      }
+    },
 }

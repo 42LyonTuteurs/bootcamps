@@ -1,4 +1,5 @@
 const fs = require('fs');
+var shuffle = require('shuffle-array');
 const i = require('./index');
 const { Users, Stat, Day } = require('./dbObject');
 var emoji = require('node-emoji')
@@ -109,6 +110,8 @@ module.exports = {
 
     printInfo : async function(message, login) {
         stat = await this.getStatByLogin(login);
+        // console.log(stat);
+        // console.log(stat.user_id);
         str = "-----------------------------------------\n         __**" + login.toUpperCase() +
         " INFO SHEET**__\n-----------------------------------------\n\n" +
         "**Expected Mana** : " + stat.days_done * 30 + "\n\n";
@@ -146,7 +149,9 @@ module.exports = {
     },
 
     DayInfo : async function(stat, dayNb) {
-        dayId = await this.getDayIdByStat(stat, dayNb);
+        dayId = await dayCtrl.getDayIdByStat(stat, dayNb);
+        // console.log(dayNb);
+        // console.log(stat.user_id);
         if (dayId == null)
             return "";
         day = await this.getDayByDayId(dayId);
@@ -186,6 +191,19 @@ module.exports = {
     printStatByDiscordIdInChannel : async function(message, discord_id, login) {
         const stat = await statCtrl.getStatByDiscordId(discord_id);
         await this.printStatInChannel(message, stat, login);
+    },
+
+    getRandomForCorrection : async  function(){
+        let list;
+        let nbCorrection = 0;
+        while (list === undefined || list.length === 0){
+            list = await statCtrl.getStatCorrection(nbCorrection);
+            nbCorrection++;
+            console.log(list.length)
+        }
+        console.log(list[0])
+        list = shuffle(list);
+        return await userCtrl.getUserByDiscordId(list[0].user_id);
     },
 
     printStatByUser : async function(user) {
@@ -309,7 +327,7 @@ module.exports = {
     // },
 
     newDay: async function (User, nbDay) {
-        const newDay = dayCtrl.createDay();
+        const newDay = await dayCtrl.createDay();
         await statCtrl.createDayInStat(User, nbDay, newDay);
     },
 
@@ -318,7 +336,7 @@ module.exports = {
     },
 
     getDayIdByStat : async function(stat, nb){
-        return dayCtrl.getDayIdByStat();
+        return dayCtrl.getDayIdByStat(stat, nb);
     },
 
     getDayIdByUser : async function(user, nb){
@@ -332,6 +350,7 @@ module.exports = {
     //     return (user.actif);
     // },
 
+    //deprecated
     printDay : async function(day){
         if (day != null) {
             console.log("----------");
@@ -345,6 +364,7 @@ module.exports = {
         }
     },
 
+    //deprecated
     daysToString : async function(day){
         const str = "----------" + "\n"
         + "day id         : " + day.day_id+ "\n"
@@ -365,6 +385,13 @@ module.exports = {
     //     const day = await dayCtrl.getDayByDayId(day_id)
     //     await this.printDay(day);
     // },
+
+    CorrectionsNotDone : async function(user){
+        const stat = await statCtrl.getStatByUser(user);
+        const listNotfinished = await correcCtrl.getCorrectionsNotDoneByCorrector(user.discord_id);
+        console.log(listNotfinished)
+        return listNotfinished;
+    },
 
 
 
