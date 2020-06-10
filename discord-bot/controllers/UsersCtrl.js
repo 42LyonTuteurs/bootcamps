@@ -1,52 +1,49 @@
-const { Users, Stat, Day } = require('../dbObject');
-const dayCtrl = require('./DayCtrl');
-const statCtrl =  require('./StatCtrl');
+const {Users} = require('../dbObject');
+const i = require('../index');
 
 module.exports = {
 
-    addUser: async function (discord_id, login) {
-        const newUser = await Users.create({discord_id: discord_id, login: login});
-        await statCtrl.createStatByDiscordId(discord_id);
+    createUser: async function (discord_id, login) {
+        try {
+            await Users.create({discord_id: discord_id, login: login});
+        } catch (e) {
+            i.logs("ERROR : function createUser : " + e);
+        }
     },
 
-    printAllLogin : async function(){
-        const List = await Users.findAll({attributes: ['login']});
-        const ListString = List.map(t => t.login).join(' : ') || 'No tags set.';
-        console.log(ListString);
-    },
-
-    printUserInfoByLogin: async function (login) {
-        const user = await Users.findOne({where: {login: login}});
-        console.log("discord id     : " + user.discord_id);
-        console.log("login          : " + user.login);
-        await statCtrl.printStatByDiscordId(user.discord_id);
-    },
-
-    printUserInfoByUser: async function (user) {
-         await this.printUserInfoByLogin(user.login);
+    getAllUser: async function (){
+        try {
+            const List = await Users.findAll();
+            return List;
+        } catch (e) {
+            i.logs("ERROR : function getAllUser : " + e);
+        }
     },
 
     getUserByLogin : async function(login){
-        const user = await Users.findOne({where: {login: login}});
-        return (user);
+        try {
+            const user = await Users.findOne({where: {login: login}});
+            return (user);
+        } catch (e) {
+            i.logs("ERROR : function getUserByLogin : " + e);
+        }
     },
 
     getUserByDiscordId : async function(discord_id){
-        const user = await Users.findOne({where: {discord_id: discord_id}});
-        return (user);
+        try {
+            const user = await Users.findOne({where: {discord_id: discord_id}});
+            return (user);
+        } catch (e) {
+            i.logs("ERROR : function getUserByDiscordId : " + e);
+        }
     },
 
-    deleteUserByUser : async function(user){
-        await user.destroy();
+    updateUserActivity : async function(user, val){
+        try {
+            await Users.update({ actif: val }, { where: { discord_id: user.discord_id } });
+        } catch (e) {
+            i.logs("ERROR : function updateUserActivity : " + e);
+        }
     },
-
-    deleteUserByDiscordId : async function(discord_id){
-        await Users.destroy({ where: { discord_id: discord_id } });
-    },
-
-    deleteUserByLogin : async function(login){
-        await Users.destroy({ where: { login: login } });
-    },
-
     
 }

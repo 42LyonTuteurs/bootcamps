@@ -1,21 +1,12 @@
-Mon Jun 08 2020 18:06:30 :
-Logged in as dev-bootcamp-bot#8589!
+Wed Jun 10 2020 15:34:55 :
+Logged in as json-bot#9208!
 
-Mon Jun 08 2020 18:06:40 :
-ERROR : function addUser : SequelizeUniqueConstraintError: Validation error
+Wed Jun 10 2020 15:34:58 | Serronia
+;finish 0
 
-Mon Jun 08 2020 18:06:40 :
-ERROR : function createDay : TypeError: Cannot read property 'discord_id' of null
+Wed Jun 10 2020 15:34:58 :
+ERROR : function getDayIdByStat : Error: WHERE parameter "day_id" has invalid "undefined" value
 
-Mon Jun 08 2020 18:06:40 :
-ERROR : function createDay : TypeError: Cannot read property 'discord_id' of null
-
-Mon Jun 08 2020 18:06:40 :
-ERROR : function createDay : TypeError: Cannot read property 'discord_id' of null
-
-Mon Jun 08 2020 18:06:40 :
-ERROR : function createDay : TypeError: Cannot read property 'discord_id' of null
-
-Mon Jun 08 2020 18:06:40 :
-ERROR : function createDay : TypeError: Cannot read property 'discord_id' of null
+Wed Jun 10 2020 15:34:58 :
+ERROR : function getCorrectionsNotDoneByCorrector : TypeError: Correc.find is not a function
 
