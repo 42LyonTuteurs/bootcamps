@@ -16,13 +16,14 @@ async function createChan(client, name, faker) {
     let LoginList = await utils.AllLogin();
     let userNb = LoginList.length;
     var user = await utils.getUserByLogin(name)
+    let discord_id;
     if (faker)
         discord_id = i.botConfig.admin[0];
     else
         discord_id = user.discord_id;
     guild.channels.create(PrivateChannelWithBot, {
         type: "text",
-        parent: guild.channels.cache.find(chan => chan.name == "Bootcamp" + [Math.trunc(1 + userNb / 50)]),
+        parent: guild.channels.cache.find(chan => chan.name == "BOOTCAMP" + [Math.trunc(1 + userNb / 50)]),
         permissionOverwrites: [
             {
                 id: everyoneRole,
@@ -80,7 +81,7 @@ async function subscribe(client, name, message)
 async function unsubscribe(message, name)
 {
     // await utils.deleteUserByLogin(name);
-    await utils.updateUserAtivity(await utils.getUserByLogin(name));
+    await utils.userGiveUpActivity(await utils.getUserByLogin(name));
     message.guild.channels.cache.forEach(element => {
         if (element.name === "bootcamp-" + name.toLowerCase())
             element.delete();
@@ -103,7 +104,7 @@ async function list(message, name, discord_id, commandArgs)
 
 async function status(message, argv, name, discord_id)
 {
-    let LoginList = await utils.allLoginAllActivity();
+    let LoginList = await utils.AllLoginAllActivity();
     if (!utils.isAdmin(discord_id)){
         help(message);
         return;
@@ -151,6 +152,7 @@ async function dayDone(message, commandArgs, name) {
    // check pending correction
    // if (pending correction === ok) {
        // set correction /this set the 2 correctors
+//    send pending correction
 
 }
 
