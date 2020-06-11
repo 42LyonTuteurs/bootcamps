@@ -1,21 +1,6 @@
-Mon Jun 08 2020 18:06:30 :
+Thu Jun 11 2020 11:42:07 :
 Logged in as dev-bootcamp-bot#8589!
 
-Mon Jun 08 2020 18:06:40 :
-ERROR : function addUser : SequelizeUniqueConstraintError: Validation error
-
-Mon Jun 08 2020 18:06:40 :
-ERROR : function createDay : TypeError: Cannot read property 'discord_id' of null
-
-Mon Jun 08 2020 18:06:40 :
-ERROR : function createDay : TypeError: Cannot read property 'discord_id' of null
-
-Mon Jun 08 2020 18:06:40 :
-ERROR : function createDay : TypeError: Cannot read property 'discord_id' of null
-
-Mon Jun 08 2020 18:06:40 :
-ERROR : function createDay : TypeError: Cannot read property 'discord_id' of null
-
-Mon Jun 08 2020 18:06:40 :
-ERROR : function createDay : TypeError: Cannot read property 'discord_id' of null
+Thu Jun 11 2020 11:42:12 | tclaudel
+;list
 

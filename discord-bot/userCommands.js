@@ -1,6 +1,8 @@
 const utils = require('./utils.js');
+const msg = require('./message')
 const c = require('./correction.js');
 const i = require('./index');
+const usrCtrl = require('./controllers/UsersCtrl')
 
 function User(id, username) {
     this.id = id;
@@ -18,9 +20,6 @@ async function createChan(client, name, faker) {
         discord_id = i.botConfig.admin[0];
     else
         discord_id = user.discord_id;
-    // console.log(user.login)
-    // console.log(typeof user.discord_id)
-    // console.log();
     guild.channels.create(PrivateChannelWithBot, {
         type: "text",
         parent: guild.channels.cache.find(chan => chan.name == "Bootcamp" + [Math.trunc(1 + userNb / 50)]),
@@ -36,16 +35,7 @@ async function createChan(client, name, faker) {
         ],
     })
         .then(r => {
-            r.send("<@" + user.discord_id + ">\n> **Here is your private channel with the bot, please enter here your commands to interract with the bot**" +
-                "\n\n__**HELP MENU**__\n\n" +
-                "You will find all the commands you can use in this discord just behind :\n\n" +
-                "**" + i.PREFIX + "subscribe**\n> to subscribe to the bootcamp, a private channel will be created\n\n" +
-                "**" + i.PREFIX + "info**\n> to diplay info from yourself or from other participant with *:info <login>*\n\n" +
-                "**" + i.PREFIX + "validates <login> <day> <validated/notvalidated>**\n> to tell the bot that you corrected the <day> of <login> and if the day is <validated> or <notvalidated>\n\n" +
-                "**" + i.PREFIX + "corrected by <login> <day>**\n> to tell the bot that your <day> have been corrected by <login>\n\n" +
-                "**" + i.PREFIX + "unsubscribe**\n> __**THIS COMMAND IS A DEFINITIVE UNSUBSCRIPTION FROM THE BOOTCAMP**__\n\n" +
-                "\n__**" + i.PREFIX + "help**__ to to diplay all the commands you can use !"
-            );
+            r.send("<@" + user.discord_id + ">\n>" + msg.help());
         })
         .catch(console.error);
 }
@@ -145,17 +135,32 @@ async function info(message, argv, name)
     }
 }
 
-function help(message)
-{
-    let str = "__**HELP MENU**__\n\n"+
-        "You will find all the commands you can use in this discord just behind :\n\n" +
-        "**" + PREFIX + "subscribe**\n> to subscribe to the bootcamp, a private channel will be created\n\n" +
-        "**" + PREFIX + "info**\n> to diplay info from yourself or from other participant with *:info <login>*\n\n" +
-        "**" + PREFIX + "validates <login> <day> <validated/notvalidated>**\n> to tell the bot that you corrected the <day> of <login> and if the day is <validated> or <notvalidated>\n\n" +
-        "**" + PREFIX + "corrected by <login> <day>**\n> to tell the bot that your <day> have been corrected by <login>\n\n" +
-        "**" + PREFIX + "unsubscribe**\n> __**THIS COMMAND IS A DEFINITIVE UNSUBSCRIPTION FROM THE BOOTCAMP**__\n\n"
-    ;
-    message.channel.send(str);
+function help(message) {
+    message.channel.send(msg.help());
+}
+
+async function enableCorrection(message, commandArgs, name) {
+//    set user enable correction
+}
+
+async function disableCorrection(message, commandArgs, name) {
+//    set user disable correction
+}
+
+async function dayDone(message, commandArgs, name) {
+   // check pending correction
+   // if (pending correction === ok) {
+       // set correction /this set the 2 correctors
+
+}
+
+async function miss(message, commandArgs, name) {
+    missingUserLogin = commandArgs[0]
+    missingUser = usrCtrl.getUserByLogin(missingUserLogin)
+    corrected = usrCtrl.getUserByLogin(name)
+    // CorrectionID = correction(corrected, missingUser)
+//    This function return the correctionID
+   utilis.miss(message, correctionID, missingUser, name)
 }
 
 async function userCommands(command, message, commandArgs, name, discord_id, client) {
@@ -170,18 +175,27 @@ async function userCommands(command, message, commandArgs, name, discord_id, cli
         unsubscribe(message, name);
     else if (command === 'list')
         list(message, name, discord_id, commandArgs);
-    else if (command === 'correction') {
-        let error = await c.correction(LoginList, commandArgs, discord_id, client);
-        if (error == 1) {
-            help(message);
-        }
-    } else if (command === 'corrected') {
-        if (await c.corrected(message, commandArgs.split(" "), name) === 1)
-            help(message);
-    } else if (command === 'validates') {
-        if (await c.validated(message, commandArgs.split(" "), name) === 1)
-            help(message);
-    } else if (command === 'help')
+    else if (command === 'enable' && commandArgs == 'correction')
+        enableCorrection(message, commandArgs.split(" "), name)
+    else if (command === 'enable' && commandArgs == 'correction')
+        disableCorrection(message, commandArgs.split(" "), name)
+    else if (command === 'day' && commandArgs == 'done')
+        dayDone(message, commandArgs.split(" "), name)
+    else if (command === 'miss')
+        miss(message, commandArgs.split(" "), name)
+    // else if (command === 'correction') {
+    //     let error = await c.correction(LoginList, commandArgs, discord_id, client);
+    //     if (error == 1) {
+    //         help(message);
+    //     }
+    // } else if (command === 'corrected') {
+    //     if (await c.corrected(message, commandArgs.split(" "), name) === 1)
+    //         help(message);
+    // } else if (command === 'validates') {
+    //     if (await c.validated(message, commandArgs.split(" "), name) === 1)
+    //         help(message);
+    // }
+    else if (command === 'help')
         help(message);
     else {
         message.channel.send("```" + message.content + " is an unknown function, please try " + PREFIX + "help```")

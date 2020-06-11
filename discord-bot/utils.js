@@ -481,6 +481,27 @@ module.exports = {
             await callback(array[index], index, array);
         }
     },
+
+    getLoginChannel: async function(message, login) {
+        message.channels.cache.forEach(element => {
+            if (element.name == "bootcamp-" + login)
+                return element
+        });
+    },
+
+    miss: async function(message, correctionID, missingUser, correcterName) {
+    //    if checkTimestamps(correctionID) {
+    //    # This function should return true id the time limit is over and remaining time otherwise
+    //      this.setMissing(missingUser)
+    //    # This function will add a warning to the missing user
+    //     channel = this.getLoginChannel(message, missingUser.name)
+        //     str = "Someone says that you were missing for your correction, you still " + missingUser.warnings + " warnings before be kicked from the bootcamp"
+        // channel.send(str);
+    //     this.resetCorrection(correctionID)
+    //    # This function set another correction
+    // }
+    },
+
     AllData : async function(){
         const List = await Users.findAll();
         return await List.map(t => t.dataValues);

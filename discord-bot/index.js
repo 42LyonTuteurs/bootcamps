@@ -114,18 +114,22 @@ function logs(string, login) {
 	logChannel.send("```" + output + "```")
 }
 
+async function init(guild) {
+	if (!guild.channels.cache.find(guild => guild.name === "Bootcamp")) {
+		await cm.initCategories(guild)
+	}
+	// await fakerDb();
+}
+
 client.on('ready', async() => {
 	fs.writeFile('app.log', "", (err) => {
 		if (err) throw err;
 	})
 	const guild = client.guilds.cache.find(guild => guild.name === config.ServerName);
-	if (!guild.channels.cache.find(guild => guild.name === "Bootcamp")) {
-		await cm.initCategories(guild)
-	}
-	fakerDb();
+	await init(guild);
+
 	console.log(`Logged in as ${client.user.tag}!`);
 	logs(`Logged in as ${client.user.tag}!`);
-
 });
 
 client.on('message', async message => {
