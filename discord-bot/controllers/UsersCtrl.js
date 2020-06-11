@@ -20,7 +20,7 @@ module.exports = {
         }
     },
 
-    getUserByLogin : async function(login){
+    getUserByLogin : async function(login) {
         try {
             const user = await Users.findOne({where: {login: login}});
             return (user);
@@ -29,7 +29,7 @@ module.exports = {
         }
     },
 
-    getUserByDiscordId : async function(discord_id){
+    getUserByDiscordId : async function(discord_id) {
         try {
             const user = await Users.findOne({where: {discord_id: discord_id}});
             return (user);
