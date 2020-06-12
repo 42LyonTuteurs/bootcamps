@@ -81,22 +81,32 @@ module.exports = {
     //
     // },
 
-    allwithMana : async function(message) {
+    allwithMana : async function(message, month) {
+        // message.channel.send()
+        if (!month) {
+            message.channel.send("please insert month")
+            return ;
+        }
         try {
-            str = "login,mana,daysdone\n"
+            str = "login,mana\n"
             let user;
-            let list = await this.AllLoginAllActivity()
-            for (user in list)
+            let list = await Users.findAll()
+            console.log(list.length)
+            for (let i = 0; i < list.length; i++)
             {
-                stat = await this.getStatByLogin(user.login)
-                mana = stat.days_done * 30 + stat.days_outstanding * 10 + stat.correction * 5;
-                str += (user.login === lpieri ? cpieri : user.login) + "," + (mana > 200 ? 200 : mana) + "," + stat.days_done + "," + stat.correction +"\n"
+                user = list[i]
+                str += user.login + ',';
+                let userStat = this.getStatByLogin(user.login)
+                if (month == "june")
+                    str += userStat.mana_june + "\n";
+                else if (month == "july")
+                    str += (userStat.mana - userStat.mana_june) + "\n";
             }
         } catch (e) {
             i.logs("ERROR : function All : " + e);
         }
-        message.channel.send(str);
-        fs.writeFile('mana.csv', str, (err) => {
+        i.logs(str)
+        fs.writeFile(month + '.csv', str, (err) => {
             if (err) throw err;
         })
     },
