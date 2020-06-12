@@ -10,22 +10,32 @@ module.exports = {
         }
     },
 
-    getCorrectionsNotDoneByCorrector : async function(discord_id){
+    getCorrectionsNotDoneByCorrector : async function(corrector, corrected){
         try{
-            return await Correc.find({where : {validated_correc: 0, corrector_id: discord_id}})
+            return await Correc.findAll({where : {corrector_validation: 0, corrector_id: corrector.discord_id, corrected_id: corrected.discord_id}})
         } catch (e) {
             i.logs("ERROR : function getCorrectionsNotDoneByCorrector : " + e);
         }
     },
 
-    getCorrectionByUser : async function(corrector_id, corrected_id) {
+    getCorrectionsByUsers : async function(corrector, corrected) {
         try {
-            return await Correc.findOne({where : {corrector_id: corrector_id, corrected_id: corrected_id}});
+            return await Correc.findAll({where : {corrector_id: corrector.discord_id, corrected_id: corrected.discord_id, corrector_validation: 0,}});
         } catch (e) {
-            i.logs("ERROR : function getCorrectionByUser : " + e);
+            i.logs("ERROR : function getCorrectionsByUsers : " + e);
         }
     },
 
+    getAllCorrection : async function(){
+        try {
+            return await Correc.findAll();
+
+        } catch (e) {
+            i.logs("ERROR : function getCorrectionsByUsers : " + e);
+        }
+    },
+
+    //no necessary
     getCorrectionByCorrecId : async function(correc_id) {
         try {
             return await Correc.findOne({where : {correc_id: correc_id}});
@@ -65,5 +75,13 @@ module.exports = {
         } catch (e) {
             i.logs("ERROR : function updateOutstanding : " + e);
         }
+    },
+
+    destroyCorrection : async function(correc_id){
+      try {
+        await Correc.destroy({where : {correc_id: correc_id} });
+      } catch (e) {
+          i.logs("ERROR : function destroyCorrection : " + e);
+      }
     },
 }

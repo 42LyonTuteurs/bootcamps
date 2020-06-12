@@ -168,7 +168,7 @@ module.exports = {
 
 //TODO
     setDayAsFinished : async function(message, name, discord_id, argv){
-        let nbDay = argv[1];
+        let nbDay = argv[0];
         console.log("1");
         const user = await utils.getUserByDiscordId(discord_id);
         console.log("2");
@@ -176,14 +176,19 @@ module.exports = {
         const stat = await utils.getStatByLogin(user.login);
         console.log("3");
 
-        const day =  await utils.getDayByDayId(await utils.getDayIdByUser(user, nbDay))
+        const day_id = await utils.getDayIdByUser(user, nbDay)
+        console.log("pls " + day_id);
+        console.log("pls " + nbDay);
+        console.log("pls " + user.discord_id);
+        console.log("pls " + stat.user_id);
+        const day =  await utils.getDayByDayId(day_id)
         console.log("4");
 
-        const list = await utils.CorrectionsNotDone(user);
-        console.log("5");
-
-        if (list !== undefined && list.length >= 2)
-            message.channel.send('First do your corrections already sets');
+        // const list = await utils.CorrectionsNotDone(user);
+        // console.log("5");
+        //
+        // if (list !== undefined && list.length >= 2)
+        //     message.channel.send('First do your corrections already sets');
         //else
         console.log("6");
         // mettre la value day set a 1
@@ -193,7 +198,7 @@ module.exports = {
         await utils.createNewCorrectionByDiscordId(day, discord_id, corrector.discord_id);
         console.log("8");
 
-        message.channel.send('you wil be corrected by ' + corrector.login + ' on you day' + nbDay);
+        message.channel.send('you wil be corrected by ' + corrector.login + ' on you day ' + nbDay);
 
     },
 
