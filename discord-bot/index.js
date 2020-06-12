@@ -85,8 +85,8 @@ async function fakerDb()
 {
 	let LoginList = await utils.AllLogin();
 	let userNb = LoginList.length;
-	if (userNb < 5) {
-		for (let i = 0; i < 5; i++) {
+	if (userNb < 2) {
+		for (let i = 0; i < 2; i++) {
 			var user = new User(faker.finance.account(18), faker.name.firstName(undefined).toLowerCase());
 			await utils.addUser(user.id, user.username);
 			await userCmd.createChan(client, user.username, 1)
@@ -118,7 +118,7 @@ async function init(guild) {
 	if (!guild.channels.cache.find(guild => guild.name === "Bootcamp")) {
 		await cm.initCategories(guild)
 	}
-	// await fakerDb();
+	await fakerDb();
 }
 
 client.on('ready', async() => {

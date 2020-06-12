@@ -84,4 +84,12 @@ module.exports = {
           i.logs("ERROR : function getStatMinCorrection : " + e);
       }
     },
+
+    updateStatStrikeDown : async function(stat){
+        try{
+             await Stat.update({strike : stat.strike - 1  }, {where : { user_id : stat.user_id}})
+        }  catch (e) {
+            i.logs("ERROR : function getStatMinCorrection : " + e);
+        }
+    },
 }

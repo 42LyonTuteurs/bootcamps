@@ -65,6 +65,7 @@ module.exports = {
         return await userCtrl.getUserByLogin(login);
     },
 
+
     getUserByDiscordId : async function(discord_id){
         return await userCtrl.getUserByDiscordId(discord_id);
     },
@@ -202,7 +203,7 @@ module.exports = {
             nbCorrection++;
             console.log(list.length)
         }
-        console.log(list[0])
+        // console.log(list[0])
         list = shuffle(list);
         return await userCtrl.getUserByDiscordId(list[0].user_id);
     },
@@ -387,14 +388,35 @@ module.exports = {
     //     await this.printDay(day);
     // },
 
-    CorrectionsNotDone : async function(user){
-        const stat = await statCtrl.getStatByUser(user);
-        const listNotfinished = await correcCtrl.getCorrectionsNotDoneByCorrector(user.discord_id);
-        console.log(listNotfinished)
-        return listNotfinished;
+
+    //TODO NEW
+    // CorrectionsNotDone : async function(user){
+    //     const stat = await statCtrl.getStatByUser(user);
+    //     const listNotfinished = await correcCtrl.getCorrectionsNotDoneByCorrector(user.discord_id);
+    //     console.log(listNotfinished)
+    //     return listNotfinished;
+    // },
+
+    //NEW
+    CheckCorrectionStatus : async function(correc){
+        if (correc.corrected_validation === 1  && correc.corrector_validation === 1)
+            return true;
+        return false;
     },
 
+    getCorrectionsByUsers : async function(corrector, corrected)
+    {
+      return await correcCtrl.getCorrectionsByUsers(corrector, corrected);
+    },
 
+    getCorrectionsNotDoneByCorrector : async function(corrector, corrected)
+    {
+        return await correcCtrl.getCorrectionsNotDoneByCorrector(corrector, corrected);
+    },
+
+    getAllCorrection : async function (){
+        return await correcCtrl.getAllCorrection();
+    },
 
     // deprecated
     updateDayCorrection : async function(day){
@@ -527,17 +549,81 @@ module.exports = {
         });
     },
 
-    miss: async function(message, correctionID, missingUser, correcterName) {
-    //    if checkTimestamps(correctionID) {
-    //    # This function should return true id the time limit is over and remaining time otherwise
-    //      this.setMissing(missingUser)
-    //    # This function will add a warning to the missing user
-    //     channel = this.getLoginChannel(message, missingUser.name)
-        //     str = "Someone says that you were missing for your correction, you still " + missingUser.warnings + " warnings before be kicked from the bootcamp"
-        // channel.send(str);
-    //     this.resetCorrection(correctionID)
-    //    # This function set another correction
-    // }
+    checkTimestamps : async function(correc){
+        let now =  (new Date).getHours();
+        let createdTime = (new Date(correc.createdAt)).getHours();
+        if ((now - createdTime) > 24){
+            return true
+        }
+        return false
+    },
+
+    //TODO only modify console.log => message to channel
+    missCorrector: async function(message, correction, missingUser, corrected) {
+        if (correction.length === 1)
+            correction = correction[0];
+        else
+            console.log("TODO");
+
+        if (await this.checkTimestamps(correction)){
+            await this.setMissing(message, missingUser);
+            await this.resetCorrection(correction, corrected);
+        } else
+            console.log("tu dois attendre 24h mec");
+
+    },
+
+    //TODO only modify console.log => message to channel
+    missCorrected: async function(message, correction, missingUser, corrector) {
+        if (correction.length === 1)
+            correction = correction[0];
+        else
+            console.log("TODO");
+
+        if (await this.checkTimestamps(correction)){
+            await this.setMissing(missingUser);
+            await this.deleteCorrection(correction);
+        } else
+            console.log("tu dois attendre 24h mec");
+
+    },
+
+    checkStrike : async function(stat){
+        if (stat.strike <= 0)
+            return true;
+        return false;
+    },
+
+
+    //TODO only modify str
+    setMissing : async function(message, missingUser){
+        const stat = await statCtrl.getStatByUser(missingUser);
+        let str;
+        const channel = await this.getLoginChannel(message, missingUser.login)
+        await statCtrl.updateStatStrikeDown(stat);
+        if (await this.checkStrike(stat)) {
+            //unsubscribe the missingUser
+            str = "R.I.P in peace"
+        } else {
+            str = "Someone says that you were missing for your correction, you still " + missingUser.strike + " warnings before be kicked from the bootcamp"
+        }
+        channel.send(str);
+    },
+
+    //TODO
+    resetCorrection : async function(correc, User) {
+        //
+        //    # This function set another correction for the user argument
+        //delete old correction
+        const day = dayCtrl.getDayByDayId(correc.day_id);
+        const newCorrector = await this.getRandomForCorrection();
+        await this.deleteCorrection(correc);
+        await this.createNewCorrectionByDiscordId(day.day_nb, User.discord_id, newCorrector.discord_id);
+    },
+
+    //TODO
+    deleteCorrection : async function(correc){
+        await correcCtrl.destroyCorrection(correc.correc_id)
     },
 
     AllData : async function(){
