@@ -168,7 +168,7 @@ async function miss(message, commandArg, user){
     else if (commandArg[0] === 'corrected')
         await missCorrected(message, commandArg, name)
     else
-        message.channels.send("please respect the format : \n `;miss <corrector/corrected> <login>`")
+        message.channel.send("please respect the format : \n `;miss <corrector/corrected> <login>`")
 }
 
 

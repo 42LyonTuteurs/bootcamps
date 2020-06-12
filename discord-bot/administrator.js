@@ -211,6 +211,7 @@ module.exports = {
     adminCommands : async function(message, argv, name, discord_id){
         if (utils.isAdmin(discord_id))
         {
+            console.log(argv[0])
             const login = argv[1];
             const nbDay = argv[2];
             if (login === undefined){
@@ -258,8 +259,8 @@ module.exports = {
             else if (argv[0] === 'recoverChans' && login === "confirm"){
                 await this.recoverPrivateChan(message, discord_id);
             }
-            else if (argv[0] === 'allWithMana'&& login === "confirm"){
-                await utils.allwithMana(message);
+            else if (argv[0] === 'allWithMana' && login) {
+                await utils.allwithMana(message, argv[1]);
             }
             else
                 await this.adminHelp(message);
