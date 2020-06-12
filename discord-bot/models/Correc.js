@@ -1,8 +1,9 @@
 module.exports = (sequelize, DataTypes) => {
     return sequelize.define('correc', {
         correc_id: {
-            type: DataTypes.STRING,
+            type: DataTypes.INTEGER,
             primaryKey: true,
+            autoIncrement: true,
             allowNull: false,
         },
         day_id: {
@@ -34,7 +35,7 @@ module.exports = (sequelize, DataTypes) => {
             defaultValue: 0,
         },
     }, {
-        timestamps: false,
+        timestamps: true,
     });
 };
 

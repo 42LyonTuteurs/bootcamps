@@ -140,14 +140,16 @@ function help(message) {
     message.channel.send(msg.help());
 }
 
-async function enableCorrection(message, commandArgs, name) {
+// async function enableCorrection(message, commandArgs, name) {
 //    set user enable correction
-}
-
-async function disableCorrection(message, commandArgs, name) {
+// }
+//
+// async function disableCorrection(message, commandArgs, name) {
 //    set user disable correction
-}
+// }
 
+
+//TODO deja en cour dans correction.js
 async function dayDone(message, commandArgs, name) {
    if (nbOfPendingCorrection(usrCtrl.getUserByLogin(name)) < 2) {
        // nbOfPendingCorrection
@@ -156,13 +158,28 @@ async function dayDone(message, commandArgs, name) {
 
 }
 
-async function miss(message, commandArgs, name) {
-    missingUserLogin = commandArgs[0]
-    missingUser = usrCtrl.getUserByLogin(missingUserLogin)
-    corrected = usrCtrl.getUserByLogin(name)
-    // CorrectionID = correction(corrected, missingUser)
-//    This function return the correctionID
-   utilis.miss(message, correctionID, missingUser, name)
+async function miss(message, commandArg, name){
+    if (commandArg[0] === 'corrector')
+        await missCorrector(message, commandArg, name)
+    else if (commandArg[0] === 'corrected')
+        await missCorrected(message, commandArg, name)
+}
+
+
+async function missCorrector(message, commandArgs, name) {
+    const missingUserLogin = commandArgs[1];
+    const missingUser = await utils.getUserByLogin(missingUserLogin);
+    const corrected = await utils.getUserByLogin(name);
+    const correc = await utils.getCorrectionsNotDoneByCorrector(missingUser, corrected)
+    await utils.missCorrector(message, correc, missingUser, corrected);
+}
+
+async function missCorrected(message, commandArgs, name) {
+    const missingUserLogin = commandArgs[1];
+    const missingUser = await utils.getUserByLogin(missingUserLogin);
+    const corrector = await utils.getUserByLogin(name);
+    const correc = await utils.getCorrectionsByUsers(corrector, missingUser)
+    await utils.missCorrected(message, correc, missingUser, corrector);
 }
 
 async function userCommands(command, message, commandArgs, name, discord_id, client) {
@@ -177,14 +194,16 @@ async function userCommands(command, message, commandArgs, name, discord_id, cli
         unsubscribe(message, name);
     else if (command === 'list')
         list(message, name, discord_id, commandArgs);
-    else if (command === 'enable' && commandArgs == 'correction')
-        await enableCorrection(message, commandArgs.split(" "), name)
-    else if (command === 'enable' && commandArgs == 'correction')
-        await disableCorrection(message, commandArgs.split(" "), name)
-    else if (command === 'day' && commandArgs == 'done')
-        await dayDone(message, commandArgs.split(" "), name)
+    // else if (command === 'enable' && commandArgs === 'correction')
+    //     enableCorrection(message, commandArgs.split(" "), name)
+    // else if (command === 'enable' && commandArgs === 'correction')
+    //     disableCorrection(message, commandArgs.split(" "), name)
+    // else if (command === 'day' && commandArgs === 'done')
+    //     dayDone(message, commandArgs.split(" "), name)
     else if (command === 'miss')
         await miss(message, commandArgs.split(" "), name)
+    else if (command === 'finish')
+        await c.setDayAsFinished(message, name, discord_id, commandArgs.split(" "));
     // else if (command === 'correction') {
     //     let error = await c.correction(LoginList, commandArgs, discord_id, client);
     //     if (error == 1) {
