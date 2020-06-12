@@ -167,11 +167,9 @@ module.exports = {
 
 
 //TODO
-    setDayAsFinished : async function(message, name, discord_id, argv){
+    setDayAsFinished : async function(message, user, argv){
         let nbDay = argv[0];
         console.log("1");
-        const user = await utils.getUserByDiscordId(discord_id);
-        console.log("2");
 
         const stat = await utils.getStatByLogin(user.login);
         console.log("3");
