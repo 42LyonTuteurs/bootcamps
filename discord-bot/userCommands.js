@@ -149,10 +149,10 @@ async function disableCorrection(message, commandArgs, name) {
 }
 
 async function dayDone(message, commandArgs, name) {
-   // check pending correction
-   // if (pending correction === ok) {
-       // set correction /this set the 2 correctors
+   if (nbOfPendingCorrection(usrCtrl.getUserByLogin(name)) < 2) {
+       // nbOfPendingCorrection
 //    send pending correction
+   }
 
 }
 
@@ -178,13 +178,13 @@ async function userCommands(command, message, commandArgs, name, discord_id, cli
     else if (command === 'list')
         list(message, name, discord_id, commandArgs);
     else if (command === 'enable' && commandArgs == 'correction')
-        enableCorrection(message, commandArgs.split(" "), name)
+        await enableCorrection(message, commandArgs.split(" "), name)
     else if (command === 'enable' && commandArgs == 'correction')
-        disableCorrection(message, commandArgs.split(" "), name)
+        await disableCorrection(message, commandArgs.split(" "), name)
     else if (command === 'day' && commandArgs == 'done')
-        dayDone(message, commandArgs.split(" "), name)
+        await dayDone(message, commandArgs.split(" "), name)
     else if (command === 'miss')
-        miss(message, commandArgs.split(" "), name)
+        await miss(message, commandArgs.split(" "), name)
     // else if (command === 'correction') {
     //     let error = await c.correction(LoginList, commandArgs, discord_id, client);
     //     if (error == 1) {
