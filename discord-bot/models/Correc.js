@@ -26,6 +26,10 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.INTEGER,
             defaultValue: 0,
         },
+        finished_correc: {
+            type: DataTypes.INTEGER,
+            defaultValue: 0,
+        },
         validated_correc: {
             type: DataTypes.INTEGER,
             defaultValue: 0,

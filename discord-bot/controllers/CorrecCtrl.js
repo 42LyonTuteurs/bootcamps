@@ -10,9 +10,9 @@ module.exports = {
         }
     },
 
-    getCorrectionsNotDoneByCorrector : async function(corrector, corrected){
+    getCorrectionsNotDoneByUsers : async function(corrector, corrected){
         try{
-            return await Correc.findAll({where : {corrector_validation: 0, corrector_id: corrector.discord_id, corrected_id: corrected.discord_id}})
+            return await Correc.findAll({where : {finished_correc: 0, corrector_id: corrector.discord_id, corrected_id: corrected.discord_id}})
         } catch (e) {
             i.logs("ERROR : function getCorrectionsNotDoneByCorrector : " + e);
         }
@@ -23,6 +23,54 @@ module.exports = {
             return await Correc.findAll({where : {corrector_id: corrector.discord_id, corrected_id: corrected.discord_id, corrector_validation: 0,}});
         } catch (e) {
             i.logs("ERROR : function getCorrectionsByUsers : " + e);
+        }
+    },
+
+    getCorrectionsNotDoneByUserAsCorrector : async function(user){
+        try{
+            return await Correc.findAll({where : {corrector_validation: 0, corrector_id: user.discord_id}})
+        } catch (e) {
+            i.logs("ERROR : function getCorrectionsNotDoneByCorrector : " + e);
+        }
+    },
+
+    getCorrectionsNotDoneByUserAsCorrected : async function(user){
+        try{
+            return await Correc.findAll({where : {corrected_validation: 0, corrected_id: user.discord_id}})
+        } catch (e) {
+            i.logs("ERROR : function getCorrectionsNotDoneByCorrector : " + e);
+        }
+    },
+
+    getCorrectionsDoneByUserAsCorrector : async function(user){
+        try{
+            return await Correc.findAll({where : {corrector_validation: 1, corrector_id: user.discord_id}})
+        } catch (e) {
+            i.logs("ERROR : function getCorrectionsNotDoneByCorrector : " + e);
+        }
+    },
+
+    getCorrectionsDoneByUserAsCorrected : async function(user){
+        try{
+            return await Correc.findAll({where : {corrected_validation: 1, corrected_id: user.discord_id}})
+        } catch (e) {
+            i.logs("ERROR : function getCorrectionsNotDoneByCorrector : " + e);
+        }
+    },
+
+    getAllCorrectionsByUserAsCorrected : async function(user){
+        try{
+            return await Correc.findAll({where : {corrected_id: user.discord_id}})
+        } catch (e) {
+            i.logs("ERROR : function getAllCorrectionsByUserAsCorrected : " + e);
+        }
+    },
+
+    getAllCorrectionsByUserAsCorrector : async function(user){
+        try{
+            return await Correc.findAll({where : {corrector_id: user.discord_id}})
+        } catch (e) {
+            i.logs("ERROR : function getAllCorrectionsByUserAsCorrector : " + e);
         }
     },
 
