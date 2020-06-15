@@ -48,4 +48,4 @@ const Correc =  sequelize.import('models/Correc');
 // };
 //
 
-module.exports = { Users, Day, Stat, Correc };
+module.exports = { Users, Day, Stat, Correc, sequelize };
