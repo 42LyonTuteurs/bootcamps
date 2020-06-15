@@ -122,14 +122,13 @@ module.exports = {
 
     printInfo : async function(message, login) {
         stat = await this.getStatByLogin(login);
-        // console.log(stat);
-        // console.log(stat.user_id);
+        user = await this.getUserByLogin(login)
         str = "-----------------------------------------\n         __**" + login.toUpperCase() +
         " INFO SHEET**__\n-----------------------------------------\n\n" +
-        "**Expected Mana** : " + stat.days_done * 30 + "\n\n";
-        for (let i = 0; i < 5; i++) {
-            str += await this.DayInfo(stat, i);
-        };
+        "**Expected Mana** : " + stat + "\n\n";
+        // for (let i = 0; i < 5; i++) {
+        //     str += await this.DayInfo(stat, i);
+        // };
         message.channel.send(str);
     },
 

@@ -15,9 +15,6 @@ const faker = require('faker');
 const emoji = require('node-emoji');
 const dateFormat = require('dateformat');
 const PREFIX = ';';
-// const categories = [config.privateChannelCategoryId1, config.privateChannelCategoryId2, config.privateChannelCategoryId3];
-
-// set it to development or production
 const config  = configFile.development
 // Cronjobs
 
