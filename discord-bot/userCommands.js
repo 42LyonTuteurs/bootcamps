@@ -36,7 +36,7 @@ async function createChan(client, name, faker) {
         ],
     })
         .then(r => {
-            r.send("<@" + user.discord_id + ">\n>" + msg.help());
+            r.send("<@" + user.discord_id + ">\n>" + msg.help);
         })
         .catch(console.error);
 }
@@ -151,11 +151,11 @@ function help(message) {
 
 //TODO deja en cour dans correction.js
 async function dayDone(message, commandArgs, user) {
-   if (nbOfPendingCorrection(user) < 2) {
-       // nbOfPendingCorrection
+   if (await utils.nbOfPendingCorrection(user) >= 2) {
+           message.channel.send('First do your corrections already sets');
 //    send pending correction
    } else {
-       await c.setDayAsFinished(message, user, commandArgs.split(" "));
+       await c.setDayAsFinished(message, user, commandArgs);
    }
 
 
@@ -171,11 +171,10 @@ async function miss(message, commandArg, user){
         message.channels.send("please respect the format : \n `;miss <corrector/corrected> <login>`")
 }
 
-
 async function missCorrector(message, user, corrector) {
     const missingUser = corrector
     const corrected = user
-    const correc = await utils.getCorrectionsNotDoneByCorrector(missingUser, corrected)
+    const correc = await utils.getCorrectionsNotDoneByUsers(missingUser, corrected)
     await utils.missCorrector(message, correc, missingUser, corrected);
 }
 
@@ -201,6 +200,8 @@ async function userCommands(command, message, commandArgs, name, discord_id, cli
         list(message, name, discord_id, commandArgs);
     else if (command === 'day' && commandArgs === 'done')
         dayDone(message, commandArgs.split(" "), user)
+    else if (command === 'correc')
+        await utils.correctInfoByUser(message, user)
     else if (command === 'miss')
         await miss(message, commandArgs.split(" "), user)
     // else if (command === 'correction') {
@@ -218,7 +219,7 @@ async function userCommands(command, message, commandArgs, name, discord_id, cli
     else if (command === 'help')
         help(message);
     else {
-        message.channel.send("```" + message.content + " is an unknown function, please try " + PREFIX + "help```")
+        message.channel.send("```" + message.content + " is an unknown function, please try " + i.PREFIX + "help```")
             .then(msg => {
                 msg.delete({timeout: 10000})
             });

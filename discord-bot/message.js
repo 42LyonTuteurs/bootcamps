@@ -1,6 +1,6 @@
 const i = require('./index');
 
-let help = "**Here is your private channel with the bot, please enter here your commands to interract with the bot**" +
+help = "**Here is your private channel with the bot, please enter here your commands to interract with the bot**" +
     "\n\n__**HELP MENU**__\n\n" +
     "You will find all the commands you can use in this discord just behind :\n\n" +
     "**" + i.PREFIX + "subscribe**\n> to subscribe to the bootcamp, a private channel will be created\n\n" +
