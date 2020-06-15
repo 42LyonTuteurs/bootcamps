@@ -34,6 +34,24 @@ async function initCategories(guild) {
             },
         ],
     });
+    // await guild.channels.create("admin-console", {
+    //     type: "text",
+    //     parent: parent_category,
+    //     permissionOverwrites: [
+    //         {
+    //             id: i.config.everyoneRoleId,
+    //             deny: ['VIEW_CHANNEL'],
+    //         },
+    //         {
+    //             id: i.botConfig.admin[0],
+    //             allow: ['VIEW_CHANNEL'],
+    //         },
+    //         {
+    //             id: i.botConfig.admin[1],
+    //             allow: ['VIEW_CHANNEL'],
+    //         },
+    //     ],
+    // });
     // await guild.channels.create("Tips-d00", {
     //     type: "text",
     //     parent: parent_category

@@ -122,14 +122,13 @@ module.exports = {
 
     printInfo : async function(message, login) {
         stat = await this.getStatByLogin(login);
-        // console.log(stat);
-        // console.log(stat.user_id);
+        user = await this.getUserByLogin(login)
         str = "-----------------------------------------\n         __**" + login.toUpperCase() +
         " INFO SHEET**__\n-----------------------------------------\n\n" +
-        "**Expected Mana** : " + stat.days_done * 30 + "\n\n";
-        for (let i = 0; i < 5; i++) {
-            str += await this.DayInfo(stat, i);
-        };
+        "**Expected Mana** : " + stat + "\n\n";
+        // for (let i = 0; i < 5; i++) {
+        //     str += await this.DayInfo(stat, i);
+        // };
         message.channel.send(str);
     },
 
@@ -211,11 +210,30 @@ module.exports = {
         while (list === undefined || list.length === 0){
             list = await statCtrl.getStatCorrection(nbCorrection);
             nbCorrection++;
-            console.log(list.length)
         }
-        // console.log(list[0])
-        list = shuffle(list);
-        return await userCtrl.getUserByDiscordId(list[0].user_id);
+        list = await this.getUserWithMinPendingCorrection(list);
+        console.log(list[0].dataValues);
+        list = await shuffle(list);
+        // console.log(list);
+        return await userCtrl.getUserByDiscordId(list[0].dataValues.discord_id);
+    },
+
+    getUserWithMinPendingCorrection : async function(stats){
+        let list = [];
+        let index = 0
+        let nb_user = 0;
+        while ((list === undefined || list.length === 0) && index < 3){
+            await this.asyncForEach(stats, async (element) =>{
+                let user = await userCtrl.getUserByDiscordId(element.user_id)
+                // console.log(user);
+                if (await this.nbOfPendingCorrection(user) === index) {
+                    list[nb_user] = user;
+                    nb_user++;
+                }
+            })
+            index++;
+        }
+        return list;
     },
 
     printStatByUser : async function(user) {
@@ -419,9 +437,16 @@ module.exports = {
       return await correcCtrl.getCorrectionsByUsers(corrector, corrected);
     },
 
-    getCorrectionsNotDoneByCorrector : async function(corrector, corrected)
+    getCorrectionsNotDoneByUsers : async function(corrector, corrected)
     {
-        return await correcCtrl.getCorrectionsNotDoneByCorrector(corrector, corrected);
+        return await correcCtrl.getCorrectionsNotDoneByUsers(corrector, corrected);
+    },
+
+    getAllCorrectionFromUser : async function(user){
+        let tab = {};
+        tab.append(await correcCtrl.getAllCorrectionsByUserAsCorrected(user))
+        tab.append(await correcCtrl.getAllCorrectionsByUserAsCorrector(user))
+        return tab
     },
 
     getAllCorrection : async function (){
@@ -628,7 +653,7 @@ module.exports = {
         const day = dayCtrl.getDayByDayId(correc.day_id);
         const newCorrector = await this.getRandomForCorrection();
         await this.deleteCorrection(correc);
-        await this.createNewCorrectionByDiscordId(day.day_nb, User.discord_id, newCorrector.discord_id);
+        // await this.createNewCorrectionByDiscordId(day.day_nb, User.discord_id, newCorrector.discord_id);
     },
 
     //TODO
@@ -640,4 +665,85 @@ module.exports = {
         const List = await Users.findAll();
         return await List.map(t => t.dataValues);
     },
+
+    nbOfPendingCorrection : async function(user){
+        const list = await correcCtrl.getAllCorrectionsByUserAsCorrector(user);
+        return list.length;
+    },
+
+    getStatByUser : async function(user){
+        return await statCtrl.getStatByUser(user)
+    },
+
+    getDayByUserAndNbDay : async function(user, nbDay){
+        const day_id = await this.getDayIdByUser(user, nbDay);
+        return await dayCtrl.getDayByDayId(day_id);
+    },
+
+    createCorrection : async function(day, corrected){
+        const corrector = await this.getRandomForCorrection();
+        await correcCtrl.createCorrection(day.day_id, corrector.discord_id, corrected.discord_id);
+    },
+
+    correctedAnnouncement : async function(message, user){
+        const correction = correcCtrl.getCorrectionsDoneByUserAsCorrected(user)
+        // const channel = await this.getLoginChannel(message, user.login)
+        let corrector;
+        let str = ""
+        correction.forEach(element => {
+            corrector = userCtrl.getUserByDiscordId(correction.corrector_id)
+           str += 'you wil be corrected by ' + corrector.login + "\n";
+        })
+        message.channel.send(str);
+    },
+
+    getActualDayByUser : async function(user){
+        const stat = await statCtrl.getStatByUser(user);
+        let tab = [stat.day0_id, stat.day1_id, stat.day2_id, stat.day3_id, stat.day4_id];
+        let result;
+        await this.asyncForEach(tab, async (element) => {
+            console.log(element);
+            let day = await dayCtrl.getDayByDayId(element);
+            console.log(day);
+            if (day.day_done === 0 && result === undefined) {
+                console.log("oui mosieur");
+                result = day;
+            }
+        })
+        return result;
+    },
+
+    correctInfoByUser : async function(message, user){
+        const correctorOn = await correcCtrl.getAllCorrectionsByUserAsCorrector(user);
+        const correctedOn = await correcCtrl.getAllCorrectionsByUserAsCorrected(user);
+        let str ="```";
+        await this.asyncForEach(correctorOn, async (element) =>{
+            let corrected = (await userCtrl.getUserByDiscordId(element.corrected_id)).login;
+            let nbDay = await this.getNbDayFromCorrec(element);
+            str += "You have to correct " + corrected + " on the day " + nbDay + "\n";
+        })
+        await this.asyncForEach(correctedOn, async (element) =>{
+            let corrector = (await userCtrl.getUserByDiscordId(element.corrector_id)).login;
+            let nbDay = await this.getNbDayFromCorrec(element);
+            str += "You have to be corrected by " + corrector + " on the day " + nbDay + "\n";
+        })
+        message.channel.send(str + "```");
+    },
+
+    correcInfo :  async function(message){
+        const correc = await correcCtrl.getAllCorrection();
+        let str ="";
+        await this.asyncForEach(correc, async (element) =>{
+            let corrected = (await userCtrl.getUserByDiscordId(element.corrected_id)).login;
+            let corrector = (await userCtrl.getUserByDiscordId(element.corrector_id)).login;
+            str += "```" + corrected + " is corrected by " + corrector + "\n```"
+        })
+        message.channel.send(str);
+    },
+
+    getNbDayFromCorrec : async function(correc){
+        const day = await dayCtrl.getDayByDayId(correc.day_id);
+        return day.day_nb;
+    },
+
 }

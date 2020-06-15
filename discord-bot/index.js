@@ -15,9 +15,6 @@ const faker = require('faker');
 const emoji = require('node-emoji');
 const dateFormat = require('dateformat');
 const PREFIX = ';';
-// const categories = [config.privateChannelCategoryId1, config.privateChannelCategoryId2, config.privateChannelCategoryId3];
-
-// set it to development or production
 const config  = configFile.development
 // Cronjobs
 
@@ -85,8 +82,8 @@ async function fakerDb()
 {
 	let LoginList = await utils.AllLogin();
 	let userNb = LoginList.length;
-	if (userNb < 2) {
-		for (let i = 0; i < 2; i++) {
+	if (userNb < 4) {
+		for (let i = 0; i < 4; i++) {
 			var user = new User(faker.finance.account(18), faker.name.firstName(undefined).toLowerCase());
 			await utils.addUser(user.id, user.username);
 			await userCmd.createChan(client, user.username, 1)
