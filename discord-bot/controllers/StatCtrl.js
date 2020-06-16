@@ -1,6 +1,6 @@
-const {Stat} = require('../dbObject');
+const {Stat, sequelize} = require('../dbObject');
 const i = require('../index');
-
+const Op = sequelize.Op;
 module.exports = {
 
     createStatByDiscordId : async function(discord_id) {
@@ -83,6 +83,14 @@ module.exports = {
       }  catch (e) {
           i.logs("ERROR : function getStatMinCorrection : " + e);
       }
+    },
+
+    getStatCorrectionWithoutSpecificUser : async function(nbCorrection, user){
+        try{
+            return  await Stat.findAll({where : { correction : nbCorrection, user_id : { [Op.notLike] : user.discord_id}}});
+        }  catch (e) {
+            i.logs("ERROR : function getStatCorrectionWithoutSpecificUser : " + e);
+        }
     },
 
     updateStatStrikeDown : async function(stat){

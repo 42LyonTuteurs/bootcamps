@@ -177,6 +177,10 @@ module.exports = {
         const day = await utils.getActualDayByUser(user);
         console.log(day);
         console.log("3");
+        if (await utils.checkSetedDay(day)) {
+            console.log("le day est déjà set");
+            return 0;
+        }
 
         await utils.createCorrection(day, user);
         console.log("4");
@@ -186,6 +190,8 @@ module.exports = {
 
         await utils.correctedAnnouncement(message, user);
         console.log("6");
+        await utils.daySeted(day);
+        console.log("7");
 
     },
 

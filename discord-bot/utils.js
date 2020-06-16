@@ -216,17 +216,22 @@ module.exports = {
         await this.printStatInChannel(message, stat, login);
     },
 
-    getRandomForCorrection : async  function(){
+    getRandomForCorrection : async  function(user){
         let list;
         let nbCorrection = 0;
         while (list === undefined || list.length === 0){
-            list = await statCtrl.getStatCorrection(nbCorrection);
+            list = await statCtrl.getStatCorrectionWithoutSpecificUser(nbCorrection , user);
             nbCorrection++;
+            console.log("nb correction " + nbCorrection);
         }
-        list = await this.getUserWithMinPendingCorrection(list);
-        console.log(list[0].dataValues);
-        list = await shuffle(list);
         // console.log(list);
+        console.log("ici " + list.length + " ici");
+        list = await this.getUserWithMinPendingCorrection(list);
+        console.log("ici " + list.length + " ici");
+
+        list = await shuffle(list);
+        console.log("ici " + list.length + " ici");
+
         return await userCtrl.getUserByDiscordId(list[0].dataValues.discord_id);
     },
 
@@ -234,7 +239,7 @@ module.exports = {
         let list = [];
         let index = 0
         let nb_user = 0;
-        while ((list === undefined || list.length === 0) && index < 3){
+        while ((list === undefined || list.length === 0)){
             await this.asyncForEach(stats, async (element) =>{
                 let user = await userCtrl.getUserByDiscordId(element.user_id)
                 // console.log(user);
@@ -244,6 +249,7 @@ module.exports = {
                 }
             })
             index++;
+            console.log("oui");
         }
         return list;
     },
@@ -692,27 +698,40 @@ module.exports = {
         return await dayCtrl.getDayByDayId(day_id);
     },
 
-    createCorrection : async function(day, corrected) {
-        const corrector = await this.getRandomForCorrection();
+    createCorrection : async function(day, corrected){
+        const corrector = await this.getRandomForCorrection(corrected);
+        // const list = await statCtrl.getStatCorrectionWithoutSpecificUser(0, corrected);
+        // console.log(list);
         await correcCtrl.createCorrection(day.day_id, corrector.discord_id, corrected.discord_id);
     },
 
-    correctedAnnouncement : async function(message, user) {
+    correctedAnnouncement : async function(message, user){
         const correction = await correcCtrl.getCorrectionsNotDoneByUserAsCorrected(user)
-        // console.log(correction)
         // const channel = await this.getLoginChannel(message, user.login)
         let corrector;
-        let str = ""
-        await this.asyncForEach(correction, async (element) => {
+        let str = "";
+        await this.asyncForEach(correction, async(element) => {
             corrector = await userCtrl.getUserByDiscordId(element.corrector_id)
-            console.log(corrector)
+            // console.log(corrector);
            str += 'you wil be corrected by ' + corrector.login + "\n";
         })
         console.log(str)
         message.channel.send(str);
     },
 
-    getActualDayByUser : async function(user) {
+    daySeted : async function(day){
+        await dayCtrl.updateDaySet(day.day_id, 1);
+    },
+
+    checkSetedDay : async function(day){
+        if (day.day_set === 1) {
+            return true;
+        }
+        return false;
+    },
+
+
+    getActualDayByUser : async function(user){
         const stat = await statCtrl.getStatByUser(user);
         let tab = [stat.day0_id, stat.day1_id, stat.day2_id, stat.day3_id, stat.day4_id];
         let result;
