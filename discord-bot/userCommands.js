@@ -1,5 +1,5 @@
 const utils = require('./utils.js');
-const msg = require('./message')
+const msg = require('./message.js')
 const c = require('./correction.js');
 const i = require('./index');
 const usrCtrl = require('./controllers/UsersCtrl')
@@ -36,7 +36,7 @@ async function createChan(client, name, faker) {
         ],
     })
         .then(r => {
-            r.send("<@" + user.discord_id + ">\n>" + msg.help);
+            r.send("<@" + user.discord_id + ">\n" + msg.help);
         })
         .catch(console.error);
 }
@@ -137,7 +137,7 @@ async function info(message, argv, name)
 }
 
 function help(message) {
-    message.channel.send(msg.help());
+    message.channel.send(msg.help);
 }
 
 // async function enableCorrection(message, commandArgs, name) {
@@ -157,11 +157,9 @@ async function dayDone(message, commandArgs, user) {
    } else {
        await c.setDayAsFinished(message, user, commandArgs);
    }
-
-
 }
 
-async function miss(message, commandArg, user){
+async function miss(message, commandArg, user) {
     other = usrCtrl.getUserByLogin(commandArg[1])
     if (commandArg[0] === 'corrector')
         await missCorrector(message, user, other)
@@ -185,9 +183,47 @@ async function missCorrected(message, user, corrected) {
     await utils.missCorrected(message, correc, missingUser, corrector);
 }
 
+async function getCorrections(message, user) {
+    message.channel.send(await utils.correctInfoByUser(message, user))
+}
+
+async function corrected(message, commandArgs, user) {
+    let userCorrected = await utils.getUserByLogin(commandArgs[1])
+    if (!userCorrected) {
+        await utils.error("could not find this user", user)
+        return;
+    }
+    let dayNb = commandArgs[1];
+    if (0 <= dayNb <= 4) {
+        await utils.error(message, "could not find this user", user)
+        return;
+    }
+    let correction = await utils.getCorrectionsByUsers(user, userCorrected)
+    if (!correction)
+        await utils.error(message, "No matching corrections found", user)
+    console.log(correction)
+//  @jdarko Update Correction
+}
+
+async function validate(message, commandArgs, user) {
+
+    console.log(commandArgs)
+    // console.log(user)
+    let userCorrector = await utils.getUserByLogin(commandArgs[0])
+    if (!userCorrector) {
+        await utils.error(message, "could not find this user", user)
+        return;
+    }
+    let correction = await utils.getCorrectionsByUsers(userCorrector, user)
+    if (!correction)
+        await utils.error(message, "No matching corrections found", user)
+    console.log(correction)
+    //  @jdarko Update Correction
+}
+
 async function userCommands(command, message, commandArgs, name, discord_id, client) {
     const LoginList = await utils.AllLogin();
-    const user = await usrCtrl.getUserByLogin(name)
+    const user = await usrCtrl.getUserByLogin(name);
     if (command === 'subscribe')
         subscribe(client, name, message);
     else if (command === 'info')
@@ -199,11 +235,17 @@ async function userCommands(command, message, commandArgs, name, discord_id, cli
     else if (command === 'list')
         list(message, name, discord_id, commandArgs);
     else if (command === 'day' && commandArgs === 'done')
-        dayDone(message, commandArgs.split(" "), user)
+        dayDone(message, commandArgs.split(" "), user);
     else if (command === 'correc')
-        await utils.correctInfoByUser(message, user)
+        await utils.correctInfoByUser(message, user);
     else if (command === 'miss')
-        await miss(message, commandArgs.split(" "), user)
+        await miss(message, commandArgs.split(" "), user);
+    else if (command === 'get' && commandArgs === 'corrections')
+        await getCorrections(message, user);
+    else if (command === 'corrected')
+        await corrected(message, commandArgs.split(" "), user);
+    else if (command === 'validate')
+        await validate(message, commandArgs.split(" "), user);
     // else if (command === 'correction') {
     //     let error = await c.correction(LoginList, commandArgs, discord_id, client);
     //     if (error == 1) {
@@ -219,6 +261,7 @@ async function userCommands(command, message, commandArgs, name, discord_id, cli
     else if (command === 'help')
         help(message);
     else {
+        console.log("ntm")
         message.channel.send("```" + message.content + " is an unknown function, please try " + i.PREFIX + "help```")
             .then(msg => {
                 msg.delete({timeout: 10000})

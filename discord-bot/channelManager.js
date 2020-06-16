@@ -1,7 +1,6 @@
 const i = require('./index');
 
 async function initCategories(guild) {
-    // logs("Categories not found, creating it")
     let parent_category;
     await guild.channels.create("Bootcamp", {
         type: "category",
@@ -17,6 +16,24 @@ async function initCategories(guild) {
         parent: parent_category
     });
     await guild.channels.create("logs", {
+        type: "text",
+        parent: parent_category,
+        permissionOverwrites: [
+            {
+                id: i.config.everyoneRoleId,
+                deny: ['VIEW_CHANNEL'],
+            },
+            {
+                id: i.botConfig.admin[0],
+                allow: ['VIEW_CHANNEL'],
+            },
+            {
+                id: i.botConfig.admin[1],
+                allow: ['VIEW_CHANNEL'],
+            },
+        ],
+    });
+    await guild.channels.create("admin-console", {
         type: "text",
         parent: parent_category,
         permissionOverwrites: [

@@ -42,6 +42,14 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING,
             defaultValue: null,
         },
+        mana: {
+            type: DataTypes.INTEGER,
+            defaultValue: 0,
+        },
+        mana_june: {
+            type: DataTypes.INTEGER,
+            defaultValue: 0,
+        },
     }, {
         timestamps: false,
     });
