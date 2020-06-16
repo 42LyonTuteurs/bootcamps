@@ -8,3 +8,5 @@ day02.pdf
 day03.pdf
 day04.pdf
 /node_modules
+app.log
+database.sqlite

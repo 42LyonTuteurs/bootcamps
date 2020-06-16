@@ -44,7 +44,7 @@ module.exports = {
 
     getCorrectionsDoneByUserAsCorrector : async function(user){
         try{
-            return await Correc.findAll({where : {corrector_validation: 1, corrector_id: user.discord_id}})
+            return await Correc.findAll({where : {corrector_validation: 0, corrector_id: user.discord_id}})
         } catch (e) {
             i.logs("ERROR : function getCorrectionsNotDoneByCorrector : " + e);
         }
