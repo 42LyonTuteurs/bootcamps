@@ -1,4 +1,5 @@
 const {Correc} = require('../dbObject');
+const { Op } = require("sequelize");
 const i = require('../index');
 
 module.exports = {
@@ -58,7 +59,7 @@ module.exports = {
         }
     },
 
-    getAllCorrectionsByUserAsCorrected : async function(user){
+    getAllCorrectionsByUserAsCorrected : async function(user) {
         try{
             return await Correc.findAll({where : {corrected_id: user.discord_id}})
         } catch (e) {
@@ -66,7 +67,7 @@ module.exports = {
         }
     },
 
-    getAllCorrectionsByUserAsCorrector : async function(user){
+    getAllCorrectionsByUserAsCorrector : async function(user) {
         try{
             return await Correc.findAll({where : {corrector_id: user.discord_id}})
         } catch (e) {
@@ -74,13 +75,30 @@ module.exports = {
         }
     },
 
-    getAllCorrection : async function(){
+    getAllCorrection : async function() {
         try {
             return await Correc.findAll();
 
         } catch (e) {
             i.logs("ERROR : function getCorrectionsByUsers : " + e);
         }
+    },
+
+    getDayCorrections : async function(dayId, user) {
+        try {
+            return await Correc.findAll({where: {
+                    day_id: dayId,
+                    corrected_id: user.discord_id,
+                    [Op.or]: [{corrector_validation}, {corrected_validation}]
+
+                }})
+        } catch (e) {
+            i.logs("ERROR : function getCorrectionByDayId : " + e);
+        }
+    },
+
+    getCorrectionByCorrector : async function() {
+
     },
 
     //no necessary

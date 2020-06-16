@@ -1,7 +1,6 @@
 const utils = require('./utils.js');
 const msg = require('./message')
 const i = require('./index');
-const msg = require('./message')
 var userCtrl = require("./controllers/UsersCtrl")
 const { Users, Stat, Day } = require('./dbObject');
 
