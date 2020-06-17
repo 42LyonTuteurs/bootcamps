@@ -197,7 +197,7 @@ async function corrected(message, commandArgs, user) {
     }
     console.log("0")
     if (!commandArgs[1]) {
-        await utils.error("please give me the mark : \n`;corrected " + userCorrected.login + " <done/outstanding>`", user)
+        await utils.error("please give me the mark : \n`;corrected " + userCorrected.login + " <notValidated/done/outstanding>`", user)
         return;
     }
     console.log(userCorrected.login)
@@ -209,6 +209,7 @@ async function corrected(message, commandArgs, user) {
     console.log(correction)
     let day = await utils.getDayByDayId(correction[0].day_id)
     let day_id = day.day_id;
+    console.log("day_id : " + day_id)
     console.log("2")
     await utils.updateCorrectorValidation(day_id)
     if (commandArgs[1] == "done") {
@@ -217,7 +218,7 @@ async function corrected(message, commandArgs, user) {
         await utils.updateValidatedCorrection(day_id)
         await utils.updateOutstanding(day_id)
     }
-    await utils.checkDayValidated(message, day_id, user, userCorrected)
+    await utils.checkDayFinished(message, day_id, user, userCorrected)
 
 }
 
@@ -233,6 +234,7 @@ async function validate(message, commandArgs, user) {
     let day = await utils.getDayByDayId(correction[0].day_id)
     let day_id = day.day_id;
     await utils.updateCorrectedValidation(day_id)
+    await utils.checkDayFinished(message, day_id, userCorrector, user)
 }
 
 async function userCommands(command, message, commandArgs, name, discord_id, client) {
@@ -275,7 +277,6 @@ async function userCommands(command, message, commandArgs, name, discord_id, cli
     else if (command === 'help')
         help(message);
     else {
-        // console.log("ntm")
         message.channel.send("```" + message.content + " is an unknown function, please try " + i.PREFIX + "help```")
             .then(msg => {
                 msg.delete({timeout: 10000})
