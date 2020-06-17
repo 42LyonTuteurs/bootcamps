@@ -82,8 +82,8 @@ async function fakerDb()
 {
 	let LoginList = await utils.AllLogin();
 	let userNb = LoginList.length;
-	if (userNb < 2) {
-		for (let i = 0; i < 2; i++) {
+	if (userNb < 5) {
+		for (let i = 0; i < 5; i++) {
 			var user = new User(faker.finance.account(18), faker.name.firstName(undefined).toLowerCase());
 			await utils.addUser(user.id, user.username);
 			await userCmd.createChan(client, user.username, 1)
