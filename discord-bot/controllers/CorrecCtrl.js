@@ -173,4 +173,23 @@ module.exports = {
       }
     },
 
+    getMark : async function(day_id, corrector) {
+        try {
+            let correction = await Correc.findOne({
+                where : {
+                    corrector_id: corrector.discord_id,
+                    day_id: dayId
+                }
+            })
+            if (correction.outstanding)
+                return 45
+            else if (correction.validated_correc)
+                return 35
+            else
+                return 0
+        } catch (e) {
+            i.logs("ERROR : function getMark : " + e);
+        }
+    }
+
 }

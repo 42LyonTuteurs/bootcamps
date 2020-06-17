@@ -87,15 +87,17 @@ module.exports = {
         return await correcCtrl.updateOutstanding(day_id)
     },
     checkDayFinished : async function(message, day_id, corrector, corrected) {
-        let correction = correcCtrl.getCorrectionByDayId(day_id, corrector)
+        let correction = await correcCtrl.getCorrectionByDayId(day_id, corrector)
         if (correction.corrected_validation && correction.corrector_validation) {
             await this.updateFinishedCorrection(day_id)
-            await this.gainMana(message, corrector, 5)
+            manaEarn = await correcCtrl.getMark(day_id, corrector)
+            console.log(manaEarn)
+            await this.gainMana(message, corrector, manaEarn)
         }
     },
-    checkDayCorrected : async function(message, user) {
-
-    }
+    // checkDayCorrected : async function(message, user) {
+    //
+    // },
     //CHECK ------------------------------------------------------------
     // All : async function() {
     //     try {
