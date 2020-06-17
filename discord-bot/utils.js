@@ -69,6 +69,33 @@ module.exports = {
     getUserByDiscordId : async function(discord_id){
         return await userCtrl.getUserByDiscordId(discord_id);
     },
+
+
+    updateCorrectedValidation : async function(day_id) {
+        return await correcCtrl.updateCorrectedValidation(day_id)
+    },
+    updateFinishedCorrection : async function(day_id) {
+        return await correcCtrl.updateFinishedCorrection(day_id)
+    },
+    updateCorrectorValidation : async function(day_id) {
+        return await correcCtrl.updateCorrectorValidation(day_id)
+    },
+    updateValidatedCorrection : async function(day_id) {
+        return await correcCtrl.updateValidatedCorrection(day_id)
+    },
+    updateOutstanding : async function(day_id) {
+        return await correcCtrl.updateOutstanding(day_id)
+    },
+    checkDayFinished : async function(message, day_id, corrector, corrected) {
+        let correction = correcCtrl.getCorrectionByDayId(day_id, corrector)
+        if (correction.corrected_validation && correction.corrector_validation) {
+            await this.updateFinishedCorrection(day_id)
+            await this.gainMana(message, corrector, 5)
+        }
+    },
+    checkDayCorrected : async function(message, user) {
+
+    }
     //CHECK ------------------------------------------------------------
     // All : async function() {
     //     try {
@@ -127,9 +154,9 @@ module.exports = {
         " INFO SHEET**__\n-----------------------------------------\n\n" +
         "**Expected Mana** : " + stat.mana + "\n\n";
         str += await this.pendingCorrectInfoByUser(message, user);
-        for (let i = 0; i < 1; i++) {
-            str += await this.DayInfo(stat, i, user);
-        };
+        // for (let i = 0; i < 1; i++) {
+        //     str += await this.DayInfo(stat, i, user);
+        // };
         message.channel.send(str);
     },
 
@@ -595,11 +622,12 @@ module.exports = {
         }
     },
 
-    getLoginChannel: async function(message, login) {
-        message.channels.cache.forEach(element => {
-            if (element.name == "bootcamp-" + login)
-                return element
-        });
+    sendInLoginChannel: function(login, str) {
+        i.client.channels.cache.forEach(element => {
+            if (element.name == "bootcamp-" + login) {
+                element.send(str)
+            }
+        })
     },
 
     checkTimestamps : async function(correc){
@@ -646,7 +674,6 @@ module.exports = {
             return true;
         return false;
     },
-
 
     //TODO only modify str
     setMissing : async function(message, missingUser) {
@@ -730,10 +757,6 @@ module.exports = {
         return false;
     },
 
-<<<<<<< HEAD
-
-=======
->>>>>>> master
     getActualDayByUser : async function(user){
         const stat = await statCtrl.getStatByUser(user);
         let tab = [stat.day0_id, stat.day1_id, stat.day2_id, stat.day3_id, stat.day4_id];
@@ -799,15 +822,19 @@ module.exports = {
         const day = await dayCtrl.getDayByDayId(correc.day_id);
         return day.day_nb;
     },
-<<<<<<< HEAD
 
-    error : async function(message, str, user) {
-        console.log(user.login)
-        let channel = await this.getLoginChannel(message, user.login)
-        console.log(channel)
-        channel.send(message)
-        i.logs(message, user.login)
+    error : async function(str, user) {
+        this.sendInLoginChannel(user.login, str)
+        i.logs(str, user.login)
     },
-=======
->>>>>>> master
+
+    gainMana : async function(message, user, manaGain) {
+        var d = new Date()
+        stat = await this.getStatByUser(user)
+        await statCtrl.updateStatMana(stat, manaGain)
+        if (d.getMonth() == 6)
+            await statCtrl.updateStatMana(stat, manaGain)
+        stat = await this.getStatByUser(user)
+        await this.sendInLoginChannel(user.login, "You earned " + manaGain + ". You are now at " + stat.mana + " total mana")
+    }
 }
