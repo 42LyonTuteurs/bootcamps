@@ -160,7 +160,7 @@ async function dayDone(message, commandArgs, user) {
 }
 
 async function miss(message, commandArg, user) {
-    other = usrCtrl.getUserByLogin(commandArg[1])
+    const other = await usrCtrl.getUserByLogin(commandArg[1])
     if (commandArg[0] === 'corrector')
         await missCorrector(message, user, other)
     else if (commandArg[0] === 'corrected')
@@ -236,8 +236,8 @@ async function userCommands(command, message, commandArgs, name, discord_id, cli
         list(message, name, discord_id, commandArgs);
     else if (command === 'day' && commandArgs === 'done')
         dayDone(message, commandArgs.split(" "), user);
-    else if (command === 'correc')
-        await utils.correctInfoByUser(message, user);
+    // else if (command === 'correc')
+    //     await utils.correctInfoByUser(message, user);
     else if (command === 'miss')
         await miss(message, commandArgs.split(" "), user);
     else if (command === 'get' && commandArgs === 'corrections')
@@ -261,7 +261,7 @@ async function userCommands(command, message, commandArgs, name, discord_id, cli
     else if (command === 'help')
         help(message);
     else {
-        console.log("ntm")
+        // console.log("ntm")
         message.channel.send("```" + message.content + " is an unknown function, please try " + i.PREFIX + "help```")
             .then(msg => {
                 msg.delete({timeout: 10000})
