@@ -173,9 +173,6 @@ module.exports = {
 
         // const stat = await utils.getStatByUser(user);
         console.log("2");
-
-
-
         // const day =  await utils.getDayByUserAndNbDay(user, nbDay);
         const day = await utils.getActualDayByUser(user);
         console.log(day);

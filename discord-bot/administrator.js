@@ -1,7 +1,6 @@
 const utils = require('./utils.js');
-const usrCmd = require('./userCommands')
-const i = require('./index');
 const msg = require('./message')
+const i = require('./index');
 var userCtrl = require("./controllers/UsersCtrl")
 const { Users, Stat, Day } = require('./dbObject');
 
@@ -258,6 +257,6 @@ module.exports = {
                 await this.adminHelp(message);
         }
         else
-            usrCmd.help(message);
+            msg.help(message);
     }
 }

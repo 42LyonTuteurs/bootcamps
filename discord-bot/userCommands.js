@@ -1,5 +1,5 @@
 const utils = require('./utils.js');
-const msg = require('./message')
+const msg = require('./message.js')
 const c = require('./correction.js');
 const i = require('./index');
 const usrCtrl = require('./controllers/UsersCtrl')
@@ -36,7 +36,7 @@ async function createChan(client, name, faker) {
         ],
     })
         .then(r => {
-            r.send("<@" + user.discord_id + ">\n>" + msg.help);
+            r.send("<@" + user.discord_id + ">\n" + msg.help);
         })
         .catch(console.error);
 }
@@ -137,7 +137,7 @@ async function info(message, argv, name)
 }
 
 function help(message) {
-    message.channel.send(msg.help());
+    message.channel.send(msg.help);
 }
 
 // async function enableCorrection(message, commandArgs, name) {
@@ -157,11 +157,9 @@ async function dayDone(message, commandArgs, user) {
    } else {
        await c.setDayAsFinished(message, user, commandArgs);
    }
-
-
 }
 
-async function miss(message, commandArg, user){
+async function miss(message, commandArg, user) {
     other = usrCtrl.getUserByLogin(commandArg[1])
     if (commandArg[0] === 'corrector')
         await missCorrector(message, user, other)
@@ -185,9 +183,63 @@ async function missCorrected(message, user, corrected) {
     await utils.missCorrected(message, correc, missingUser, corrector);
 }
 
+async function getCorrections(message, user) {
+    message.channel.send(await utils.correctInfoByUser(message, user))
+}
+
+async function corrected(message, commandArgs, user) {
+
+    let userCorrected = await utils.getUserByLogin(commandArgs[0])
+    // console.log(userCorrected)
+    if (!userCorrected) {
+        await utils.error("could not find this user", user)
+        return;
+    }
+    console.log("0")
+    if (!commandArgs[1]) {
+        await utils.error("please give me the mark : \n`;corrected " + userCorrected.login + " <notValidated/done/outstanding>`", user)
+        return;
+    }
+    console.log(userCorrected.login)
+    console.log(user.login)
+    let correction = await utils.getCorrectionsNotDoneByUsers(user, userCorrected)
+    if (!correction)
+        await utils.error("No matching corrections found", user)
+    console.log("1")
+    console.log(correction)
+    let day = await utils.getDayByDayId(correction[0].day_id)
+    let day_id = day.day_id;
+    console.log("day_id : " + day_id)
+    console.log("2")
+    await utils.updateCorrectorValidation(day_id)
+    if (commandArgs[1] == "done") {
+        await utils.updateValidatedCorrection(day_id)
+    } else {
+        await utils.updateValidatedCorrection(day_id)
+        await utils.updateOutstanding(day_id)
+    }
+    await utils.checkDayFinished(message, day_id, user, userCorrected)
+
+}
+
+async function validate(message, commandArgs, user) {
+    let userCorrector = await utils.getUserByLogin(commandArgs[0])
+    if (!userCorrector) {
+        await utils.error("could not find this user", user)
+        return;
+    }
+    let correction = await utils.getCorrectionsNotDoneByUsers(userCorrector, user)
+    if (!correction)
+        await utils.error("No matching corrections found", user)
+    let day = await utils.getDayByDayId(correction[0].day_id)
+    let day_id = day.day_id;
+    await utils.updateCorrectedValidation(day_id)
+    await utils.checkDayFinished(message, day_id, userCorrector, user)
+}
+
 async function userCommands(command, message, commandArgs, name, discord_id, client) {
     const LoginList = await utils.AllLogin();
-    const user = await usrCtrl.getUserByLogin(name)
+    const user = await usrCtrl.getUserByLogin(name);
     if (command === 'subscribe')
         subscribe(client, name, message);
     else if (command === 'info')
@@ -199,11 +251,17 @@ async function userCommands(command, message, commandArgs, name, discord_id, cli
     else if (command === 'list')
         list(message, name, discord_id, commandArgs);
     else if (command === 'day' && commandArgs === 'done')
-        dayDone(message, commandArgs.split(" "), user)
+        dayDone(message, commandArgs.split(" "), user);
     else if (command === 'correc')
-        await utils.correctInfoByUser(message, user)
+        await utils.correctInfoByUser(message, user);
     else if (command === 'miss')
-        await miss(message, commandArgs.split(" "), user)
+        await miss(message, commandArgs.split(" "), user);
+    else if (command === 'get' && commandArgs === 'corrections')
+        await getCorrections(message, user);
+    else if (command === 'corrected')
+        await corrected(message, commandArgs.split(" "), user);
+    else if (command === 'validate')
+        await validate(message, commandArgs.split(" "), user);
     // else if (command === 'correction') {
     //     let error = await c.correction(LoginList, commandArgs, discord_id, client);
     //     if (error == 1) {
