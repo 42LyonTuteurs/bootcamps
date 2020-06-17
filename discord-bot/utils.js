@@ -719,7 +719,7 @@ module.exports = {
         message.channel.send(str);
     },
 
-    daySeted : async function(day){
+    daySeted : async function(day) {
         await dayCtrl.updateDaySet(day.day_id, 1);
     },
 
@@ -730,7 +730,10 @@ module.exports = {
         return false;
     },
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> master
     getActualDayByUser : async function(user){
         const stat = await statCtrl.getStatByUser(user);
         let tab = [stat.day0_id, stat.day1_id, stat.day2_id, stat.day3_id, stat.day4_id];
@@ -796,6 +799,7 @@ module.exports = {
         const day = await dayCtrl.getDayByDayId(correc.day_id);
         return day.day_nb;
     },
+<<<<<<< HEAD
 
     error : async function(message, str, user) {
         console.log(user.login)
@@ -804,4 +808,6 @@ module.exports = {
         channel.send(message)
         i.logs(message, user.login)
     },
+=======
+>>>>>>> master
 }
