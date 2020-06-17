@@ -82,8 +82,8 @@ async function fakerDb()
 {
 	let LoginList = await utils.AllLogin();
 	let userNb = LoginList.length;
-	if (userNb < 5) {
-		for (let i = 0; i < 5; i++) {
+	if (userNb < 2) {
+		for (let i = 0; i < 2; i++) {
 			var user = new User(faker.finance.account(18), faker.name.firstName(undefined).toLowerCase());
 			await utils.addUser(user.id, user.username);
 			await userCmd.createChan(client, user.username, 1)
@@ -166,5 +166,6 @@ client.on('message', async message => {
 exports.PREFIX = PREFIX;
 exports.config = config;
 exports.botConfig = botConfig;
+exports.client = client;
 module.exports.logs = logs;
 client.login(botConfig.token);
