@@ -56,4 +56,11 @@ module.exports = {
             i.logs("ERROR : function updateDayOutstanding : " + e);
         }
     },
+    updateDayOutstanding : async function (day_id) {
+        try{
+            await Day.update({ outstanding_day: 1 }, { where: { day_id: day_id } });
+        } catch (e) {
+            i.logs("ERROR : function updateDayOutstanding : " + e);
+        }
+    },
 }

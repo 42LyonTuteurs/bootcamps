@@ -59,6 +59,15 @@ module.exports = {
             }
     },
 
+    updateStatMana : async function (stat, gainMana) {
+        if (stat != null)
+            try{
+                await Stat.update({ mana: stat.mana + gainMana }, { where: { user_id: stat.user_id } });
+            } catch (e) {
+                i.logs("ERROR : function updateStatDaysDone : " + e);
+            }
+    },
+
     updateStatDaysOutstanding : async function (stat) {
         if (stat != null)
             try{
