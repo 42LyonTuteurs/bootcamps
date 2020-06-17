@@ -125,7 +125,7 @@ module.exports = {
         user = await this.getUserByLogin(login)
         str = "-----------------------------------------\n         __**" + login.toUpperCase() +
         " INFO SHEET**__\n-----------------------------------------\n\n" +
-        "**Expected Mana** : " + stat + "\n\n";
+        "**Expected Mana** : " + stat.mana + "\n\n";
         // for (let i = 0; i < 5; i++) {
         //     str += await this.DayInfo(stat, i);
         // };
@@ -706,7 +706,7 @@ module.exports = {
         message.channel.send(str);
     },
 
-    daySeted : async function(day){
+    daySeted : async function(day) {
         await dayCtrl.updateDaySet(day.day_id, 1);
     },
 
@@ -717,8 +717,7 @@ module.exports = {
         return false;
     },
 
-
-        getActualDayByUser : async function(user){
+    getActualDayByUser : async function(user){
         const stat = await statCtrl.getStatByUser(user);
         let tab = [stat.day0_id, stat.day1_id, stat.day2_id, stat.day3_id, stat.day4_id];
         let result;
@@ -766,5 +765,4 @@ module.exports = {
         const day = await dayCtrl.getDayByDayId(correc.day_id);
         return day.day_nb;
     },
-
 }
