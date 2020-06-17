@@ -95,7 +95,7 @@ module.exports = {
     },
     checkDayCorrected : async function(message, user) {
 
-    }
+    },
     //CHECK ------------------------------------------------------------
     // All : async function() {
     //     try {
@@ -249,7 +249,7 @@ module.exports = {
         while (list === undefined || list.length === 0){
             list = await statCtrl.getStatCorrectionWithoutSpecificUser(nbCorrection , user);
             nbCorrection++;
-            console.log("nb correction " + nbCorrection);
+            console.log(" yes nb correction " + nbCorrection);
         }
         // console.log(list);
         console.log("ici " + list.length + " ici");
@@ -646,11 +646,13 @@ module.exports = {
         else
             console.log("TODO");
 
-        if (await this.checkTimestamps(correction)){
+        // if (await this.checkTimestamps(correction)){
             await this.setMissing(message, missingUser);
-            await this.resetCorrection(correction, corrected);
-        } else
-            console.log("tu dois attendre 24h mec");
+            const day =await dayCtrl.getDayByDayId(correction.day_id);
+            await this.createCorrection(day, corrected);
+            await correcCtrl.destroyCorrection(correction.correc_id);
+        // } else
+        //     console.log("tu dois attendre 24h mec");
 
     },
 
@@ -679,7 +681,6 @@ module.exports = {
     setMissing : async function(message, missingUser) {
         const stat = await statCtrl.getStatByUser(missingUser);
         let str;
-        const channel = await this.getLoginChannel(message, missingUser.login)
         await statCtrl.updateStatStrikeDown(stat);
         if (await this.checkStrike(stat)) {
             //unsubscribe the missingUser
@@ -687,19 +688,19 @@ module.exports = {
         } else {
             str = "Someone says that you were missing for your correction, you still " + missingUser.strike + " warnings before be kicked from the bootcamp"
         }
-        channel.send(str);
+        await this.sendInLoginChannel(missingUser.login, str);
     },
 
-    //TODO
-    resetCorrection : async function(correc, User) {
-        //
-        //    # This function set another correction for the user argument
-        //delete old correction
-        const day = dayCtrl.getDayByDayId(correc.day_id);
-        const newCorrector = await this.getRandomForCorrection();
-        await this.deleteCorrection(correc);
-        // await this.createNewCorrectionByDiscordId(day.day_nb, User.discord_id, newCorrector.discord_id);
-    },
+    //
+    // resetCorrection : async function(correc, User) {
+    //     //
+    //     //    # This function set another correction for the user argument
+    //     //delete old correction
+    //     const day = dayCtrl.getDayByDayId(correc.day_id);
+    //     const newCorrector = await this.getRandomForCorrection();
+    //     await this.deleteCorrection(correc);
+    //     // await this.createNewCorrectionByDiscordId(day.day_nb, User.discord_id, newCorrector.discord_id);
+    // },
 
     //TODO
     deleteCorrection : async function(correc){
@@ -727,8 +728,6 @@ module.exports = {
 
     createCorrection : async function(day, corrected){
         const corrector = await this.getRandomForCorrection(corrected);
-        // const list = await statCtrl.getStatCorrectionWithoutSpecificUser(0, corrected);
-        // console.log(list);
         await correcCtrl.createCorrection(day.day_id, corrector.discord_id, corrected.discord_id);
     },
 
