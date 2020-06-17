@@ -175,6 +175,9 @@ module.exports = {
         console.log("2");
         // const day =  await utils.getDayByUserAndNbDay(user, nbDay);
         const day = await utils.getActualDayByUser(user);
+        if (day === undefined){
+            console.log("tout les days sont déjà sets");
+        }
         console.log(day);
         console.log("3");
         if (await utils.checkSetedDay(day)) {

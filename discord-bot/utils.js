@@ -762,9 +762,9 @@ module.exports = {
         let tab = [stat.day0_id, stat.day1_id, stat.day2_id, stat.day3_id, stat.day4_id];
         let result;
         await this.asyncForEach(tab, async (element) => {
-            console.log(element);
+            // console.log(element);
             let day = await dayCtrl.getDayByDayId(element);
-            console.log(day);
+            // console.log(day);
             if (day.day_done === 0 && result === undefined) {
                 console.log("oui mosieur");
                 result = day;
