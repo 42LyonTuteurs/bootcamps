@@ -253,10 +253,73 @@ module.exports = {
             else if (argv[0] === 'allWithMana' && login) {
                 await utils.allwithMana(message, argv[1]);
             }
+            //
+                //
+                // FOR TESTING
+                //
+            else if (argv[0] === 'forceValidate' && login) {
+                await this.forceValCorrection(message, argv);
+            }
+            else if (argv[0] === 'forceCorrect' && login) {
+                await this.forceCorrecCorrection(message, argv);
+            }
             else
                 await this.adminHelp(message);
         }
         else
             msg.help(message);
+    },
+
+    forceValCorrection: async function(message, argv){
+        let me = argv[1];
+        let other = argv[2];
+
+        let user = await utils.getUserByLogin(me)
+        let userCorrector = await utils.getUserByLogin(other)
+        if (!userCorrector)
+            return await utils.error("could not find this user", user);
+        // let correction = await utils.getCorrectionsNotDoneByUsers(userCorrector, user)
+        let correction = await utils.getCorrectionsByUsers(userCorrector, user)
+
+        if (!correction)
+            return await utils.error("No matching corrections found", user);
+        let day = await utils.getDayByDayId(correction[0].day_id)
+        let day_id = day.day_id;
+        await utils.updateCorrectedValidation(day_id)
+        await utils.checkDayFinished(message, day_id, userCorrector, user)
+    },
+
+    forceCorrecCorrection: async function(message, argv){
+        let me = argv[1];
+        let other = argv[2];
+        let mark = argv[3];
+
+        console.log(me)
+        console.log(other)
+        console.log(mark)
+        let user = await utils.getUserByLogin(me)
+        let userCorrected = await utils.getUserByLogin(other)
+        if (!userCorrected)
+            return await utils.error("could not find this user", user);
+        if (!mark)
+            return await utils.error("please give me the mark : \n`;corrected " + userCorrected.login + " <notValidated/done/outstanding>`", user);
+        // let correction = await utils.getCorrectionsNotDoneByUsers(user, userCorrected)
+        let correction = await utils.getCorrectionsByUsers(user, userCorrected)
+        if (!correction)
+            return await utils.error("No matching corrections found", user)
+        // console.log(correction);
+        let day = await utils.getDayByDayId(correction[0].day_id)
+        let day_id = day.day_id;
+        await utils.updateCorrectorValidation(day_id)
+        if (mark === "done") {
+            await utils.updateValidatedCorrection(day_id)
+        } else if (mark === "outstanding") {
+            await utils.updateValidatedCorrection(day_id)
+            await utils.updateOutstanding(day_id)
+        } else
+            return await utils.error("please give me the mark : \n`;corrected " + userCorrected.login + " <notValidated/done/outstanding>`", user);
+
+        await utils.checkDayFinished(message, day_id, user, userCorrected)
     }
+
 }

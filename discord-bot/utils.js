@@ -87,7 +87,7 @@ module.exports = {
         return await correcCtrl.updateOutstanding(day_id)
     },
     checkDayFinished : async function(message, day_id, corrector, corrected) {
-        let correction = await correcCtrl.getCorrectionByDayId(day_id, corrector)
+        let correction = await correcCtrl.getCorrectionByDayIdAndCorrector(day_id, corrector)
         if (correction.corrected_validation && correction.corrector_validation) {
             await this.updateFinishedCorrection(day_id)
             manaEarn = await correcCtrl.getMark(day_id, corrector)
@@ -338,9 +338,11 @@ module.exports = {
             day = await this.getDayByDayId(stat.day3_id);
             str+= await this.daysToString(day);
             day = await this.getDayByDayId(stat.day4_id);
-            str+= await this.daysToString(day) + "```";
+            str+= await this.daysToString(day) + "``` \n";
+
 
             message.channel.send(str);
+            await this.getCorrecInfoFromUser(message, user)
         }
     },
 
@@ -688,7 +690,7 @@ module.exports = {
             //unsubscribe the missingUser
             str = "R.I.P in peace"
         } else {
-            str = "Someone says that you were missing for your correction, you still " + missingUser.strike + " warnings before be kicked from the bootcamp"
+            str = "Someone says that you were missing for your correction, you still " + stat.strike - 1 + " warnings before be kicked from the bootcamp"
         }
         await this.sendInLoginChannel(missingUser.login, str);
     },
@@ -808,15 +810,45 @@ module.exports = {
         return str
     },
 
-    correcInfo :  async function(message) {
+    getCorrecInfoFromUser : async function(message, user){
+        const stat = await statCtrl.getStatByUser(user);
+        const tab = [stat.day0_id, stat.day1_id, stat.day2_id, stat.day3_id, stat.day4_id];
+        for(const day_id of tab){
+            console.log(day_id)
+            for(const correc of (await correcCtrl.getCorrectionsByDayId(day_id))){
+                console.log(correc)
+                 message.channel.send(await this.correcInfo(correc));
+            }
+        }
+    },
+
+    allCorrecInfo :  async function(message) {
         const correc = await correcCtrl.getAllCorrection();
         let str ="";
         await this.asyncForEach(correc, async (element) =>{
-            let corrected = (await userCtrl.getUserByDiscordId(element.corrected_id)).login;
-            let corrector = (await userCtrl.getUserByDiscordId(element.corrector_id)).login;
-            str += "```" + corrected + " is corrected by " + corrector + "\n```"
+            str += await this.correcInfo(element);
         })
         message.channel.send(str);
+    },
+
+    correcInfo :  async function(correc) {
+        let str ="";
+        console.log("correc =>")
+        console.log(correc)
+        let corrected = (await userCtrl.getUserByDiscordId(correc.corrected_id)).login;
+        let corrector = (await userCtrl.getUserByDiscordId(correc.corrector_id)).login;
+        str += "```correc id           : " + correc.correc_id + '\n';
+        str += "day id              : " + correc.day_id + '\n';
+        str += "corrector id        : " + correc.corrector_id + '\n';
+        str += "corrector name      : " + corrector + '\n';
+        str += "corrected id        : " + correc.corrected_id + '\n';
+        str += "corrected name      : " + corrected + '\n';
+        str += "corrector check     : " + correc.corrector_validation + '\n';
+        str += "corrected check     : " + correc.corrected_validation + '\n';
+        str += "correction finished : " + correc.finished_correc + '\n';
+        str += "validated           : " + correc.validated_correc + '\n';
+        str += "outstanding         : " + correc.outstanding + '```';
+        return str;
     },
 
     getNbDayFromCorrec : async function(correc) {
