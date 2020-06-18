@@ -42,7 +42,6 @@ module.exports = {
     },
 
     forceSetStatCorrection: async function (login) {
-        console.log("login ==>" + login);
         const stat = await utils.getStatByLogin(login);
         try {
             await Stat.update({correction: stat.correction + 1}, {where: {user_id: stat.user_id}});
@@ -271,7 +270,8 @@ module.exports = {
             return await utils.error("No matching corrections found", user);
         let day = await utils.getDayByDayId(correction[0].day_id)
         let day_id = day.day_id;
-        await utils.updateCorrectedValidation(day_id)
+        console.log(correction.correc_id)
+        await utils.updateCorrectedValidation(correction[0].correc_id)
         await utils.checkDayFinished(message, day_id, userCorrector, user)
     },
 
@@ -296,12 +296,12 @@ module.exports = {
         // console.log(correction);
         let day = await utils.getDayByDayId(correction[0].day_id)
         let day_id = day.day_id;
-        await utils.updateCorrectorValidation(day_id)
+        await utils.updateCorrectorValidation(correction[0].correc_id)
         if (mark === "done") {
-            await utils.updateValidatedCorrection(day_id)
+            await utils.updateValidatedCorrection(correction[0].correc_id)
         } else if (mark === "outstanding") {
-            await utils.updateValidatedCorrection(day_id)
-            await utils.updateOutstanding(day_id)
+            await utils.updateValidatedCorrection(correction[0].correc_id)
+            await utils.updateOutstanding(correction[0].correc_id)
         } else
             return await utils.error("please give me the mark : \n`;corrected " + userCorrected.login + " <notValidated/done/outstanding>`", user);
 
