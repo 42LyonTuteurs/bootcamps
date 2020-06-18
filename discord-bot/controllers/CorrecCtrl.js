@@ -21,7 +21,7 @@ module.exports = {
 
     getCorrectionsByUsers : async function(corrector, corrected) {
         try {
-            return await Correc.findAll({where : {corrector_id: corrector.discord_id, corrected_id: corrected.discord_id, corrector_validation: 0,}});
+            return await Correc.findAll({where : {corrector_id: corrector.discord_id, corrected_id: corrected.discord_id}});
         } catch (e) {
             i.logs("ERROR : function getCorrectionsByUsers : " + e);
         }
@@ -97,11 +97,24 @@ module.exports = {
         }
     },
 
-    getCorrectionByDayId : async function(dayId, corrector) {
+    getCorrectionByDayIdAndCorrector : async function(dayId, corrector) {
         try {
             return await Correc.findOne({
                 where : {
                     corrector_id: corrector.discord_id,
+                    day_id: dayId
+                }
+            })
+        } catch (e) {
+            i.logs("ERROR : function getCorrectionByDayId : " + e);
+        }
+
+    },
+
+    getCorrectionsByDayId : async function(dayId) {
+        try {
+            return await Correc.findAll({
+                where : {
                     day_id: dayId
                 }
             })
@@ -178,7 +191,7 @@ module.exports = {
             let correction = await Correc.findOne({
                 where : {
                     corrector_id: corrector.discord_id,
-                    day_id: dayId
+                    day_id: day_id
                 }
             })
             if (correction.outstanding)

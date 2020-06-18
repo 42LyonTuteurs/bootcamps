@@ -173,7 +173,10 @@ async function missCorrector(message, user, corrector) {
     const missingUser = corrector
     const corrected = user
     const correc = await utils.getCorrectionsNotDoneByUsers(missingUser, corrected)
-    await utils.missCorrector(message, correc, missingUser, corrected);
+    if (correc.length)
+        await utils.missCorrector(message, correc, missingUser, corrected);
+    else
+        message.channel.send("this correction doesn't exist");
 }
 
 async function missCorrected(message, user, corrected) {
@@ -188,49 +191,36 @@ async function getCorrections(message, user) {
 }
 
 async function corrected(message, commandArgs, user) {
-
     let userCorrected = await utils.getUserByLogin(commandArgs[0])
-    // console.log(userCorrected)
-    if (!userCorrected) {
-        await utils.error("could not find this user", user)
-        return;
-    }
-    console.log("0")
-    if (!commandArgs[1]) {
-        await utils.error("please give me the mark : \n`;corrected " + userCorrected.login + " <notValidated/done/outstanding>`", user)
-        return;
-    }
-    console.log(userCorrected.login)
-    console.log(user.login)
+    let mark = commandArgs[1];
+    if (!userCorrected)
+        return await utils.error("could not find this user", user);
+    if (!mark)
+        return await utils.error("please give me the mark : \n`;corrected " + userCorrected.login + " <notValidated/done/outstanding>`", user);
     let correction = await utils.getCorrectionsNotDoneByUsers(user, userCorrected)
     if (!correction)
-        await utils.error("No matching corrections found", user)
-    console.log("1")
-    console.log(correction)
+        return await utils.error("No matching corrections found", user)
     let day = await utils.getDayByDayId(correction[0].day_id)
     let day_id = day.day_id;
-    console.log("day_id : " + day_id)
-    console.log("2")
     await utils.updateCorrectorValidation(day_id)
-    if (commandArgs[1] == "done") {
+    if (mark === "done") {
         await utils.updateValidatedCorrection(day_id)
-    } else {
+    } else if (mark === "outstanding") {
         await utils.updateValidatedCorrection(day_id)
         await utils.updateOutstanding(day_id)
-    }
-    await utils.checkDayFinished(message, day_id, user, userCorrected)
+    } else
+        return await utils.error("please give me the mark : \n`;corrected " + userCorrected.login + " <notValidated/done/outstanding>`", user);
 
+    await utils.checkDayFinished(message, day_id, user, userCorrected)
 }
 
 async function validate(message, commandArgs, user) {
     let userCorrector = await utils.getUserByLogin(commandArgs[0])
-    if (!userCorrector) {
-        await utils.error("could not find this user", user)
-        return;
-    }
+    if (!userCorrector)
+        return await utils.error("could not find this user", user);
     let correction = await utils.getCorrectionsNotDoneByUsers(userCorrector, user)
     if (!correction)
-        await utils.error("No matching corrections found", user)
+        return await utils.error("No matching corrections found", user);
     let day = await utils.getDayByDayId(correction[0].day_id)
     let day_id = day.day_id;
     await utils.updateCorrectedValidation(day_id)
