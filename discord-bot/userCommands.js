@@ -210,7 +210,6 @@ async function corrected(message, commandArgs, user) {
         await utils.updateOutstanding(day_id)
     } else
         return await utils.error("please give me the mark : \n`;corrected " + userCorrected.login + " <notValidated/done/outstanding>`", user);
-
     await utils.checkDayFinished(message, day_id, user, userCorrected)
 }
 
