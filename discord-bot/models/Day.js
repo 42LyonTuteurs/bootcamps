@@ -9,11 +9,11 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.INTEGER,
             defaultValue: 0,
         },
-        corrected: {
+        day_set:{
             type: DataTypes.INTEGER,
             defaultValue: 0,
         },
-        day_set:{
+        corrected: {
             type: DataTypes.INTEGER,
             defaultValue: 0,
         },

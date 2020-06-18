@@ -71,42 +71,55 @@ module.exports = {
     },
 
 
-    updateCorrectedValidation : async function(day_id) {
-        return await correcCtrl.updateCorrectedValidation(day_id)
+    updateCorrectedValidation : async function(correc_id) {
+        return await correcCtrl.updateCorrectedValidation(correc_id)
     },
-    updateFinishedCorrection : async function(day_id) {
-        return await correcCtrl.updateFinishedCorrection(day_id)
+    updateFinishedCorrection : async function(correc_id) {
+        return await correcCtrl.updateFinishedCorrection(correc_id)
     },
-    updateCorrectorValidation : async function(day_id) {
-        return await correcCtrl.updateCorrectorValidation(day_id)
+    updateCorrectorValidation : async function(correc_id) {
+        return await correcCtrl.updateCorrectorValidation(correc_id)
     },
-    updateValidatedCorrection : async function(day_id) {
-        return await correcCtrl.updateValidatedCorrection(day_id)
+    updateValidatedCorrection : async function(correc_id) {
+        return await correcCtrl.updateValidatedCorrection(correc_id)
     },
-    updateOutstanding : async function(day_id) {
-        return await correcCtrl.updateOutstanding(day_id)
+    updateOutstanding : async function(correc_id) {
+        return await correcCtrl.updateOutstanding(correc_id)
     },
     checkDayFinished : async function(message, day_id, corrector, corrected) {
         let corrections = await correcCtrl.getCorrectionsByDayId(day_id)
         if (corrections[0].corrected_validation && corrections[0].corrector_validation) {
+            console.log("first");
             if (corrections[0].finished_correc != 1) {
-                await this.updateFinishedCorrection(day_id)
+                console.log("in")
+                await this.updateFinishedCorrection(corrections[0].correc_id)
                 await this.gainMana(message, corrector, 5)
                 var score0 = await correcCtrl.getMark(day_id, corrections[0].corrector_id)
             }
         }
         if (corrections[1].corrected_validation && corrections[1].corrector_validation) {
+            console.log("second");
             if (corrections[1].finished_correc != 1) {
-                await this.updateFinishedCorrection(day_id)
+                console.log("in")
+
+                await this.updateFinishedCorrection(corrections[1].correc_id)
                 await this.gainMana(message, corrector, 5)
                 var score1 = await correcCtrl.getMark(day_id, corrections[1].corrector_id)
+
             }
         }
 
+        console.log("score0 =>" + score0);
+        console.log("score1 =>" + score1);
+
+        if (score0 === undefined)
+            score0 = 0;
+        if (score1 === undefined)
+            score1 = 0;
         corrections = await correcCtrl.getCorrectionsByDayId(day_id)
         if (corrections[0].finished_correc && corrections[1].finished_correc) {
             let day = await this.getDayByDayId(day_id)
-            await this.updateDayComplete(day)
+            await dayCtrl.updateDayComplete(day)
             bestScore = score0 > score1 ? score0 : score1
             console.log("best score : " + bestScore)
             if (bestScore >= 35)
@@ -116,6 +129,7 @@ module.exports = {
             await this.gainMana(message, corrected, bestScore)
         }
     },
+
     getCorrectionsByDayIdCorrectorCorrected : async function(dayId, corrector, corrected) {
         return await correcCtrl.getCorrectionsByDayIdCorrectorCorrected(dayId, corrector, corrected);
     },
@@ -145,7 +159,6 @@ module.exports = {
             str = "login,mana\n"
             let user;
             let list = await Users.findAll()
-            console.log(list.length)
             for (let i = 0; i < list.length; i++)
             {
                 user = list[i]
@@ -276,15 +289,10 @@ module.exports = {
         while (list === undefined || list.length === 0){
             list = await statCtrl.getStatCorrectionWithoutSpecificUser(nbCorrection , user);
             nbCorrection++;
-            console.log(" yes nb correction " + nbCorrection);
         }
-        // console.log(list);
-        console.log("ici " + list.length + " ici");
         list = await this.getUserWithMinPendingCorrection(list);
-        console.log("ici " + list.length + " ici");
 
         list = await shuffle(list);
-        console.log("ici " + list.length + " ici");
 
         return await userCtrl.getUserByDiscordId(list[0].dataValues.discord_id);
     },
@@ -303,7 +311,6 @@ module.exports = {
                 }
             })
             index++;
-            console.log("oui");
         }
         return list;
     },
@@ -343,17 +350,16 @@ module.exports = {
             let user = await this.getUserByLogin(login);
             let str;
             // message.channel.send(
-            str ="```login          : " + login + "\n" +
-            "is actif ?     : " + user.actif + "\n"+
-            "jours terminés : " + stat.days_done + "\n" +
-            "jours outstanding : " + stat.days_outstanding + "\n" +
-            "nb corrections : " + stat.correction + "\n" +
-            // "nb corrigé     : " + stat.corrected + "\n" +
-            "Day 0          : " + stat.day0_id + "\n" +
-            "Day 1          : " + stat.day1_id + "\n" +
-            "Day 2          : " + stat.day2_id + "\n" +
-            "Day 3          : " + stat.day3_id + "\n" +
-            "Day 4          : " + stat.day4_id + "\n";
+            str ="```login           : " + login + "\n" +
+            "is actif ?      : " + user.actif + "\n"+
+            "nb terminés     : " + stat.days_done + "\n" +
+            "nb outstanding  : " + stat.days_outstanding + "\n" +
+            "nb corrections  : " + stat.correction + "\n" +
+            "Day 0           : " + stat.day0_id + "\n" +
+            "Day 1           : " + stat.day1_id + "\n" +
+            "Day 2           : " + stat.day2_id + "\n" +
+            "Day 3           : " + stat.day3_id + "\n" +
+            "Day 4           : " + stat.day4_id + "\n";
             let day = await this.getDayByDayId(stat.day0_id);
             str+= await this.daysToString(day);
             day = await this.getDayByDayId(stat.day1_id);
@@ -471,16 +477,12 @@ module.exports = {
     //deprecated
     daysToString : async function(day){
         const str = "----------" + "\n"
-        + "day id         : " + day.day_id+ "\n"
-        + "day nb         : " + day.day_nb+ "\n"
-        + "correction     : " + day.correction+ "\n"
-        + "correction on  : " + day.who_correction+ "\n"
-        + "corrected      : " + day.corrected+ "\n"
-        + "corrected by   : " + day.who_corrected+ "\n"
-        + "day complete   : " + day.day_complete+ "\n"
-        + "correction send: " + day.correction_send+ "\n"
-        + "corrected send : " + day.corrected_send+ "\n"
-        + "validate day   : " + day.day_validated+ "\n";
+        + "day id          : " + day.day_id+ "\n"
+        + "day nb          : " + day.day_nb+ "\n"
+        + "set as finished : " + day.day_set+ "\n"
+        + "corrected       : " + day.corrected+ "\n"
+        + "validated       : " + day.day_done+ "\n"
+        + "outstanding     : " + day.outstanding_day+ "\n";
         return str;
     },
 
@@ -610,7 +612,6 @@ module.exports = {
     //deprecated
     updateDayComplete : async function(day){
         try {
-            console.log(day);
             await Day.update({ day_complete: 1 }, { where: { day_id: day.day_id } });
         } catch (e) {
             i.logs("ERROR : function updateDayComplete : " + e);
@@ -696,7 +697,7 @@ module.exports = {
             await this.setMissing(missingUser);
             await this.deleteCorrection(correction);
         } else
-            console.log("tu dois attendre 24h mec");
+            console.log("tu dois attendre 24h");
 
     },
 
@@ -770,7 +771,6 @@ module.exports = {
             // console.log(corrector);
            str += 'you wil be corrected by ' + corrector.login + "\n";
         })
-        console.log(str)
         message.channel.send(str);
     },
 
@@ -794,7 +794,6 @@ module.exports = {
             let day = await dayCtrl.getDayByDayId(element);
             // console.log(day);
             if (day.day_done === 0 && result === undefined) {
-                console.log("oui mosieur");
                 result = day;
             }
         })
@@ -839,9 +838,7 @@ module.exports = {
         const stat = await statCtrl.getStatByUser(user);
         const tab = [stat.day0_id, stat.day1_id, stat.day2_id, stat.day3_id, stat.day4_id];
         for(const day_id of tab){
-            console.log(day_id)
             for(const correc of (await correcCtrl.getCorrectionsByDayId(day_id))){
-                console.log(correc)
                  message.channel.send(await this.correcInfo(correc));
             }
         }
@@ -858,8 +855,6 @@ module.exports = {
 
     correcInfo :  async function(correc) {
         let str ="";
-        console.log("correc =>")
-        console.log(correc)
         let corrected = (await userCtrl.getUserByDiscordId(correc.corrected_id)).login;
         let corrector = (await userCtrl.getUserByDiscordId(correc.corrector_id)).login;
         str += "```correc id           : " + correc.correc_id + '\n';
@@ -894,5 +889,9 @@ module.exports = {
             await statCtrl.updateStatMana(stat, manaGain)
         stat = await this.getStatByUser(user)
         await this.sendInLoginChannel(user.login, "<@" + user.discord_id + "> You earned " + manaGain + ". You are now at " + stat.mana + " total mana")
-    }
+    },
+
+    getCorrectionsByDayIdCorrectorCorrected : async function(dayId, corrector, corrected) {
+        return await correcCtrl.getCorrectionsByDayIdCorrectorCorrected(dayId, corrector, corrected);
+    },
 }

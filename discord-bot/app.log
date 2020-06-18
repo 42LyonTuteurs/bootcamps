@@ -1,75 +1,66 @@
-Thu Jun 18 2020 12:45:04 :
-Logged in as dev-bootcamp-bot#8589!
+Thu Jun 18 2020 15:20:52 :
+Logged in as json-bot#9208!
 
-Thu Jun 18 2020 12:45:05 | tclaudel
+Thu Jun 18 2020 15:20:56 | Serronia
 ;subscribe
 
-Thu Jun 18 2020 12:45:05 :
-There is 16 channel for the bootcamp at the moment.
+Thu Jun 18 2020 15:20:56 :
+There is 5 channel for the bootcamp at the moment.
 
-Thu Jun 18 2020 12:45:05 :
-subscription of :tclaudel 220625639655473152
+Thu Jun 18 2020 15:20:56 :
+subscription of :Serronia 374265216608763907
 
-Thu Jun 18 2020 12:45:06 | jdarko
-;subscribe
-
-Thu Jun 18 2020 12:45:06 :
-There is 16 channel for the bootcamp at the moment.
-
-Thu Jun 18 2020 12:45:06 :
-subscription of :jdarko 374265216608763907
-
-Thu Jun 18 2020 12:45:08 | aurbuche
-;subscribe
-
-Thu Jun 18 2020 12:45:08 :
-There is 16 channel for the bootcamp at the moment.
-
-Thu Jun 18 2020 12:45:08 :
-subscription of :aurbuche 185046440136015882
-
-Thu Jun 18 2020 12:45:12 | tclaudel
+Thu Jun 18 2020 15:20:58 | Serronia
 ;day done
 
-Thu Jun 18 2020 12:45:15 | jdarko
-;corrected tclaudel done
-
-Thu Jun 18 2020 12:45:19 | aurbuche
-;day done
-
-Thu Jun 18 2020 12:45:21 | tclaudel
-;validate jdarko
-
-Thu Jun 18 2020 12:45:21 :
-ERROR : function updateDayComplete : SequelizeDatabaseError: SQLITE_ERROR: near "WHERE": syntax error
-
-Thu Jun 18 2020 12:46:06 | tclaudel
-;info
-
-Thu Jun 18 2020 12:46:18 | tclaudel
-;corrected aurbuche done
-
-Thu Jun 18 2020 12:46:25 | aurbuche
-;validate tclaudel
-
-Thu Jun 18 2020 12:46:25 :
-ERROR : function updateDayComplete : SequelizeDatabaseError: SQLITE_ERROR: near "WHERE": syntax error
-
-Thu Jun 18 2020 12:46:43 | jdarko
+Thu Jun 18 2020 15:21:00 | Serronia
 ;status
 
-Thu Jun 18 2020 12:46:51 | tclaudel
-;info jdarko
+Thu Jun 18 2020 15:21:28 | Serronia
+;admin forceCorrect alfonzo Serronia done
 
-Thu Jun 18 2020 12:46:56 | jdarko
-;status tclaudel
+Thu Jun 18 2020 15:21:33 | Serronia
+;status
 
-Thu Jun 18 2020 12:46:57 | tclaudel
-;indo aurbuche
+Thu Jun 18 2020 15:21:57 | Serronia
+;admin forceValidate Serronia alfonzo
 
-Thu Jun 18 2020 12:47:03 | tclaudel
-;info aurbuche
+Thu Jun 18 2020 15:22:00 | Serronia
+;staus
 
-Thu Jun 18 2020 12:47:23 | jdarko
-;status aurbuche
+Thu Jun 18 2020 15:22:02 | Serronia
+;status
+
+Thu Jun 18 2020 15:22:09 | Serronia
+;info
+
+Thu Jun 18 2020 15:22:20 | Serronia
+;info alfonzo
+
+Thu Jun 18 2020 15:22:55 | Serronia
+;admin forceValidate Serronia robb
+
+Thu Jun 18 2020 15:22:58 | Serronia
+;info robb
+
+Thu Jun 18 2020 15:23:01 | Serronia
+;status
+
+Thu Jun 18 2020 15:23:29 | Serronia
+;admin forceCorrect robb Serronia done
+
+Thu Jun 18 2020 15:23:29 :
+ERROR : function updateDayComplete : SequelizeDatabaseError: SQLITE_ERROR: near "WHERE": syntax error
+
+Thu Jun 18 2020 15:25:12 | Serronia
+;info
+
+Thu Jun 18 2020 15:25:22 | Serronia
+;info alfonzo robb
+
+Thu Jun 18 2020 15:25:28 | Serronia
+;day done
+
+Thu Jun 18 2020 15:25:34 | Serronia
+;status
 

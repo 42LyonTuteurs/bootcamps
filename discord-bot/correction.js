@@ -169,32 +169,22 @@ module.exports = {
 //TODO
     setDayAsFinished : async function(message, user, argv){
 
-        console.log("1");
 
-        // const stat = await utils.getStatByUser(user);
-        console.log("2");
-        // const day =  await utils.getDayByUserAndNbDay(user, nbDay);
         const day = await utils.getActualDayByUser(user);
         if (day === undefined){
             console.log("tout les days sont déjà sets");
         }
-        console.log(day);
-        console.log("3");
         if (await utils.checkSetedDay(day)) {
             console.log("le day est déjà set");
             return 0;
         }
 
         await utils.createCorrection(day, user);
-        console.log("4");
 
         await utils.createCorrection(day, user);
-        console.log("5");
 
         await utils.correctedAnnouncement(message, user);
-        console.log("6");
         await utils.daySeted(day);
-        console.log("7");
 
     },
 

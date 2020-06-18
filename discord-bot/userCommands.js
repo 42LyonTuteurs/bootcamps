@@ -202,12 +202,12 @@ async function corrected(message, commandArgs, user) {
         return await utils.error("No matching corrections found", user)
     let day = await utils.getDayByDayId(correction[0].day_id)
     let day_id = day.day_id;
-    await utils.updateCorrectorValidation(day_id)
+    await utils.updateCorrectorValidation(correction[0].correc_id)
     if (mark === "done") {
-        await utils.updateValidatedCorrection(day_id)
+        await utils.updateValidatedCorrection(correction[0].correc_id)
     } else if (mark === "outstanding") {
-        await utils.updateValidatedCorrection(day_id)
-        await utils.updateOutstanding(day_id)
+        await utils.updateValidatedCorrection(correction[0].correc_id)
+        await utils.updateOutstanding(correction[0].correc_id)
     } else
         return await utils.error("please give me the mark : \n`;corrected " + userCorrected.login + " <notValidated/done/outstanding>`", user);
     await utils.checkDayFinished(message, day_id, user, userCorrected)
@@ -222,7 +222,7 @@ async function validate(message, commandArgs, user) {
         return await utils.error("No matching corrections found", user);
     let day = await utils.getDayByDayId(correction[0].day_id)
     let day_id = day.day_id;
-    await utils.updateCorrectedValidation(day_id)
+    await utils.updateCorrectedValidation(correction.correc_id)
     await utils.checkDayFinished(message, day_id, userCorrector, user)
 }
 

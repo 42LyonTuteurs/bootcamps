@@ -124,6 +124,21 @@ module.exports = {
 
     },
 
+    getCorrectionsByDayIdCorrectorCorrected : async function(dayId, corrector, corrected) {
+        try {
+            return await Correc.findOne({
+                where : {
+                    day_id: dayId,
+                    corrected_id : corrected.discord_id,
+                    corrector_id : corrector.discord_id,
+                }
+            })
+        } catch (e) {
+            i.logs("ERROR : function getCorrectionsByDayIdCorrectorCorrected : " + e);
+        }
+
+    },
+
     getCorrectionByCorrector : async function() {
 
     },
@@ -138,41 +153,41 @@ module.exports = {
     },
 
 
-    updateCorrectorValidation : async function(day_id) {
+    updateCorrectorValidation : async function(correc_id) {
         try {
-            await Correc.update({ corrector_validation: 1}, {where : {day_id : day_id}});
+            await Correc.update({ corrector_validation: 1}, {where : {correc_id : correc_id}});
         } catch (e) {
             i.logs("ERROR : function updateCorrectorValidation : " + e);
         }
     },
 
-    updateCorrectedValidation : async function(day_id) {
+    updateCorrectedValidation : async function(correc_id) {
         try {
-            await Correc.update({ corrected_validation: 1}, {where : {day_id : day_id}});
+            await Correc.update({ corrected_validation: 1}, {where : {correc_id : correc_id}});
         } catch (e) {
             i.logs("ERROR : function updateCorrectedValidation : " + e);
         }
     },
 
-    updateFinishedCorrection : async function(day_id) {
+    updateFinishedCorrection : async function(correc_id) {
         try {
-            await Correc.update({ finished_correc: 1}, {where : {day_id : day_id}});
+            await Correc.update({ finished_correc: 1}, {where : {correc_id : correc_id}});
         } catch (e) {
             i.logs("ERROR : function updateValidatedCorrection : " + e);
         }
     },
 
-    updateValidatedCorrection : async function(day_id) {
+    updateValidatedCorrection : async function(correc_id) {
         try {
-            await Correc.update({ validated_correc: 1}, {where : {day_id : day_id}});
+            await Correc.update({ validated_correc: 1}, {where : {correc_id : correc_id}});
         } catch (e) {
             i.logs("ERROR : function updateValidatedCorrection : " + e);
         }
     },
 
-    updateOutstanding : async function(day_id) {
+    updateOutstanding : async function(correc_id) {
         try {
-            await Correc.update({ outstanding: 1}, {where : {day_id : day_id}});
+            await Correc.update({ outstanding: 1}, {where : {day_id : correc_id}});
         } catch (e) {
             i.logs("ERROR : function updateOutstanding : " + e);
         }
