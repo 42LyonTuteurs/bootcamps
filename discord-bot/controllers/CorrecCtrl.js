@@ -124,6 +124,21 @@ module.exports = {
 
     },
 
+    getCorrectionsByDayIdCorrectorCorrected : async function(dayId, corrector, corrected) {
+        try {
+            return await Correc.findOne({
+                where : {
+                    day_id: dayId,
+                    corrected_id : corrected.discord_id,
+                    corrector_id : corrector.discord_id,
+                }
+            })
+        } catch (e) {
+            i.logs("ERROR : function getCorrectionsByDayIdCorrectorCorrected : " + e);
+        }
+
+    },
+
     getCorrectionByCorrector : async function() {
 
     },

@@ -869,5 +869,9 @@ module.exports = {
             await statCtrl.updateStatMana(stat, manaGain)
         stat = await this.getStatByUser(user)
         await this.sendInLoginChannel(user.login, "You earned " + manaGain + ". You are now at " + stat.mana + " total mana")
-    }
+    },
+
+    getCorrectionsByDayIdCorrectorCorrected : async function(dayId, corrector, corrected) {
+        return await correcCtrl.getCorrectionsByDayIdCorrectorCorrected(dayId, corrector, corrected);
+    },
 }
