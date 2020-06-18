@@ -87,14 +87,39 @@ module.exports = {
         return await correcCtrl.updateOutstanding(day_id)
     },
     checkDayFinished : async function(message, day_id, corrector, corrected) {
-        let correction = await correcCtrl.getCorrectionByDayIdAndCorrector(day_id, corrector)
-        if (correction.corrected_validation && correction.corrector_validation) {
-            await this.updateFinishedCorrection(day_id)
-            manaEarn = await correcCtrl.getMark(day_id, corrector)
-            console.log(manaEarn)
-            await this.gainMana(message, corrector, manaEarn)
+        let corrections = await correcCtrl.getCorrectionsByDayId(day_id)
+        if (corrections[0].corrected_validation && corrections[0].corrector_validation) {
+            if (corrections[0].finished_correc != 1) {
+                await this.updateFinishedCorrection(day_id)
+                await this.gainMana(message, corrector, 5)
+                var score0 = await correcCtrl.getMark(day_id, corrections[0].corrector_id)
+            }
+        }
+        if (corrections[1].corrected_validation && corrections[1].corrector_validation) {
+            if (corrections[1].finished_correc != 1) {
+                await this.updateFinishedCorrection(day_id)
+                await this.gainMana(message, corrector, 5)
+                var score1 = await correcCtrl.getMark(day_id, corrections[1].corrector_id)
+            }
+        }
+
+        corrections = await correcCtrl.getCorrectionsByDayId(day_id)
+        if (corrections[0].finished_correc && corrections[1].finished_correc) {
+            let day = await this.getDayByDayId(day_id)
+            await this.updateDayComplete(day)
+            bestScore = score0 > score1 ? score0 : score1
+            console.log("best score : " + bestScore)
+            if (bestScore >= 35)
+                await dayCtrl.updateDayDone(day_id)
+            if (bestScore == 45)
+                await dayCtrl.updateDayOutstanding(day_id)
+            await this.gainMana(message, corrected, bestScore)
         }
     },
+    getCorrectionsByDayIdCorrectorCorrected : async function(dayId, corrector, corrected) {
+        return await correcCtrl.getCorrectionsByDayIdCorrectorCorrected(dayId, corrector, corrected);
+    },
+
     // checkDayCorrected : async function(message, user) {
     //
     // },
@@ -868,6 +893,6 @@ module.exports = {
         if (d.getMonth() == 6)
             await statCtrl.updateStatMana(stat, manaGain)
         stat = await this.getStatByUser(user)
-        await this.sendInLoginChannel(user.login, "You earned " + manaGain + ". You are now at " + stat.mana + " total mana")
+        await this.sendInLoginChannel(user.login, "<@" + user.discord_id + "> You earned " + manaGain + ". You are now at " + stat.mana + " total mana")
     }
 }

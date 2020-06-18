@@ -1,12 +1,75 @@
-Wed Jun 17 2020 19:21:41 :
-Logged in as json-bot#9208!
+Thu Jun 18 2020 12:45:04 :
+Logged in as dev-bootcamp-bot#8589!
 
-Wed Jun 17 2020 19:21:42 | Serronia
+Thu Jun 18 2020 12:45:05 | tclaudel
+;subscribe
+
+Thu Jun 18 2020 12:45:05 :
+There is 16 channel for the bootcamp at the moment.
+
+Thu Jun 18 2020 12:45:05 :
+subscription of :tclaudel 220625639655473152
+
+Thu Jun 18 2020 12:45:06 | jdarko
+;subscribe
+
+Thu Jun 18 2020 12:45:06 :
+There is 16 channel for the bootcamp at the moment.
+
+Thu Jun 18 2020 12:45:06 :
+subscription of :jdarko 374265216608763907
+
+Thu Jun 18 2020 12:45:08 | aurbuche
+;subscribe
+
+Thu Jun 18 2020 12:45:08 :
+There is 16 channel for the bootcamp at the moment.
+
+Thu Jun 18 2020 12:45:08 :
+subscription of :aurbuche 185046440136015882
+
+Thu Jun 18 2020 12:45:12 | tclaudel
+;day done
+
+Thu Jun 18 2020 12:45:15 | jdarko
+;corrected tclaudel done
+
+Thu Jun 18 2020 12:45:19 | aurbuche
+;day done
+
+Thu Jun 18 2020 12:45:21 | tclaudel
+;validate jdarko
+
+Thu Jun 18 2020 12:45:21 :
+ERROR : function updateDayComplete : SequelizeDatabaseError: SQLITE_ERROR: near "WHERE": syntax error
+
+Thu Jun 18 2020 12:46:06 | tclaudel
 ;info
 
-Wed Jun 17 2020 19:21:53 | Serronia
-;miss corrector okey
+Thu Jun 18 2020 12:46:18 | tclaudel
+;corrected aurbuche done
 
-Wed Jun 17 2020 19:21:57 | Serronia
-;info
+Thu Jun 18 2020 12:46:25 | aurbuche
+;validate tclaudel
+
+Thu Jun 18 2020 12:46:25 :
+ERROR : function updateDayComplete : SequelizeDatabaseError: SQLITE_ERROR: near "WHERE": syntax error
+
+Thu Jun 18 2020 12:46:43 | jdarko
+;status
+
+Thu Jun 18 2020 12:46:51 | tclaudel
+;info jdarko
+
+Thu Jun 18 2020 12:46:56 | jdarko
+;status tclaudel
+
+Thu Jun 18 2020 12:46:57 | tclaudel
+;indo aurbuche
+
+Thu Jun 18 2020 12:47:03 | tclaudel
+;info aurbuche
+
+Thu Jun 18 2020 12:47:23 | jdarko
+;status aurbuche
 
