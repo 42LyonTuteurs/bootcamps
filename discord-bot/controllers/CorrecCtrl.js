@@ -186,11 +186,11 @@ module.exports = {
       }
     },
 
-    getMark : async function(day_id, corrector) {
+    getMark : async function(day_id, correctorId) {
         try {
             let correction = await Correc.findOne({
                 where : {
-                    corrector_id: corrector.discord_id,
+                    corrector_id: correctorId,
                     day_id: day_id
                 }
             })
@@ -203,6 +203,35 @@ module.exports = {
         } catch (e) {
             i.logs("ERROR : function getMark : " + e);
         }
-    }
+    },
+
+    getCorrectionsByDayIdCorrectorCorrected : async function(dayId, corrector, corrected) {
+        try {
+            return await Correc.findOne({
+                where : {
+                    day_id: dayId,
+                    corrected_id : corrected.discord_id,
+                    corrector_id : corrector.discord_id,
+                }
+            })
+        } catch (e) {
+            i.logs("ERROR : function getCorrectionsByDayIdCorrectorCorrected : " + e);
+        }
+
+    },
+    getIsFinishedCorrection : async function(Correction) {
+        try {
+            return await Correc.findOne({
+                where : {
+                    day_id: dayId,
+                    corrected_id : corrected.discord_id,
+                    corrector_id : corrector.discord_id,
+                }
+            })
+        } catch (e) {
+            i.logs("ERROR : function getCorrectionsByDayIdCorrectorCorrected : " + e);
+        }
+
+    },
 
 }
