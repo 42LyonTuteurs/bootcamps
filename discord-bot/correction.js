@@ -168,21 +168,16 @@ module.exports = {
 
 //TODO
     setDayAsFinished : async function(message, user, argv){
-
-
         const day = await utils.getActualDayByUser(user);
         if (day === undefined){
             console.log("tout les days sont déjà sets");
         }
         if (await utils.checkSetedDay(day)) {
-            console.log("le day est déjà set");
+            utils.error("le day est déjà set", user);
             return 0;
         }
-
         await utils.createCorrection(day, user);
-
         await utils.createCorrection(day, user);
-
         await utils.correctedAnnouncement(message, user);
         await utils.daySeted(day);
 

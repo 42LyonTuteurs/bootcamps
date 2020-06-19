@@ -187,7 +187,7 @@ async function missCorrected(message, user, corrected) {
 }
 
 async function getCorrections(message, user) {
-    message.channel.send(await utils.correctInfoByUser(message, user))
+    message.channel.send(await utils.pendingCorrectInfoByUser(message, user));
 }
 
 async function corrected(message, commandArgs, user) {
@@ -195,21 +195,24 @@ async function corrected(message, commandArgs, user) {
     let mark = commandArgs[1];
     if (!userCorrected)
         return await utils.error("could not find this user", user);
-    if (!mark)
+    if (mark != "notValidated" && mark != "done" && mark != "outstanding")
         return await utils.error("please give me the mark : \n`;corrected " + userCorrected.login + " <notValidated/done/outstanding>`", user);
     let correction = await utils.getCorrectionsNotDoneByUsers(user, userCorrected)
-    if (!correction)
-        return await utils.error("No matching corrections found", user)
-    let day = await utils.getDayByDayId(correction[0].day_id)
+    if (!correction || correction.length === 0)
+        return await utils.error("This correction doesn't exist or is already finished", user);
+    correction = correction[0];
+    if (correction.corrector_validation === 1)
+        return await utils.error("You already corrected the correction", user);
+    let day = await utils.getDayByDayId(correction.day_id)
     let day_id = day.day_id;
-    await utils.updateCorrectorValidation(correction[0].correc_id)
+    await utils.updateCorrectorValidation(correction.correc_id)
     if (mark === "done") {
-        await utils.updateValidatedCorrection(correction[0].correc_id)
+        await utils.updateValidatedCorrection(correction.correc_id)
     } else if (mark === "outstanding") {
-        await utils.updateValidatedCorrection(correction[0].correc_id)
-        await utils.updateOutstanding(correction[0].correc_id)
-    } else
-        return await utils.error("please give me the mark : \n`;corrected " + userCorrected.login + " <notValidated/done/outstanding>`", user);
+        await utils.updateValidatedCorrection(correction.correc_id)
+        await utils.updateOutstanding(correction.correc_id)
+    }
+    message.channel.send("You successfully corrected " + userCorrected.login)
     await utils.checkDayFinished(message, day_id, user, userCorrected)
 }
 
@@ -218,11 +221,16 @@ async function validate(message, commandArgs, user) {
     if (!userCorrector)
         return await utils.error("could not find this user", user);
     let correction = await utils.getCorrectionsNotDoneByUsers(userCorrector, user)
-    if (!correction)
-        return await utils.error("No matching corrections found", user);
-    let day = await utils.getDayByDayId(correction[0].day_id)
+    if (!correction || correction.length === 0)
+        return await utils.error("This correction doesn't exist or is already finished", user);
+    correction = correction[0];
+    if (correction.corrected_validation === 1)
+        return await utils.error("You already validate the corrector", user);
+    let day = await utils.getDayByDayId(correction.day_id)
     let day_id = day.day_id;
+    console.log(correction.correc_id)
     await utils.updateCorrectedValidation(correction.correc_id)
+    message.channel.send("You successfully feedback " + userCorrector.login)
     await utils.checkDayFinished(message, day_id, userCorrector, user)
 }
 
@@ -249,7 +257,7 @@ async function userCommands(command, message, commandArgs, name, discord_id, cli
         await getCorrections(message, user);
     else if (command === 'corrected')
         await corrected(message, commandArgs.split(" "), user);
-    else if (command === 'validate')
+    else if (command === 'feedback')
         await validate(message, commandArgs.split(" "), user);
     // else if (command === 'correction') {
     //     let error = await c.correction(LoginList, commandArgs, discord_id, client);
