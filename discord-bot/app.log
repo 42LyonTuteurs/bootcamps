@@ -1,42 +1,18 @@
-Fri Jun 19 2020 10:40:07 :
-Logged in as json-bot#9208!
+Fri Jun 19 2020 15:50:23 :
+Logged in as dev-bootcamp-bot#8589!
 
-Fri Jun 19 2020 10:40:08 | Serronia
+Fri Jun 19 2020 15:50:37 | tclaudel
 ;subscribe
 
-Fri Jun 19 2020 10:40:08 :
-There is 5 channel for the bootcamp at the moment.
+Fri Jun 19 2020 15:50:37 :
+There is 12 channel for the bootcamp at the moment.
 
-Fri Jun 19 2020 10:40:08 :
-subscription of :Serronia 374265216608763907
+Fri Jun 19 2020 15:50:37 :
+subscription of :tclaudel 220625639655473152
 
-Fri Jun 19 2020 10:40:10 | Serronia
+Fri Jun 19 2020 15:50:40 | tclaudel
+;list
+
+Fri Jun 19 2020 15:50:44 | tclaudel
 ;day done
-
-Fri Jun 19 2020 10:40:31 | Serronia
-;admin forceValidate Serronia angelita
-
-Fri Jun 19 2020 10:40:40 | Serronia
-;admin forceValidate Serronia lon
-
-Fri Jun 19 2020 10:40:58 | Serronia
-;admin forceCorrect lon Serronia outstanding
-
-Fri Jun 19 2020 10:41:06 | Serronia
-;status
-
-Fri Jun 19 2020 10:41:17 | Serronia
-;status lon
-
-Fri Jun 19 2020 10:41:35 | Serronia
-;admin forceCorrect angelita Serronia outstanding
-
-Fri Jun 19 2020 10:41:42 | Serronia
-;status
-
-Fri Jun 19 2020 10:42:37 | Serronia
-;status lon
-
-Fri Jun 19 2020 10:44:17 | Serronia
-;status angelita
 

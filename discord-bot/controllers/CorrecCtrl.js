@@ -5,7 +5,7 @@ const i = require('../index');
 module.exports = {
     createCorrection : async function(day_id, corrector_id, corrected_id) {
         try {
-            await Correc.create({ day_id: day_id, corrector_id: corrector_id, corrected_id: corrected_id});
+            return await Correc.create({ day_id: day_id, corrector_id: corrector_id, corrected_id: corrected_id});
         } catch (e) {
             i.logs("ERROR : function createCorrection : " + e);
         }
