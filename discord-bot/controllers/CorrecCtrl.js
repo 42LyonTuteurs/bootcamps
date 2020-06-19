@@ -187,7 +187,7 @@ module.exports = {
 
     updateOutstanding : async function(correc_id) {
         try {
-            await Correc.update({ outstanding: 1}, {where : {day_id : correc_id}});
+            await Correc.update({ outstanding: 1}, {where : {correc_id : correc_id}});
         } catch (e) {
             i.logs("ERROR : function updateOutstanding : " + e);
         }

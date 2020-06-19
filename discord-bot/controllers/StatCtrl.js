@@ -96,7 +96,7 @@ module.exports = {
 
     getStatCorrectionWithoutSpecificUser : async function(nbCorrection, user){
         try{
-            return  await Stat.findAll({where : { correction : nbCorrection, user_id : { [Op.notLike] : user.discord_id}}});
+            return  await Stat.findAll({where : {correction : nbCorrection, user_id : { [Op.notLike] : user.discord_id}}});
         }  catch (e) {
             i.logs("ERROR : function getStatCorrectionWithoutSpecificUser : " + e);
         }

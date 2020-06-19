@@ -89,28 +89,24 @@ module.exports = {
     checkDayFinished : async function(message, day_id, corrector, corrected) {
         let corrections = await correcCtrl.getCorrectionsByDayId(day_id)
         if (corrections[0].corrected_validation && corrections[0].corrector_validation) {
-            console.log("first");
             if (corrections[0].finished_correc != 1) {
-                console.log("in")
+                let stat = await statCtrl.getStatByDiscordId(corrections[0].corrector_id)
+                await statCtrl.updateStatCorrection(stat);
                 await this.updateFinishedCorrection(corrections[0].correc_id)
                 await this.gainMana(message, corrector, 5)
                 var score0 = await correcCtrl.getMark(day_id, corrections[0].corrector_id)
             }
         }
         if (corrections[1].corrected_validation && corrections[1].corrector_validation) {
-            console.log("second");
             if (corrections[1].finished_correc != 1) {
-                console.log("in")
-
                 await this.updateFinishedCorrection(corrections[1].correc_id)
+                let stat = await statCtrl.getStatByDiscordId(corrections[1].corrector_id)
+                await statCtrl.updateStatCorrection(stat);
                 await this.gainMana(message, corrector, 5)
                 var score1 = await correcCtrl.getMark(day_id, corrections[1].corrector_id)
 
             }
         }
-
-        console.log("score0 =>" + score0);
-        console.log("score1 =>" + score1);
 
         if (score0 === undefined)
             score0 = 0;
@@ -118,14 +114,19 @@ module.exports = {
             score1 = 0;
         corrections = await correcCtrl.getCorrectionsByDayId(day_id)
         if (corrections[0].finished_correc && corrections[1].finished_correc) {
-            let day = await this.getDayByDayId(day_id)
-            await dayCtrl.updateDayComplete(day)
+            // let day = await this.getDayByDayId(day_id)
+            await dayCtrl.updateDayComplete(day_id)
+            const stat = await statCtrl.getStatByDiscordId(corrections[0].corrected_id)
+            await statCtrl.updateStatDaysDone(stat)
             bestScore = score0 > score1 ? score0 : score1
             console.log("best score : " + bestScore)
-            if (bestScore >= 35)
+            if (bestScore >= 35) {
                 await dayCtrl.updateDayDone(day_id)
-            if (bestScore == 45)
+            }
+            if (bestScore == 45){
                 await dayCtrl.updateDayOutstanding(day_id)
+                await statCtrl.updateStatDaysOutstanding(stat)
+            }
             await this.gainMana(message, corrected, bestScore)
         }
     },
@@ -288,9 +289,9 @@ module.exports = {
         let nbCorrection = 0;
         while (list === undefined || list.length === 0){
             list = await statCtrl.getStatCorrectionWithoutSpecificUser(nbCorrection , user);
+            list = await this.getUserWithMinPendingCorrection(list);
             nbCorrection++;
         }
-        list = await this.getUserWithMinPendingCorrection(list);
 
         list = await shuffle(list);
 
@@ -306,7 +307,8 @@ module.exports = {
                 let user = await userCtrl.getUserByDiscordId(element.user_id)
                 // console.log(user);
                 if (await this.nbOfPendingCorrection(user) === index) {
-                    list[nb_user] = user;
+                    if (user.actif === 1)
+                        list[nb_user] = user;
                     nb_user++;
                 }
             })
@@ -437,7 +439,7 @@ module.exports = {
     // },
 
     newDay: async function (User, nbDay) {
-        const newDay = await dayCtrl.createDay();
+        const newDay = await dayCtrl.createDay(nbDay);
         await statCtrl.createDayInStat(User, nbDay, newDay);
     },
 
@@ -716,7 +718,8 @@ module.exports = {
             //unsubscribe the missingUser
             str = "R.I.P in peace"
         } else {
-            str = "Someone says that you were missing for your correction, you still " + stat.strike - 1 + " warnings before be kicked from the bootcamp"
+            let i = stat.strike - 1
+            str = "Someone says that you were missing for your correction, you still " + i + " warnings before be kicked from the bootcamp"
         }
         await this.sendInLoginChannel(missingUser.login, str);
     },

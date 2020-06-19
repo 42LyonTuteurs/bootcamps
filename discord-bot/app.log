@@ -1,66 +1,42 @@
-Thu Jun 18 2020 15:20:52 :
+Fri Jun 19 2020 10:40:07 :
 Logged in as json-bot#9208!
 
-Thu Jun 18 2020 15:20:56 | Serronia
+Fri Jun 19 2020 10:40:08 | Serronia
 ;subscribe
 
-Thu Jun 18 2020 15:20:56 :
+Fri Jun 19 2020 10:40:08 :
 There is 5 channel for the bootcamp at the moment.
 
-Thu Jun 18 2020 15:20:56 :
+Fri Jun 19 2020 10:40:08 :
 subscription of :Serronia 374265216608763907
 
-Thu Jun 18 2020 15:20:58 | Serronia
+Fri Jun 19 2020 10:40:10 | Serronia
 ;day done
 
-Thu Jun 18 2020 15:21:00 | Serronia
+Fri Jun 19 2020 10:40:31 | Serronia
+;admin forceValidate Serronia angelita
+
+Fri Jun 19 2020 10:40:40 | Serronia
+;admin forceValidate Serronia lon
+
+Fri Jun 19 2020 10:40:58 | Serronia
+;admin forceCorrect lon Serronia outstanding
+
+Fri Jun 19 2020 10:41:06 | Serronia
 ;status
 
-Thu Jun 18 2020 15:21:28 | Serronia
-;admin forceCorrect alfonzo Serronia done
+Fri Jun 19 2020 10:41:17 | Serronia
+;status lon
 
-Thu Jun 18 2020 15:21:33 | Serronia
+Fri Jun 19 2020 10:41:35 | Serronia
+;admin forceCorrect angelita Serronia outstanding
+
+Fri Jun 19 2020 10:41:42 | Serronia
 ;status
 
-Thu Jun 18 2020 15:21:57 | Serronia
-;admin forceValidate Serronia alfonzo
+Fri Jun 19 2020 10:42:37 | Serronia
+;status lon
 
-Thu Jun 18 2020 15:22:00 | Serronia
-;staus
-
-Thu Jun 18 2020 15:22:02 | Serronia
-;status
-
-Thu Jun 18 2020 15:22:09 | Serronia
-;info
-
-Thu Jun 18 2020 15:22:20 | Serronia
-;info alfonzo
-
-Thu Jun 18 2020 15:22:55 | Serronia
-;admin forceValidate Serronia robb
-
-Thu Jun 18 2020 15:22:58 | Serronia
-;info robb
-
-Thu Jun 18 2020 15:23:01 | Serronia
-;status
-
-Thu Jun 18 2020 15:23:29 | Serronia
-;admin forceCorrect robb Serronia done
-
-Thu Jun 18 2020 15:23:29 :
-ERROR : function updateDayComplete : SequelizeDatabaseError: SQLITE_ERROR: near "WHERE": syntax error
-
-Thu Jun 18 2020 15:25:12 | Serronia
-;info
-
-Thu Jun 18 2020 15:25:22 | Serronia
-;info alfonzo robb
-
-Thu Jun 18 2020 15:25:28 | Serronia
-;day done
-
-Thu Jun 18 2020 15:25:34 | Serronia
-;status
+Fri Jun 19 2020 10:44:17 | Serronia
+;status angelita
 

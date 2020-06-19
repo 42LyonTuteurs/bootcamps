@@ -263,15 +263,17 @@ module.exports = {
         let userCorrector = await utils.getUserByLogin(other)
         if (!userCorrector)
             return await utils.error("could not find this user", user);
-        // let correction = await utils.getCorrectionsNotDoneByUsers(userCorrector, user)
-        let correction = await utils.getCorrectionsByUsers(userCorrector, user)
-
-        if (!correction)
-            return await utils.error("No matching corrections found", user);
-        let day = await utils.getDayByDayId(correction[0].day_id)
+        // let correction = await utils.getCorrectionsByUsers(userCorrector, user)
+        let correction = await utils.getCorrectionsNotDoneByUsers(userCorrector, user)
+        if (!correction || correction.length === 0)
+            return await utils.error("This correction doesn't exist or is already finished", user);
+        correction = correction[0];
+        if (correction.corrected_validation === 1)
+            return await utils.error("You already validate the corrector", user);
+        let day = await utils.getDayByDayId(correction.day_id)
         let day_id = day.day_id;
         console.log(correction.correc_id)
-        await utils.updateCorrectedValidation(correction[0].correc_id)
+        await utils.updateCorrectedValidation(correction.correc_id)
         await utils.checkDayFinished(message, day_id, userCorrector, user)
     },
 
@@ -289,19 +291,22 @@ module.exports = {
             return await utils.error("could not find this user", user);
         if (!mark)
             return await utils.error("please give me the mark : \n`;corrected " + userCorrected.login + " <notValidated/done/outstanding>`", user);
-        // let correction = await utils.getCorrectionsNotDoneByUsers(user, userCorrected)
-        let correction = await utils.getCorrectionsByUsers(user, userCorrected)
-        if (!correction)
-            return await utils.error("No matching corrections found", user)
+        let correction = await utils.getCorrectionsNotDoneByUsers(user, userCorrected)
+        // let correction = await utils.getCorrectionsByUsers(user, userCorrected)
+        if (!correction || correction.length === 0)
+            return await utils.error("This correction doesn't exist or is already finished", user);
         // console.log(correction);
-        let day = await utils.getDayByDayId(correction[0].day_id)
+        correction = correction[0];
+        if (correction.corrector_validation === 1)
+            return await utils.error("You already corrected the correction", user);
+        let day = await utils.getDayByDayId(correction.day_id)
         let day_id = day.day_id;
-        await utils.updateCorrectorValidation(correction[0].correc_id)
+        await utils.updateCorrectorValidation(correction.correc_id)
         if (mark === "done") {
-            await utils.updateValidatedCorrection(correction[0].correc_id)
+            await utils.updateValidatedCorrection(correction.correc_id)
         } else if (mark === "outstanding") {
-            await utils.updateValidatedCorrection(correction[0].correc_id)
-            await utils.updateOutstanding(correction[0].correc_id)
+            await utils.updateValidatedCorrection(correction.correc_id)
+            await utils.updateOutstanding(correction.correc_id)
         } else
             return await utils.error("please give me the mark : \n`;corrected " + userCorrected.login + " <notValidated/done/outstanding>`", user);
 
@@ -313,6 +318,7 @@ module.exports = {
         let corrector = argv[2];
         let day_nb = argv[3];
         const day = await utils.getDayIdByUser(corrected, day_nb);
-        const correc = await utils.getCorrectionsByDayIdCorrectorCorrected(day.day_id)
+        const correc = await utils.getCorrectionsByDayIdCorrectorCorrected(day.day_id, corrector, corrected);
+
     },
 }

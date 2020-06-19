@@ -3,7 +3,7 @@ const i = require('../index');
 
 module.exports = {
 
-    createDay: async function (User, nbDay) {
+    createDay: async function (nbDay) {
         try {
             return await Day.create({day_nb: nbDay});
         } catch (e) {
@@ -66,7 +66,7 @@ module.exports = {
 
     updateDayComplete : async function(day_id) {
         try {
-            await Correc.update({ corrected: 1}, {where : {day_id : day_id}});
+            await Day.update({ corrected: 1}, {where : {day_id : day_id}});
         } catch (e) {
             i.logs("ERROR : function updateDayComplet : " + e);
         }
