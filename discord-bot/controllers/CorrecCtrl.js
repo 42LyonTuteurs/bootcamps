@@ -29,6 +29,7 @@ module.exports = {
 
     getCorrectionsNotDoneByUserAsCorrector : async function(user){
         try{
+            console.log("dans getascorrector"+user.login);
             return await Correc.findAll({where : {corrector_validation: 0, corrector_id: user.discord_id}})
         } catch (e) {
             i.logs("ERROR : function getCorrectionsNotDoneByCorrector : " + e);
@@ -37,6 +38,8 @@ module.exports = {
 
     getCorrectionsNotDoneByUserAsCorrected : async function(user){
         try{
+            console.log("dans getascorrected"+user.login);
+
             return await Correc.findAll({where : {corrected_validation: 0, corrected_id: user.discord_id}})
         } catch (e) {
             i.logs("ERROR : function getCorrectionsNotDoneByCorrector : " + e);

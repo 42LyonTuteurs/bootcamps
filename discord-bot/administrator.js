@@ -240,6 +240,10 @@ module.exports = {
                 await utils.allwithMana(message, argv[1]);
             } else if (argv[0] === 'forceReset' && login) {
                 await this.forceResetCorrection(message, argv[1]);
+            } else if (argv[0] === 'forceUnsubscribe' && login) {
+                await this.forceUnsubscribe(message, argv);
+            } else if (argv[0] === 'allCorrec' && login) {
+                await utils.allCorrecInfo(message);
             }
                 //
                 //
@@ -319,6 +323,20 @@ module.exports = {
         let day_nb = argv[3];
         const day = await utils.getDayIdByUser(corrected, day_nb);
         const correc = await utils.getCorrectionsByDayIdCorrectorCorrected(day.day_id, corrector, corrected);
+        await utils.createCorrection(day, corrected);
+        await utils.destroyCorrection(correc.correc_id);
+    },
 
+    forceUnsubscribe : async function(message, argv){
+        let userLogin = argv[1];
+        console.log(userLogin);
+        const user = await utils.getUserByLogin(userLogin);
+        await utils.userGiveUpActivity(await utils.getUserByLogin(userLogin));
+        message.guild.channels.cache.forEach(element => {
+            if (element.name === "bootcamp-" + userLogin.toLowerCase())
+                element.delete();
+        });
+        await utils.resetAllUnsubscribedCorrections(user)
+        message.channel.send("You succesfully unsubscribed !");
     },
 }

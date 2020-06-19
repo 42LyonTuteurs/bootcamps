@@ -80,12 +80,15 @@ async function subscribe(client, name, message)
 
 async function unsubscribe(message, name)
 {
+    const user = await utils.getUserByLogin(name);
+
     // await utils.deleteUserByLogin(name);
     await utils.userGiveUpActivity(await utils.getUserByLogin(name));
     message.guild.channels.cache.forEach(element => {
         if (element.name === "bootcamp-" + name.toLowerCase())
             element.delete();
     });
+    await utils.resetAllUnsubscribedCorrections(user);
     message.channel.send("You succesfully unsubscribed !");
 }
 

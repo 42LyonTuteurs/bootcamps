@@ -632,6 +632,8 @@ module.exports = {
         message.channel.send(List);
         message.channel.send("Total : " + List.length);
     },
+
+
     //
     // UserNb : async function() {
     //   const nbOfUsers = await Users.findAll();
@@ -678,14 +680,18 @@ module.exports = {
         else
             console.log("TODO");
 
-        // if (await this.checkTimestamps(correction)){
+        if (await this.checkTimestamps(correction)){
             await this.setMissing(message, missingUser);
             const day =await dayCtrl.getDayByDayId(correction.day_id);
             await this.createCorrection(day, corrected);
             await correcCtrl.destroyCorrection(correction.correc_id);
-        // } else
-        //     console.log("tu dois attendre 24h mec");
+        } else
+            await this.error("you must wait 24h before report user", corrected);
 
+    },
+
+    destroyCorrection : async function(correc_id){
+      await correcCtrl.destroyCorrection(correc_id);
     },
 
     //TODO only modify console.log => message to channel
@@ -699,7 +705,7 @@ module.exports = {
             await this.setMissing(missingUser);
             await this.deleteCorrection(correction);
         } else
-            console.log("tu dois attendre 24h");
+            await this.error("you must wait 24h before report user", corrected);
 
     },
 
@@ -761,6 +767,7 @@ module.exports = {
 
     createCorrection : async function(day, corrected){
         const corrector = await this.getRandomForCorrection(corrected);
+        console.log("aie aie")
         await correcCtrl.createCorrection(day.day_id, corrector.discord_id, corrected.discord_id);
     },
 
@@ -896,5 +903,25 @@ module.exports = {
 
     getCorrectionsByDayIdCorrectorCorrected : async function(dayId, corrector, corrected) {
         return await correcCtrl.getCorrectionsByDayIdCorrectorCorrected(dayId, corrector, corrected);
+    },
+
+    resetAllUnsubscribedCorrections : async function(user){
+        const correctionsAsCorrector = await correcCtrl.getCorrectionsNotDoneByUserAsCorrector(user);
+        const correctionsAsCorrected = await correcCtrl.getCorrectionsNotDoneByUserAsCorrected(user);
+        console.log("really ?");
+        console.log(correctionsAsCorrector);
+        console.log(correctionsAsCorrected);
+        for (const correc of correctionsAsCorrector){
+            let corrected = await userCtrl.getUserByDiscordId(correc.corrected_id);
+            // let day_id = await this.getDayIdByUser(corrected);
+            console.log("login = > " + user.login);
+            console.log("login = > " + corrected.login);
+            console.log("correc.day_id = > " + correc.day_id);
+            await this.createCorrection(correc, corrected);
+            await correcCtrl.destroyCorrection(correc.correc_id)
+        }
+        for (const correc of correctionsAsCorrected){
+            await correcCtrl.destroyCorrection(correc.correc_id);
+        }
     },
 }
