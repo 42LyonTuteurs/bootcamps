@@ -197,6 +197,82 @@ module.exports = {
             help(message);
     },
 
+    forceValCorrection: async function (message, argv) {
+        let me = argv[1];
+        let other = argv[2];
+
+        let user = await utils.getUserByLogin(me)
+        let userCorrector = await utils.getUserByLogin(other)
+        if (!userCorrector)
+            return await utils.error("could not find this user", user);
+        let correction = await utils.getCorrectionsNotDoneByUsers(userCorrector, user)
+        if (!correction || correction.length === 0)
+            return await utils.error("This correction doesn't exist or is already finished", user);
+        correction = correction[0];
+        if (correction.corrected_validation === 1)
+            return await utils.error("You already validate the corrector", user);
+        let day = await utils.getDayByDayId(correction.day_id)
+        let day_id = day.day_id;
+        console.log(correction.correc_id)
+        await utils.updateCorrectedValidation(correction.correc_id)
+        await utils.checkDayFinished(message, day_id, userCorrector, user)
+    },
+
+    forceCorrecCorrection: async function (message, argv) {
+        let me = argv[1];
+        let other = argv[2];
+        let mark = argv[3];
+
+        console.log(me)
+        console.log(other)
+        console.log(mark)
+        let user = await utils.getUserByLogin(me)
+        let userCorrected = await utils.getUserByLogin(other)
+        if (!userCorrected)
+            return await utils.error("could not find this user", user);
+        if (mark != "notValidated" && mark != "done" && mark != "outstanding")
+            return await utils.error("please give me the mark : \n`;corrected " + userCorrected.login + " <notValidated/done/outstanding>`", user);
+        let correction = await utils.getCorrectionsNotDoneByUsers(user, userCorrected)
+        if (!correction || correction.length === 0)
+            return await utils.error("This correction doesn't exist or is already finished", user);
+        correction = correction[0];
+        if (correction.corrector_validation === 1)
+            return await utils.error("You already corrected the correction", user);
+        let day = await utils.getDayByDayId(correction.day_id)
+        let day_id = day.day_id;
+        await utils.updateCorrectorValidation(correction.correc_id)
+        if (mark === "done") {
+            await utils.updateValidatedCorrection(correction.correc_id)
+        } else if (mark === "outstanding") {
+            await utils.updateValidatedCorrection(correction.correc_id)
+            await utils.updateOutstanding(correction.correc_id)
+        }
+        await utils.checkDayFinished(message, day_id, user, userCorrected)
+    },
+
+    forceResetCorrection: async function (message, argv) {
+        let corrected = argv[1];
+        let corrector = argv[2];
+        let day_nb = argv[3];
+        const day = await utils.getDayIdByUser(corrected, day_nb);
+        const correc = await utils.getCorrectionsByDayIdCorrectorCorrected(day.day_id, corrector, corrected);
+        await utils.createCorrection(day, corrected);
+        await utils.destroyCorrection(correc.correc_id);
+    },
+
+    forceUnsubscribe : async function(message, argv){
+        let userLogin = argv[1];
+        console.log(userLogin);
+        const user = await utils.getUserByLogin(userLogin);
+        await utils.userGiveUpActivity(await utils.getUserByLogin(userLogin));
+        message.guild.channels.cache.forEach(element => {
+            if (element.name === "bootcamp-" + userLogin.toLowerCase())
+                element.delete();
+        });
+        await utils.resetAllUnsubscribedCorrections(user)
+        message.channel.send("You succesfully unsubscribed !");
+    },
+
     adminCommands: async function (message, argv, name, discord_id) {
         if (utils.isAdmin(discord_id)) {
             console.log(argv[0])
@@ -240,103 +316,17 @@ module.exports = {
                 await utils.allwithMana(message, argv[1]);
             } else if (argv[0] === 'forceReset' && login) {
                 await this.forceResetCorrection(message, argv[1]);
+            } else if (argv[0] === 'forceValidate' && login) {
+                await this.forceValCorrection(message, argv);
+            } else if (argv[0] === 'forceCorrect' && login) {
+                await this.forceCorrecCorrection(message, argv);
             } else if (argv[0] === 'forceUnsubscribe' && login) {
                 await this.forceUnsubscribe(message, argv);
             } else if (argv[0] === 'allCorrec' && login) {
                 await utils.allCorrecInfo(message);
-            }
-                //
-                //
-                // FOR TESTING
-            //
-            else if (argv[0] === 'forceValidate' && login) {
-                await this.forceValCorrection(message, argv);
-            } else if (argv[0] === 'forceCorrect' && login) {
-                await this.forceCorrecCorrection(message, argv);
             } else
                 await this.adminHelp(message);
         } else
             msg.help(message);
-    },
-
-    forceValCorrection: async function (message, argv) {
-        let me = argv[1];
-        let other = argv[2];
-
-        let user = await utils.getUserByLogin(me)
-        let userCorrector = await utils.getUserByLogin(other)
-        if (!userCorrector)
-            return await utils.error("could not find this user", user);
-        // let correction = await utils.getCorrectionsByUsers(userCorrector, user)
-        let correction = await utils.getCorrectionsNotDoneByUsers(userCorrector, user)
-        if (!correction || correction.length === 0)
-            return await utils.error("This correction doesn't exist or is already finished", user);
-        correction = correction[0];
-        if (correction.corrected_validation === 1)
-            return await utils.error("You already validate the corrector", user);
-        let day = await utils.getDayByDayId(correction.day_id)
-        let day_id = day.day_id;
-        console.log(correction.correc_id)
-        await utils.updateCorrectedValidation(correction.correc_id)
-        await utils.checkDayFinished(message, day_id, userCorrector, user)
-    },
-
-    forceCorrecCorrection: async function (message, argv) {
-        let me = argv[1];
-        let other = argv[2];
-        let mark = argv[3];
-
-        console.log(me)
-        console.log(other)
-        console.log(mark)
-        let user = await utils.getUserByLogin(me)
-        let userCorrected = await utils.getUserByLogin(other)
-        if (!userCorrected)
-            return await utils.error("could not find this user", user);
-        if (!mark)
-            return await utils.error("please give me the mark : \n`;corrected " + userCorrected.login + " <notValidated/done/outstanding>`", user);
-        let correction = await utils.getCorrectionsNotDoneByUsers(user, userCorrected)
-        // let correction = await utils.getCorrectionsByUsers(user, userCorrected)
-        if (!correction || correction.length === 0)
-            return await utils.error("This correction doesn't exist or is already finished", user);
-        // console.log(correction);
-        correction = correction[0];
-        if (correction.corrector_validation === 1)
-            return await utils.error("You already corrected the correction", user);
-        let day = await utils.getDayByDayId(correction.day_id)
-        let day_id = day.day_id;
-        await utils.updateCorrectorValidation(correction.correc_id)
-        if (mark === "done") {
-            await utils.updateValidatedCorrection(correction.correc_id)
-        } else if (mark === "outstanding") {
-            await utils.updateValidatedCorrection(correction.correc_id)
-            await utils.updateOutstanding(correction.correc_id)
-        } else
-            return await utils.error("please give me the mark : \n`;corrected " + userCorrected.login + " <notValidated/done/outstanding>`", user);
-
-        await utils.checkDayFinished(message, day_id, user, userCorrected)
-    },
-
-    forceResetCorrection: async function (message, argv) {
-        let corrected = argv[1];
-        let corrector = argv[2];
-        let day_nb = argv[3];
-        const day = await utils.getDayIdByUser(corrected, day_nb);
-        const correc = await utils.getCorrectionsByDayIdCorrectorCorrected(day.day_id, corrector, corrected);
-        await utils.createCorrection(day, corrected);
-        await utils.destroyCorrection(correc.correc_id);
-    },
-
-    forceUnsubscribe : async function(message, argv){
-        let userLogin = argv[1];
-        console.log(userLogin);
-        const user = await utils.getUserByLogin(userLogin);
-        await utils.userGiveUpActivity(await utils.getUserByLogin(userLogin));
-        message.guild.channels.cache.forEach(element => {
-            if (element.name === "bootcamp-" + userLogin.toLowerCase())
-                element.delete();
-        });
-        await utils.resetAllUnsubscribedCorrections(user)
-        message.channel.send("You succesfully unsubscribed !");
     },
 }
