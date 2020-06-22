@@ -223,15 +223,12 @@ module.exports = {
         let other = argv[2];
         let mark = argv[3];
 
-        console.log(me)
-        console.log(other)
-        console.log(mark)
         let user = await utils.getUserByLogin(me)
         let userCorrected = await utils.getUserByLogin(other)
         if (!userCorrected)
             return await utils.error("could not find this user", user);
         if (mark != "notValidated" && mark != "done" && mark != "outstanding")
-            return await utils.error("please give me the mark : \n`;corrected " + userCorrected.login + " <notValidated/done/outstanding>`", user);
+            return await utils.error("pppplease give me the mark : \n`;corrected " + userCorrected.login + " <notValidated/done/outstanding>`", user);
         let correction = await utils.getCorrectionsNotDoneByUsers(user, userCorrected)
         if (!correction || correction.length === 0)
             return await utils.error("This correction doesn't exist or is already finished", user);
@@ -262,7 +259,6 @@ module.exports = {
 
     forceUnsubscribe : async function(message, argv){
         let userLogin = argv[1];
-        console.log(userLogin);
         const user = await utils.getUserByLogin(userLogin);
         await utils.userGiveUpActivity(await utils.getUserByLogin(userLogin));
         message.guild.channels.cache.forEach(element => {
@@ -275,7 +271,6 @@ module.exports = {
 
     adminCommands: async function (message, argv, name, discord_id) {
         if (utils.isAdmin(discord_id)) {
-            console.log(argv[0])
             const login = argv[1];
             const nbDay = argv[2];
             if (login === undefined) {

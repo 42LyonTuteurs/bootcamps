@@ -82,7 +82,6 @@ async function unsubscribe(message, name)
 {
     const user = await utils.getUserByLogin(name);
 
-    // await utils.deleteUserByLogin(name);
     await utils.userGiveUpActivity(await utils.getUserByLogin(name));
     message.guild.channels.cache.forEach(element => {
         if (element.name === "bootcamp-" + name.toLowerCase())
@@ -231,7 +230,6 @@ async function validate(message, commandArgs, user) {
         return await utils.error("You already validate the corrector", user);
     let day = await utils.getDayByDayId(correction.day_id)
     let day_id = day.day_id;
-    console.log(correction.correc_id)
     await utils.updateCorrectedValidation(correction.correc_id)
     message.channel.send("You successfully feedback " + userCorrector.login)
     await utils.checkDayFinished(message, day_id, userCorrector, user)
