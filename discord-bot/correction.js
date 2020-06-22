@@ -166,14 +166,14 @@ var shuffle = require('shuffle-array');
 module.exports = {
 
 
-//TODO
+//TODO message to user
     setDayAsFinished : async function(message, user, argv){
         const day = await utils.getActualDayByUser(user);
         if (day === undefined){
-            console.log("tout les days sont déjà sets");
+            await utils.error("all days are seted", user);
         }
         if (await utils.checkSetedDay(day)) {
-            utils.error("le day est déjà set", user);
+            await utils.error("you day " + day.day_nb + " is already seted", user);
             return 0;
         }
         await utils.createCorrection(day, user);

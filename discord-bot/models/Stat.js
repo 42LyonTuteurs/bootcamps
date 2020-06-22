@@ -18,6 +18,10 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.INTEGER,
             defaultValue: 0,
         },
+        pending_correc: {
+            type: DataTypes.INTEGER,
+            defaultValue: 0,
+        },
         strike: {
             type: DataTypes.INTEGER,
             defaultValue: 3,
