@@ -82,7 +82,7 @@ async function fakerDb()
 {
 	let LoginList = await utils.AllLogin();
 	let userNb = LoginList.length;
-	if (userNb < 3) {
+	if (userNb < 0) {
 		for (let i = 0; i < 3; i++) {
 			var user = new User(faker.finance.account(18), faker.name.firstName(undefined).toLowerCase());
 			await utils.addUser(user.id, user.username);
@@ -106,7 +106,6 @@ function logs(string, login) {
 		if (err) throw err;
 	})
 	const guild = client.guilds.cache.find(guild => guild.name === config.ServerName);
-	// console.log(guild)
 	let logChannel = guild.channels.cache.find(chan => chan.name === botConfig.logChannelName)
 	logChannel.send("```" + output + "```")
 }
@@ -130,7 +129,6 @@ client.on('ready', async() => {
 
 client.on('message', async message => {
 	if (message.author.username != "bootcamp" && !message.author.bot && message.content.search("!mana") == -1 && message.content.startsWith(PREFIX)) {
-		// console.log(message.guild.channels.cache)
 		if (!message.member) {
 			message.author.send('```DM disable, please call me from 42 Lyon Server```')
 			return;
@@ -142,8 +140,8 @@ client.on('message', async message => {
 		let LoginList = await utils.AllLogin();
 		let name = message.member.nickname == null ? message.author.username : message.member.nickname;
 		let discord_id = message.member.id;
-		if (config.env != "dev" || (message.content !== PREFIX + "help" && message.content !== PREFIX + "debug" &&
-			message.content !== PREFIX + "subscribe" && !LoginList.includes(name))) {
+		if (message.content !== PREFIX + "help" && message.content !== PREFIX + "debug" &&
+			message.content !== PREFIX + "subscribe" && !LoginList.includes(name)) {
 			message.channel.send("Please " + PREFIX + "subscribe to access the commands")
 			return;
 		}

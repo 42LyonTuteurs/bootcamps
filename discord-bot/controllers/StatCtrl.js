@@ -112,19 +112,6 @@ module.exports = {
         }
     },
 
-    // testSum : async function(){
-    //     try{
-    //          let min = await Stat.min('correction');
-    //          let max = await Stat.max('correction');
-    //          let sum = await Stat.sum('correction');
-    //          console.log("min => " + min);
-    //          console.log("max => " + max);
-    //          console.log("sum => " + sum);
-    //     }  catch (e) {
-    //         i.logs("ERROR : function getStatMinCorrection : " + e);
-    //     }
-    // },
-
     getStatsListWithMinCorrec : async function(user){
         console.log("login 2 =>" + user.discord_id);
         try {
@@ -143,20 +130,4 @@ module.exports = {
           i.logs("ERROR : function updatePendingCorrectionByStat : " + e);
       }
     },
-
-    // const users = await sequelize.query("SELECT * FROM `users`", { type: QueryTypes.SELECT });
-
-    // stpmec : async function(){
-    //     let ret = await Stat.findAll({
-    //         attributes: [ 'correction', 'testing',
-    //             [ sequelize.literal(
-    //                 'MIN (COALESCE(correction, 0) + COALESCE(testing, 0))'
-    //             ), 'total_sal'
-    //             ]
-    //         ],
-    //         // group: ['oui', 'name']
-    //     })
-    //     console.log(ret);
-    // },
-
 }

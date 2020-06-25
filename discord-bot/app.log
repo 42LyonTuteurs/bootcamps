@@ -1,15 +1,102 @@
-Mon Jun 22 2020 12:18:23 :
-Logged in as json-bot#9208!
+Thu Jun 25 2020 15:40:29 :
+Logged in as dev-bootcamp-bot#8589!
 
-Mon Jun 22 2020 12:18:31 | Serronia
+Thu Jun 25 2020 15:40:41 | tclaudel
 ;subscribe
 
-Mon Jun 22 2020 12:18:31 :
-There is 18 channel for the bootcamp at the moment.
+Thu Jun 25 2020 15:40:41 :
+There is 0 channel for the bootcamp at the moment.
 
-Mon Jun 22 2020 12:18:31 :
-subscription of :Serronia 374265216608763907
+Thu Jun 25 2020 15:40:41 :
+subscription of :tclaudel 220625639655473152
 
-Mon Jun 22 2020 12:18:34 | Serronia
-;status
+Thu Jun 25 2020 15:40:50 | gaennuye
+;subscribe
+
+Thu Jun 25 2020 15:40:50 :
+There is 1 channel for the bootcamp at the moment.
+
+Thu Jun 25 2020 15:40:50 :
+subscription of :gaennuye 685982799630827654
+
+Thu Jun 25 2020 15:40:50 | KingDiams
+;subscribe
+
+Thu Jun 25 2020 15:40:50 :
+There is 1 channel for the bootcamp at the moment.
+
+Thu Jun 25 2020 15:40:50 :
+subscription of :KingDiams 189405583953100800
+
+Thu Jun 25 2020 15:40:52 | rmazars
+;subscribe
+
+Thu Jun 25 2020 15:40:52 :
+There is 3 channel for the bootcamp at the moment.
+
+Thu Jun 25 2020 15:40:52 :
+subscription of :rmazars 614073883007516685
+
+Thu Jun 25 2020 15:40:53 | KingDiams
+;mdr
+
+Thu Jun 25 2020 15:40:59 | gaennuye
+;moncul
+
+Thu Jun 25 2020 15:41:06 | KingDiams
+;help
+
+Thu Jun 25 2020 15:41:11 | gaennuye
+;get corrections
+
+Thu Jun 25 2020 15:41:17 | Drakauf
+;subscribe
+
+Thu Jun 25 2020 15:41:17 :
+There is 4 channel for the bootcamp at the moment.
+
+Thu Jun 25 2020 15:41:17 :
+subscription of :Drakauf 694240320325550182
+
+Thu Jun 25 2020 15:41:22 | gaennuye
+;feedback
+
+Thu Jun 25 2020 15:41:22 | gaennuye
+could not find this user
+
+Thu Jun 25 2020 15:41:31 | gaennuye
+;feedback aweiler
+
+Thu Jun 25 2020 15:41:32 | gaennuye
+could not find this user
+
+Thu Jun 25 2020 15:41:38 | gaennuye
+;help
+
+Thu Jun 25 2020 15:41:47 | gaennuye
+;missing corrector jdarko
+
+Thu Jun 25 2020 15:41:47 :
+ERROR : function getCorrectionsNotDoneByCorrector : TypeError: Cannot read property 'discord_id' of null
+
+Thu Jun 25 2020 15:41:56 | KingDiams
+;day done
+
+Thu Jun 25 2020 15:41:58 | tclaudel
+;day done
+
+Thu Jun 25 2020 15:42:01 | gaennuye
+;day done
+
+Thu Jun 25 2020 15:42:04 | jdarko
+;subscribe
+
+Thu Jun 25 2020 15:42:04 :
+There is 5 channel for the bootcamp at the moment.
+
+Thu Jun 25 2020 15:42:04 :
+subscription of :jdarko 374265216608763907
+
+Thu Jun 25 2020 15:42:08 | rmazars
+;day done
 
