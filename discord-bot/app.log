@@ -1,15 +1,75 @@
-Mon Jun 22 2020 12:18:23 :
-Logged in as json-bot#9208!
-
-Mon Jun 22 2020 12:18:31 | Serronia
+Thu Jun 25 2020 16:54:17 | Drakauf
 ;subscribe
 
-Mon Jun 22 2020 12:18:31 :
-There is 18 channel for the bootcamp at the moment.
+Thu Jun 25 2020 16:54:17 :
+Logged in as dev-bootcamp-bot#8589!
 
-Mon Jun 22 2020 12:18:31 :
-subscription of :Serronia 374265216608763907
+Thu Jun 25 2020 16:54:17 :
+There is 7 channel for the bootcamp at the moment.
 
-Mon Jun 22 2020 12:18:34 | Serronia
-;status
+Thu Jun 25 2020 16:54:17 :
+subscription of :Drakauf 694240320325550182
+
+Thu Jun 25 2020 16:54:21 | Drakauf
+;info
+
+Thu Jun 25 2020 16:54:23 | tclaudel
+;subscribe
+
+Thu Jun 25 2020 16:54:23 :
+There is 8 channel for the bootcamp at the moment.
+
+Thu Jun 25 2020 16:54:23 :
+subscription of :tclaudel 220625639655473152
+
+Thu Jun 25 2020 16:54:25 | ZBEUL
+;subscribe
+
+Thu Jun 25 2020 16:54:25 :
+There is 8 channel for the bootcamp at the moment.
+
+Thu Jun 25 2020 16:54:25 :
+subscription of :ZBEUL 288745208030560258
+
+Thu Jun 25 2020 16:54:26 | BaDaB
+;subscribe
+
+Thu Jun 25 2020 16:54:26 :
+There is 9 channel for the bootcamp at the moment.
+
+Thu Jun 25 2020 16:54:26 :
+subscription of :BaDaB 270640896742129664
+
+Thu Jun 25 2020 16:54:27 | tclaudel
+;list
+
+Thu Jun 25 2020 16:54:29 | Drakauf
+;day done
+
+Thu Jun 25 2020 16:54:32 | tclaudel
+;day done
+
+Thu Jun 25 2020 16:54:35 | BaDaB
+;day done
+
+Thu Jun 25 2020 16:54:35 | ZBEUL
+;day done
+
+Thu Jun 25 2020 16:54:48 | tclaudel
+;info
+
+Thu Jun 25 2020 16:55:08 | Drakauf
+;unsubscribe
+
+Thu Jun 25 2020 16:55:13 | tclaudel
+;info
+
+Thu Jun 25 2020 16:55:52 | tclaudel
+;admib
+
+Thu Jun 25 2020 16:55:55 | tclaudel
+;admin
+
+Thu Jun 25 2020 16:55:59 | tclaudel
+;admin destroyChans confirm
 

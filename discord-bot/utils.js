@@ -146,9 +146,11 @@ module.exports = {
     printInfo : async function(message, login) {
         stat = await this.getStatByLogin(login);
         user = await this.getUserByLogin(login)
+        currentDay = await this.getActualDayByUser(user)
         let str = "-----------------------------------------\n         __**" + login.toUpperCase() +
         " INFO SHEET**__\n-----------------------------------------\n\n" +
-        "**Expected Mana** : " + stat.mana + "\n\n";
+            "**Current day : " + currentDay.day_nb + "\n" +
+        "Expected Mana : " + stat.mana + "**\n\n";
         str += await this.pendingCorrectInfoByUser(message, user);
         for (let i = 0; i < 5; i++) {
             dayId = await dayCtrl.getDayIdByStat(stat, i);
@@ -194,6 +196,14 @@ module.exports = {
     getRandomForCorrection : async  function(user){
         let list;
         list = await statCtrl.getStatsListWithMinCorrec(user);
+        list = await shuffle(list);
+        return await userCtrl.getUserByDiscordId(list[0].user_id);
+
+    },
+
+    getAnotherRandomForCorrection : async  function(user, user2){
+        let list = await statCtrl.getAnotherStatsListWithMinCorrec(user, user2);
+        console.log(list)
         list = await shuffle(list);
         return await userCtrl.getUserByDiscordId(list[0].user_id);
     },
@@ -396,7 +406,7 @@ module.exports = {
     },
 
     nbOfPendingCorrection : async function(user) {
-        const list = await correcCtrl.getAllCorrectionsByUserAsCorrector(user);
+        const list = await correcCtrl.getCorrectionsNotDoneByUserAsCorrector(user);
         return list.length;
     },
 
@@ -409,7 +419,20 @@ module.exports = {
         const statCorrector = await statCtrl.getStatByUser(corrector);
         await statCtrl.updatePendingCorrectionByStat(statCorrector, 1);
         const correction = await correcCtrl.createCorrection(day.day_id, corrector.discord_id, corrected.discord_id);
-        await this.sendInLoginChannel(corrector.login, "<@" + corrector.discord_id + " You will correct " + corrected.login + " on day " + day.day_nb)
+        await this.sendInLoginChannel(corrector.login, "<@" + corrector.discord_id + "> You will correct " + corrected.login + " on day " + day.day_nb)
+    },
+
+    createSomeCorrections : async function(day, corrected){
+        const corrector = await this.getRandomForCorrection(corrected);
+        let statCorrector = await statCtrl.getStatByUser(corrector);
+        await statCtrl.updatePendingCorrectionByStat(statCorrector, 1);
+        await correcCtrl.createCorrection(day.day_id, corrector.discord_id, corrected.discord_id);
+        await this.sendInLoginChannel(corrector.login, "<@" + corrector.discord_id + "> You will correct " + corrected.login + " on day " + day.day_nb)
+        const corrector2 = await this.getAnotherRandomForCorrection(corrected, corrector);
+        statCorrector = await statCtrl.getStatByUser(corrector2);
+        await statCtrl.updatePendingCorrectionByStat(statCorrector, 1);
+        await correcCtrl.createCorrection(day.day_id, corrector2.discord_id, corrected.discord_id);
+        await this.sendInLoginChannel(corrector2.login, "<@" + corrector2.discord_id + "> You will correct " + corrected.login + " on day " + day.day_nb)
     },
 
     correctedAnnouncement : async function(message, user){
@@ -440,7 +463,7 @@ module.exports = {
         let result;
         await this.asyncForEach(tab, async (element) => {
             let day = await dayCtrl.getDayByDayId(element);
-            if (day.day_done === 0 && result === undefined) {
+            if (day.corrected === 0 && result === undefined) {
                 result = day;
             }
         })
@@ -531,10 +554,14 @@ module.exports = {
         const correctionsAsCorrected = await correcCtrl.getCorrectionsNotDoneByUserAsCorrected(user);
         for (const correc of correctionsAsCorrector){
             let corrected = await userCtrl.getUserByDiscordId(correc.corrected_id);
+            console.log("Corrector : " + correc.login)
+            console.log("Corrected : " + corrected.login)
             await this.createCorrection(correc, corrected);
             await correcCtrl.destroyCorrection(correc.correc_id)
         }
         for (const correc of correctionsAsCorrected){
+            const stat = await statCtrl.getStatByDiscordId(correc.corrector_id);
+            await statCtrl.updatePendingCorrectionByStat(stat, -1);
             await correcCtrl.destroyCorrection(correc.correc_id);
         }
     },

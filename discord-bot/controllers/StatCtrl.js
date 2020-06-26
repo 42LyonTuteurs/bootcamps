@@ -112,27 +112,26 @@ module.exports = {
         }
     },
 
-    // testSum : async function(){
-    //     try{
-    //          let min = await Stat.min('correction');
-    //          let max = await Stat.max('correction');
-    //          let sum = await Stat.sum('correction');
-    //          console.log("min => " + min);
-    //          console.log("max => " + max);
-    //          console.log("sum => " + sum);
-    //     }  catch (e) {
-    //         i.logs("ERROR : function getStatMinCorrection : " + e);
-    //     }
-    // },
-
     getStatsListWithMinCorrec : async function(user){
         console.log("login 2 =>" + user.discord_id);
         try {
-            let ret = await sequelize.query(" SELECT * FROM stats WHERE (correction + pending_correc) = (select MIN (correction + pending_correc) from stats where user_id NOT LIKE '" + user.discord_id + "') AND user_id NOT LIKE '" + user.discord_id + "'  GROUP BY user_id", { type: QueryTypes.SELECT });
+            let ret = await sequelize.query(" SELECT * FROM stats WHERE (correction + pending_correc) = (select MIN (correction + pending_correc) from stats where user_id NOT LIKE '" + user.discord_id + "') AND user_id NOT LIKE '" + user.discord_id + "'AND (select actif FROM users_lists where actif = 1) GROUP BY user_id", { type: QueryTypes.SELECT });
             console.log(ret)
             return ret;
         } catch (e) {
                     i.logs("ERROR : function getStatMinCorrection : " + e);
+        }
+    },
+
+    getAnotherStatsListWithMinCorrec : async function(user, user2){
+        console.log("login 1 =>" + user.discord_id);
+        try {
+            let ret = await sequelize.query(" SELECT * FROM stats WHERE (correction + pending_correc) = (select MIN (correction + pending_correc) from stats where user_id NOT LIKE '" + user.discord_id + "' AND user_id NOT LIKE '" + user2.discord_id + "') AND user_id NOT LIKE '" + user.discord_id + "' AND user_id NOT LIKE '" + user2.discord_id + "'  AND (select actif FROM users_lists where actif = 1) GROUP BY user_id", { type: QueryTypes.SELECT });
+            console.log(ret)
+            console.log("prout")
+            return ret;
+        } catch (e) {
+            i.logs("ERROR : function getStatMinCorrection : " + e);
         }
     },
 
@@ -143,20 +142,4 @@ module.exports = {
           i.logs("ERROR : function updatePendingCorrectionByStat : " + e);
       }
     },
-
-    // const users = await sequelize.query("SELECT * FROM `users`", { type: QueryTypes.SELECT });
-
-    // stpmec : async function(){
-    //     let ret = await Stat.findAll({
-    //         attributes: [ 'correction', 'testing',
-    //             [ sequelize.literal(
-    //                 'MIN (COALESCE(correction, 0) + COALESCE(testing, 0))'
-    //             ), 'total_sal'
-    //             ]
-    //         ],
-    //         // group: ['oui', 'name']
-    //     })
-    //     console.log(ret);
-    // },
-
 }

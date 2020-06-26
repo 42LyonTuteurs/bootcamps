@@ -23,7 +23,7 @@ async function createChan(client, name, faker) {
         discord_id = user.discord_id;
     guild.channels.create(PrivateChannelWithBot, {
         type: "text",
-        parent: guild.channels.cache.find(chan => chan.name == "BOOTCAMP" + [Math.trunc(1 + userNb / 50)]),
+        parent: guild.channels.cache.find(chan => chan.name === "BOOTCAMP" + [Math.trunc(1 + userNb / 50)]),
         permissionOverwrites: [
             {
                 id: everyoneRole,
@@ -61,7 +61,7 @@ async function subscribe(client, name, message)
         }
         let myRole = message.guild.roles.cache.get(i.config.bootcampRoleId);
         message.member.roles.add(myRole).catch(console.error);
-        var user = new User(message.member.id, name);
+        const user = new User(message.member.id, name);
         i.logs("subscription of :" + user.username + " " + user.id);
         await utils.addUser(user.id, user.username);
         if (!message.guild.channels.cache.map(t => t.name).includes("bootcamp-" + name)) {
@@ -83,12 +83,11 @@ async function unsubscribe(message, name)
     const user = await utils.getUserByLogin(name);
 
     await utils.userGiveUpActivity(await utils.getUserByLogin(name));
+    await utils.resetAllUnsubscribedCorrections(user);
     message.guild.channels.cache.forEach(element => {
         if (element.name === "bootcamp-" + name.toLowerCase())
             element.delete();
     });
-    await utils.resetAllUnsubscribedCorrections(user);
-    message.channel.send("You succesfully unsubscribed !");
 }
 
 async function list(message, name, discord_id, commandArgs)
@@ -142,15 +141,6 @@ function help(message) {
     message.channel.send(msg.help);
 }
 
-// async function enableCorrection(message, commandArgs, name) {
-//    set user enable correction
-// }
-//
-// async function disableCorrection(message, commandArgs, name) {
-//    set user disable correction
-// }
-
-
 //TODO deja en cour dans correction.js
 async function dayDone(message, commandArgs, user) {
    if (await utils.nbOfPendingCorrection(user) >= 2) {
@@ -168,7 +158,7 @@ async function miss(message, commandArg, user) {
     else if (commandArg[0] === 'corrected')
         await missCorrected(message, commandArg, name)
     else
-        message.channel.send("please respect the format : \n `;miss <corrector/corrected> <login>`")
+        message.channel.send("please respect the format : \n `;missing <corrector/corrected> <login>`")
 }
 
 async function missCorrector(message, user, corrector) {
@@ -199,7 +189,7 @@ async function corrected(message, commandArgs, user) {
         return await utils.error("could not find this user", user);
     if (mark != "notValidated" && mark != "done" && mark != "outstanding")
         return await utils.error("please give me the mark : \n`;corrected " + userCorrected.login + " <notValidated/done/outstanding>`", user);
-    let correction = await utils.getCorrectionsNotDoneByUsers(user, userCorrected)
+    let correction = await utils.getCorrectionsNotDoneByUsers(user, userCorrected);
     if (!correction || correction.length === 0)
         return await utils.error("This correction doesn't exist or is already finished", user);
     correction = correction[0];
@@ -231,7 +221,7 @@ async function validate(message, commandArgs, user) {
     let day = await utils.getDayByDayId(correction.day_id)
     let day_id = day.day_id;
     await utils.updateCorrectedValidation(correction.correc_id)
-    message.channel.send("You successfully feedback " + userCorrector.login)
+    message.channel.send("You successfully fedback " + userCorrector.login)
     await utils.checkDayFinished(message, day_id, userCorrector, user)
 }
 
@@ -239,20 +229,18 @@ async function userCommands(command, message, commandArgs, name, discord_id, cli
     const LoginList = await utils.AllLogin();
     const user = await usrCtrl.getUserByLogin(name);
     if (command === 'subscribe')
-        subscribe(client, name, message);
+        await subscribe(client, name, message);
     else if (command === 'info')
-        info(message, commandArgs.split(" "), name);
+        await info(message, commandArgs.split(" "), name);
     else if (command === 'status')
-        status(message, commandArgs.split(" "), name, discord_id);
+        await status(message, commandArgs.split(" "), name, discord_id);
     else if (command === 'unsubscribe')
-        unsubscribe(message, name);
+        await unsubscribe(message, name);
     else if (command === 'list')
-        list(message, name, discord_id, commandArgs);
+        await list(message, name, discord_id, commandArgs);
     else if (command === 'day' && commandArgs === 'done')
-        dayDone(message, commandArgs.split(" "), user);
-    // else if (command === 'correc')
-    //     await utils.correctInfoByUser(message, user);
-    else if (command === 'miss')
+        await dayDone(message, commandArgs.split(" "), user);
+    else if (command === 'missing')
         await miss(message, commandArgs.split(" "), user);
     else if (command === 'get' && commandArgs === 'corrections')
         await getCorrections(message, user);
@@ -260,18 +248,6 @@ async function userCommands(command, message, commandArgs, name, discord_id, cli
         await corrected(message, commandArgs.split(" "), user);
     else if (command === 'feedback')
         await validate(message, commandArgs.split(" "), user);
-    // else if (command === 'correction') {
-    //     let error = await c.correction(LoginList, commandArgs, discord_id, client);
-    //     if (error == 1) {
-    //         help(message);
-    //     }
-    // } else if (command === 'corrected') {
-    //     if (await c.corrected(message, commandArgs.split(" "), name) === 1)
-    //         help(message);
-    // } else if (command === 'validates') {
-    //     if (await c.validated(message, commandArgs.split(" "), name) === 1)
-    //         help(message);
-    // }
     else if (command === 'help')
         help(message);
     else {

@@ -173,11 +173,10 @@ module.exports = {
             await utils.error("all days are seted", user);
         }
         if (await utils.checkSetedDay(day)) {
-            await utils.error("you day " + day.day_nb + " is already seted", user);
+            await utils.error("you day " + day.day_nb + " is already set", user);
             return 0;
         }
-        await utils.createCorrection(day, user);
-        await utils.createCorrection(day, user);
+        await utils.createSomeCorrections(day, user);
         await utils.correctedAnnouncement(message, user);
         await utils.daySeted(day);
 
