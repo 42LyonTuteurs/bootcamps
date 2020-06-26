@@ -115,8 +115,8 @@ module.exports = {
     getStatsListWithMinCorrec : async function(user){
         console.log("login 2 =>" + user.discord_id);
         try {
-            let ret = await sequelize.query(" SELECT * FROM stats WHERE (correction + pending_correc) = (select MIN (correction + pending_correc) from stats where user_id NOT LIKE '" + user.discord_id + "') AND user_id NOT LIKE '" + user.discord_id + "'AND (select actif FROM users_lists where actif = 1) GROUP BY user_id", { type: QueryTypes.SELECT });
-            console.log(ret)
+            // let ret = await sequelize.query(" SELECT * FROM stats WHERE (correction + pending_correc) = (select MIN (correction + pending_correc) from stats where user_id NOT LIKE '" + user.discord_id + "') AND user_id NOT LIKE '" + user.discord_id + "'AND (select actif FROM users_lists where actif = 1) GROUP BY user_id", { type: QueryTypes.SELECT });
+            let ret = await sequelize.query(" SELECT * FROM stats WHERE (correction + pending_correc) = (select MIN (correction + pending_correc) from stats where user_id NOT LIKE '" + user.discord_id + "'  AND user_id in (select discord_id FROM users_lists WHERE actif = 1)) AND user_id NOT LIKE '" + user.discord_id + "' AND user_id in (select discord_id FROM users_lists WHERE actif = 1) GROUP BY user_id;", { type: QueryTypes.SELECT });
             return ret;
         } catch (e) {
                     i.logs("ERROR : function getStatMinCorrection : " + e);
@@ -126,8 +126,7 @@ module.exports = {
     getAnotherStatsListWithMinCorrec : async function(user, user2){
         console.log("login 1 =>" + user.discord_id);
         try {
-            let ret = await sequelize.query(" SELECT * FROM stats WHERE (correction + pending_correc) = (select MIN (correction + pending_correc) from stats where user_id NOT LIKE '" + user.discord_id + "' AND user_id NOT LIKE '" + user2.discord_id + "') AND user_id NOT LIKE '" + user.discord_id + "' AND user_id NOT LIKE '" + user2.discord_id + "'  AND (select actif FROM users_lists where actif = 1) GROUP BY user_id", { type: QueryTypes.SELECT });
-            console.log(ret)
+            let ret = await sequelize.query(" SELECT * FROM stats WHERE (correction + pending_correc) = (select MIN (correction + pending_correc) from stats where user_id NOT LIKE '" + user.discord_id + "' AND user_id NOT LIKE '" + user2.discord_id + "' AND user_id in (select discord_id FROM users_lists WHERE actif = 1)) AND user_id NOT LIKE '" + user.discord_id + "' AND user_id NOT LIKE '" + user2.discord_id + "'  AND user_id in (select discord_id FROM users_lists WHERE actif = 1) GROUP BY user_id", { type: QueryTypes.SELECT });
             console.log("prout")
             return ret;
         } catch (e) {
