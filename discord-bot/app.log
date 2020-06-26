@@ -1,75 +1,78 @@
-Thu Jun 25 2020 16:54:17 | Drakauf
-;subscribe
-
-Thu Jun 25 2020 16:54:17 :
+Fri Jun 26 2020 16:39:18 :
 Logged in as dev-bootcamp-bot#8589!
 
-Thu Jun 25 2020 16:54:17 :
-There is 7 channel for the bootcamp at the moment.
+Fri Jun 26 2020 16:40:34 | jdarko
+;help
 
-Thu Jun 25 2020 16:54:17 :
-subscription of :Drakauf 694240320325550182
-
-Thu Jun 25 2020 16:54:21 | Drakauf
-;info
-
-Thu Jun 25 2020 16:54:23 | tclaudel
+Fri Jun 26 2020 16:51:09 | jdarko
 ;subscribe
 
-Thu Jun 25 2020 16:54:23 :
-There is 8 channel for the bootcamp at the moment.
+Fri Jun 26 2020 16:51:09 :
+There is 3 channel for the bootcamp at the moment.
 
-Thu Jun 25 2020 16:54:23 :
-subscription of :tclaudel 220625639655473152
+Fri Jun 26 2020 16:51:09 :
+subscription of :jdarko 374265216608763907
 
-Thu Jun 25 2020 16:54:25 | ZBEUL
-;subscribe
-
-Thu Jun 25 2020 16:54:25 :
-There is 8 channel for the bootcamp at the moment.
-
-Thu Jun 25 2020 16:54:25 :
-subscription of :ZBEUL 288745208030560258
-
-Thu Jun 25 2020 16:54:26 | BaDaB
-;subscribe
-
-Thu Jun 25 2020 16:54:26 :
-There is 9 channel for the bootcamp at the moment.
-
-Thu Jun 25 2020 16:54:26 :
-subscription of :BaDaB 270640896742129664
-
-Thu Jun 25 2020 16:54:27 | tclaudel
+Fri Jun 26 2020 16:51:16 | jdarko
 ;list
 
-Thu Jun 25 2020 16:54:29 | Drakauf
+Fri Jun 26 2020 16:51:16 | Drakauf
+;subscribe
+
+Fri Jun 26 2020 16:51:16 :
+There is 3 channel for the bootcamp at the moment.
+
+Fri Jun 26 2020 16:51:16 :
+subscription of :Drakauf 694240320325550182
+
+Fri Jun 26 2020 16:51:16 | srepelli
+;subscribe
+
+Fri Jun 26 2020 16:51:16 :
+There is 3 channel for the bootcamp at the moment.
+
+Fri Jun 26 2020 16:51:16 :
+subscription of :srepelli 261065502539907072
+
+Fri Jun 26 2020 16:51:19 | jdarko
+;list
+
+Fri Jun 26 2020 16:51:29 | srepelli
 ;day done
 
-Thu Jun 25 2020 16:54:32 | tclaudel
+Fri Jun 26 2020 16:51:34 | Drakauf
 ;day done
 
-Thu Jun 25 2020 16:54:35 | BaDaB
+Fri Jun 26 2020 16:51:40 | jdarko
 ;day done
 
-Thu Jun 25 2020 16:54:35 | ZBEUL
-;day done
+Fri Jun 26 2020 16:51:47 | Drakauf
+;ubsubscribe
 
-Thu Jun 25 2020 16:54:48 | tclaudel
+Fri Jun 26 2020 16:51:52 | jdarko
 ;info
 
-Thu Jun 25 2020 16:55:08 | Drakauf
+Fri Jun 26 2020 16:51:58 | Drakauf
 ;unsubscribe
 
-Thu Jun 25 2020 16:55:13 | tclaudel
+Fri Jun 26 2020 16:52:10 | jdarko
 ;info
 
-Thu Jun 25 2020 16:55:52 | tclaudel
-;admib
+Fri Jun 26 2020 16:52:15 | srepelli
+;info
 
-Thu Jun 25 2020 16:55:55 | tclaudel
-;admin
+Fri Jun 26 2020 16:52:20 | jdarko
+;info srepelli
 
-Thu Jun 25 2020 16:55:59 | tclaudel
-;admin destroyChans confirm
+Fri Jun 26 2020 16:52:58 | jdarko
+;corrected srepelli done
+
+Fri Jun 26 2020 16:53:13 | srepelli
+;feedback jdarko
+
+Fri Jun 26 2020 16:53:27 | jdarko
+;day done
+
+Fri Jun 26 2020 16:53:41 | jdarko
+;info
 

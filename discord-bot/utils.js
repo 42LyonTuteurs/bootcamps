@@ -197,6 +197,7 @@ module.exports = {
         let list;
         list = await statCtrl.getStatsListWithMinCorrec(user);
         list = await shuffle(list);
+        console.log(list);
         return await userCtrl.getUserByDiscordId(list[0].user_id);
 
     },
@@ -416,6 +417,7 @@ module.exports = {
 
     createCorrection : async function(day, corrected){
         const corrector = await this.getRandomForCorrection(corrected);
+        console.log("create correction =>" + corrector.login);
         const statCorrector = await statCtrl.getStatByUser(corrector);
         await statCtrl.updatePendingCorrectionByStat(statCorrector, 1);
         const correction = await correcCtrl.createCorrection(day.day_id, corrector.discord_id, corrected.discord_id);
@@ -554,9 +556,10 @@ module.exports = {
         const correctionsAsCorrected = await correcCtrl.getCorrectionsNotDoneByUserAsCorrected(user);
         for (const correc of correctionsAsCorrector){
             let corrected = await userCtrl.getUserByDiscordId(correc.corrected_id);
-            console.log("Corrector : " + correc.login)
-            console.log("Corrected : " + corrected.login)
-            await this.createCorrection(correc, corrected);
+            // console.log("Corrector : " + correc.login)
+            // console.log("Corrected : " + corrected.login)
+            const day = await dayCtrl.getDayByDayId(correc.day_id);
+            await this.createCorrection(day, corrected);
             await correcCtrl.destroyCorrection(correc.correc_id)
         }
         for (const correc of correctionsAsCorrected){
