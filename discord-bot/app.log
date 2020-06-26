@@ -1,102 +1,75 @@
-Thu Jun 25 2020 15:40:29 :
+Thu Jun 25 2020 16:54:17 | Drakauf
+;subscribe
+
+Thu Jun 25 2020 16:54:17 :
 Logged in as dev-bootcamp-bot#8589!
 
-Thu Jun 25 2020 15:40:41 | tclaudel
-;subscribe
+Thu Jun 25 2020 16:54:17 :
+There is 7 channel for the bootcamp at the moment.
 
-Thu Jun 25 2020 15:40:41 :
-There is 0 channel for the bootcamp at the moment.
-
-Thu Jun 25 2020 15:40:41 :
-subscription of :tclaudel 220625639655473152
-
-Thu Jun 25 2020 15:40:50 | gaennuye
-;subscribe
-
-Thu Jun 25 2020 15:40:50 :
-There is 1 channel for the bootcamp at the moment.
-
-Thu Jun 25 2020 15:40:50 :
-subscription of :gaennuye 685982799630827654
-
-Thu Jun 25 2020 15:40:50 | KingDiams
-;subscribe
-
-Thu Jun 25 2020 15:40:50 :
-There is 1 channel for the bootcamp at the moment.
-
-Thu Jun 25 2020 15:40:50 :
-subscription of :KingDiams 189405583953100800
-
-Thu Jun 25 2020 15:40:52 | rmazars
-;subscribe
-
-Thu Jun 25 2020 15:40:52 :
-There is 3 channel for the bootcamp at the moment.
-
-Thu Jun 25 2020 15:40:52 :
-subscription of :rmazars 614073883007516685
-
-Thu Jun 25 2020 15:40:53 | KingDiams
-;mdr
-
-Thu Jun 25 2020 15:40:59 | gaennuye
-;moncul
-
-Thu Jun 25 2020 15:41:06 | KingDiams
-;help
-
-Thu Jun 25 2020 15:41:11 | gaennuye
-;get corrections
-
-Thu Jun 25 2020 15:41:17 | Drakauf
-;subscribe
-
-Thu Jun 25 2020 15:41:17 :
-There is 4 channel for the bootcamp at the moment.
-
-Thu Jun 25 2020 15:41:17 :
+Thu Jun 25 2020 16:54:17 :
 subscription of :Drakauf 694240320325550182
 
-Thu Jun 25 2020 15:41:22 | gaennuye
-;feedback
+Thu Jun 25 2020 16:54:21 | Drakauf
+;info
 
-Thu Jun 25 2020 15:41:22 | gaennuye
-could not find this user
-
-Thu Jun 25 2020 15:41:31 | gaennuye
-;feedback aweiler
-
-Thu Jun 25 2020 15:41:32 | gaennuye
-could not find this user
-
-Thu Jun 25 2020 15:41:38 | gaennuye
-;help
-
-Thu Jun 25 2020 15:41:47 | gaennuye
-;missing corrector jdarko
-
-Thu Jun 25 2020 15:41:47 :
-ERROR : function getCorrectionsNotDoneByCorrector : TypeError: Cannot read property 'discord_id' of null
-
-Thu Jun 25 2020 15:41:56 | KingDiams
-;day done
-
-Thu Jun 25 2020 15:41:58 | tclaudel
-;day done
-
-Thu Jun 25 2020 15:42:01 | gaennuye
-;day done
-
-Thu Jun 25 2020 15:42:04 | jdarko
+Thu Jun 25 2020 16:54:23 | tclaudel
 ;subscribe
 
-Thu Jun 25 2020 15:42:04 :
-There is 5 channel for the bootcamp at the moment.
+Thu Jun 25 2020 16:54:23 :
+There is 8 channel for the bootcamp at the moment.
 
-Thu Jun 25 2020 15:42:04 :
-subscription of :jdarko 374265216608763907
+Thu Jun 25 2020 16:54:23 :
+subscription of :tclaudel 220625639655473152
 
-Thu Jun 25 2020 15:42:08 | rmazars
+Thu Jun 25 2020 16:54:25 | ZBEUL
+;subscribe
+
+Thu Jun 25 2020 16:54:25 :
+There is 8 channel for the bootcamp at the moment.
+
+Thu Jun 25 2020 16:54:25 :
+subscription of :ZBEUL 288745208030560258
+
+Thu Jun 25 2020 16:54:26 | BaDaB
+;subscribe
+
+Thu Jun 25 2020 16:54:26 :
+There is 9 channel for the bootcamp at the moment.
+
+Thu Jun 25 2020 16:54:26 :
+subscription of :BaDaB 270640896742129664
+
+Thu Jun 25 2020 16:54:27 | tclaudel
+;list
+
+Thu Jun 25 2020 16:54:29 | Drakauf
 ;day done
+
+Thu Jun 25 2020 16:54:32 | tclaudel
+;day done
+
+Thu Jun 25 2020 16:54:35 | BaDaB
+;day done
+
+Thu Jun 25 2020 16:54:35 | ZBEUL
+;day done
+
+Thu Jun 25 2020 16:54:48 | tclaudel
+;info
+
+Thu Jun 25 2020 16:55:08 | Drakauf
+;unsubscribe
+
+Thu Jun 25 2020 16:55:13 | tclaudel
+;info
+
+Thu Jun 25 2020 16:55:52 | tclaudel
+;admib
+
+Thu Jun 25 2020 16:55:55 | tclaudel
+;admin
+
+Thu Jun 25 2020 16:55:59 | tclaudel
+;admin destroyChans confirm
 
