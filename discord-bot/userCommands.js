@@ -21,9 +21,10 @@ async function createChan(client, name, faker) {
         discord_id = i.botConfig.admin[0];
     else
         discord_id = user.discord_id;
+    parentCategory = guild.channels.cache.find(chan => chan.name === "BOOTCAMP" + [Math.trunc(1 + userNb / 50)])
     guild.channels.create(PrivateChannelWithBot, {
         type: "text",
-        parent: guild.channels.cache.find(chan => chan.name === "BOOTCAMP" + [Math.trunc(1 + userNb / 50)]),
+        parent: parentCategory,
         permissionOverwrites: [
             {
                 id: everyoneRole,
