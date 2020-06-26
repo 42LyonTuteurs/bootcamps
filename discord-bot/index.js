@@ -15,63 +15,7 @@ const faker = require('faker');
 const emoji = require('node-emoji');
 const dateFormat = require('dateformat');
 const PREFIX = botConfig.prefix;
-const config  = configFile.development
-// Cronjobs
-
-// cron.schedule("0 42 8 25 * * ", function() {
-// 	client.channels.cache.get(config.testChannelId).send("here is the day00 subject !\nTo install anaconda in the ex00, you have to change some lines on linux : ```1. curl -LO \"https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh\"\n" +
-// 		"2. sh Miniconda3-latest-Linux-x86_64.sh -b -p ~/Miniconda3\n" +
-// 		"3. conda install -y \"jupyter\" \"numpy\" \"pandas\"\n" +
-// 		"6. which python\n```", {files: ["./day00.pdf"]});
-// });
-//
-// cron.schedule("0 42 8 26 * * ", function() {
-// 	client.channels.cache.get(config.testChannelId).send("here is the Day01 subject", {files: ["./day01.pdf"]});
-// });
-//
-// cron.schedule("0 42 23 26 * * ", async function() {
-// 	// Correction
-// 	let LoginList = await utils.AllLogin();
-// 	await c.correction(LoginList, 0, "374265216608763907", client);
-// });
-//
-// cron.schedule("0 42 8 27 * * ", function() {
-// 	client.channels.cache.get(config.testChannelId).send("here is the Day02 subject", {files: ["./day02.pdf"]});
-// });
-//
-// cron.schedule("0 42 23 27 * * ", async function() {
-// 	// Correction
-// 	let LoginList = await utils.AllLogin();
-// 	await c.correction(LoginList, 1, "374265216608763907", client);
-// });
-//
-// cron.schedule("0 42 8 28 * * ", function() {
-// 	client.channels.cache.get(config.testChannelId).send("here is the Day03 subject", {files: ["./day03.pdf"]});
-// });
-//
-// cron.schedule("0 42 23 28 * * ", async function() {
-// 	// Correction
-// 	let LoginList = await utils.AllLogin();
-// 	await c.correction(LoginList, 2, "374265216608763907", client);
-// });
-//
-// cron.schedule("0 42 8 29 * * ", function() {
-// 	client.channels.cache.get(config.testChannelId).send("here is the Day04 subject", {files: ["./day04.pdf"]});
-// });
-//
-// cron.schedule("0 42 23 29 * * ", async function() {
-// 	// Correction
-// 	let LoginList = await utils.AllLogin();
-// 	await c.correction(LoginList, 3, "374265216608763907", client);
-// });
-//
-// cron.schedule("0 42 23 30 * * ", async function() {
-// 	// Correction
-// 	let LoginList = await utils.AllLogin();
-// 	await c.correction(LoginList, 4, "374265216608763907", client);
-// });
-
-// End Cronjobs
+const config  = configFile.production
 
 function User(id, username) {
 	this.id = id;
@@ -92,7 +36,7 @@ async function fakerDb()
 }
 
 function debug(message, commandArgs) {
-	console.log(message.guild.channels.cache.find(chan => chan.name === "Bootcamp1"))
+	console.log(message.guild.roles)
 }
 
 function logs(string, login) {

@@ -21,7 +21,9 @@ async function createChan(client, name, faker) {
         discord_id = i.botConfig.admin[0];
     else
         discord_id = user.discord_id;
-    parentCategory = guild.channels.cache.find(chan => chan.name === "BOOTCAMP" + [Math.trunc(1 + userNb / 50)])
+    let parentCategory = guild.channels.cache.find(chan => chan.name === "Bootcamp" + [Math.trunc(1 + userNb / 50)])
+    console.log("BOOTCAMP" + [Math.trunc(1 + userNb / 50)])
+    console.log(parentCategory)
     guild.channels.create(PrivateChannelWithBot, {
         type: "text",
         parent: parentCategory,
@@ -144,12 +146,17 @@ function help(message) {
 
 //TODO deja en cour dans correction.js
 async function dayDone(message, commandArgs, user) {
-   if (await utils.nbOfPendingCorrection(user) >= 2) {
+    let now =  Date.now();
+    const begin = new Date('June 29, 2020 08:42:00');
+    if (now < begin) {
+        utils.error("You should wait June 29 8:42", user)
+        return ;
+    }
+    if (await utils.nbOfPendingCorrection(user) >= 2) {
            message.channel.send('First do your corrections already sets');
-//    send pending correction
-   } else {
+    } else {
        await c.setDayAsFinished(message, user, commandArgs);
-   }
+    }
 }
 
 async function miss(message, commandArg, user) {
